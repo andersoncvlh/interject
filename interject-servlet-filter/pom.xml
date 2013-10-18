@@ -41,8 +41,8 @@
                      <value>false</value>
                   </systemProperty>
                   <systemProperty>
-                     <name>log4j.configuration</name>
-                     <value>file:./src/main/resources/log4j.properties</value>
+                     <name>log4j.configurationFile</name>
+                     <value>${basedir}/src/test/resources/log4j.xml</value>
                   </systemProperty>
                </systemProperties>
             </configuration>
@@ -64,9 +64,9 @@
                      <goal>stop</goal>
                   </goals>
                </execution>
-            </executions>            
+            </executions>
          </plugin>
-          <plugin>
+         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
@@ -128,13 +128,14 @@
          <type>jar</type>
       </dependency>
       <dependency>
-         <groupId>org.apache.logging.log4j</groupId>
-         <artifactId>log4j-api</artifactId>
-         <version>2.0-beta9</version>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient</artifactId>
+         <version>4.3.1</version>
+         <type>jar</type>
       </dependency>
       <dependency>
          <groupId>org.apache.logging.log4j</groupId>
-         <artifactId>log4j-core</artifactId>
+         <artifactId>log4j-1.2-api</artifactId>
          <version>2.0-beta9</version>
       </dependency>
    </dependencies>

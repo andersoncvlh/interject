@@ -20,6 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
@@ -41,27 +44,6 @@ import org.apache.tika.Tika;
  * 
  * But see below for notes on the complications that ensue.
  * 
- * ALSO for testing, could include an example image conversion service: 
- *  http://stackoverflow.com/a/14619218/6689 
- *  ...reading and writing JPEG, PNG, BMP, WBMP and GIF.
-
-File inputFile = new File("...");
-File outputFile = new File("Test.jpg");
-try (InputStream is = new FileInputStream(inputFile)) {
-    ImageInputStream iis = ImageIO.createImageInputStream(is);
-    BufferedImage image = ImageIO.read(iis);
-    try (OutputStream os = new FileOutputStream(outputFile)) {
-        ImageOutputStream ios = ImageIO.createImageOutputStream(os);
-        ImageIO.write(image, "jpg", ios);
-    } catch (Exception exp) {
-        exp.printStackTrace();
-    }
-} catch (Exception exp) {
-    exp.printStackTrace();
-}
-
- * 
- * 
  * @author Andrew.Jackson@bl.uk
  * 
  */
@@ -77,7 +59,7 @@ public class InterjectRequestFilter implements Filter {
 	 * 
 	 */
 	public InterjectRequestFilter() {
-		logger.error("Starting up...");
+		logger.info("Starting up...");
 	}
 
 
@@ -88,7 +70,7 @@ public class InterjectRequestFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) req;
 	    HttpServletResponse httpResponse = (HttpServletResponse) res;
 	    
-	    logger.error("Checking MIME Type for: "+httpRequest.getRequestURL());
+	    logger.info("Checking MIME Type for: "+httpRequest.getRequestURL());
 	    
 	    // Perform the rest of the processing, so we have access to the payload:
 	    //
@@ -104,17 +86,34 @@ public class InterjectRequestFilter implements Filter {
 	    //BufferedInputStream in = new BufferedInputStream("test");
 	    Tika tika = new Tika();
 	    String strMime = tika.detect(httpRequest.getRequestURL().toString());
-	    logger.error("Determined Content-Type to be: "+strMime);
+	    logger.info("Determined Content-Type to be: "+strMime);
 	    
-	   // Redirect any filtered Mimetype
+	    Header accept = new BasicHeader("Accept", httpRequest.getHeader("Accept"));
+	    boolean originalRequested = false;
+	    if( accept != null ) {
+	    	logger.info("Got Accept: "+accept);
+	    	for( HeaderElement e : accept.getElements() ) {
+	    		if( e.getName().equals(strMime)) {
+	    			logger.info("Accept header matched original format.");
+	    			originalRequested = true;
+	    		}
+	    	}
+	    }
+	    
+	    if( originalRequested == false ) {
+	    // Redirect any filtered Mimetype
         for(int i = 0;i < mimeTypes.size();i++){
         	String mimeType = mimeTypes.get(i);
         	if(mimeType.equalsIgnoreCase(strMime)){
-        		logger.error("Redirecting: "+httpRequest.getRequestURL() + " to: " +  mimeRedirects.get(i));
-        		httpResponse.sendRedirect(httpResponse.encodeRedirectURL(mimeRedirects.get(i) + httpRequest.getRequestURL().toString()));
+        		logger.info("Redirecting: "+httpRequest.getRequestURL() + " to: " +  mimeRedirects.get(i));
+        		httpResponse.sendRedirect(httpResponse.encodeRedirectURL(
+        					mimeRedirects.get(i) 
+        					+ httpRequest.getRequestURL().toString() 
+        					+ "&sourceContentType=" + strMime
+        				));
         		return;
         	}
-        	
+        }	
         }
         
         // Pass down the chain:
@@ -129,7 +128,7 @@ public class InterjectRequestFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
-		logger.error("Loading Properties file: interject-filter.properties" );	      
+		logger.info("Loading Properties file: interject-filter.properties" );	      
         
 		propertiesConfig = new Properties();
 		try {

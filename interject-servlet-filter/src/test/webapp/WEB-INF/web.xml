@@ -14,8 +14,19 @@
     
     <filter-mapping>
         <filter-name>InterjectFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>*.bmp</url-pattern>
     </filter-mapping>
+
+  <servlet>
+    <description></description>
+    <display-name>ImageIOConversionServlet</display-name>
+    <servlet-name>ImageIOConversionServlet</servlet-name>
+    <servlet-class>uk.bl.wa.interject.servlet.ImageIOConversionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImageIOConversionServlet</servlet-name>
+    <url-pattern>/ImageIOConversionServlet</url-pattern>
+  </servlet-mapping>
 
 
 </web-app>
