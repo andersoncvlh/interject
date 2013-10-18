@@ -26,9 +26,23 @@ import org.apache.tika.Tika;
 
 
 /**
- * @author JoeObrien
  *
- *	Redirect specific Mime Types
+ * Redirect specific Mime Types
+ *
+ * This version just uses the URL.
+ * 
+ * Want to use URL, server mime type and content sniffing. a la:
+ * 
+ * http://stackoverflow.com/questions/8933054/how-to-log-response-content-from-a-java-web-server
+ * 
+ * See also
+ * 
+ * http://stackoverflow.com/a/8499001/6689
+ * 
+ * But see below for notes on the complications that ensue.
+ * 
+ * @author Andrew.Jackson@bl.uk
+ * 
  */
 public class InterjectRequestFilter implements Filter {
 	
@@ -39,11 +53,6 @@ public class InterjectRequestFilter implements Filter {
 	
 	
 	/**
-	 * This version just uses the URL.
-	 * 
-	 * Want to use URL, server mime type and content sniffing. a la:
-	 * 
-	 * http://stackoverflow.com/questions/8933054/how-to-log-response-content-from-a-java-web-server
 	 * 
 	 */
 	public InterjectRequestFilter() {
@@ -61,7 +70,14 @@ public class InterjectRequestFilter implements Filter {
 	    logger.error("Checking MIME Type for: "+httpRequest.getRequestURL());
 	    
 	    // Perform the rest of the processing, so we have access to the payload:
-	    chain.doFilter(req, res);
+	    //
+	    // FIXME Doing this here does not work, as the initial response (e.g. status code etc is already 
+	    // committed by the time we exit this function.
+	    // To make this work, we need to buffer the response until we can sample the body and then
+	    // clear/rewrite the response before continuing.
+	    // A fairly similar example is included in the form of the HttpServletResponseCopier class.
+	    //
+	    //chain.doFilter(req, res);
 	    
 	    // Sniff the type of the payload:
 	    //BufferedInputStream in = new BufferedInputStream("test");
@@ -79,6 +95,9 @@ public class InterjectRequestFilter implements Filter {
         	}
         	
         }
+        
+        // Pass down the chain:
+	    chain.doFilter(req, res);
 		
 	}
 
