@@ -33,7 +33,14 @@ Offer to convert tape image formats, e.g. [taper](3)?
 Emulation-based actions
 -----------------------
 
-Look for .tap files, e.g. the current JISC Search contains [121 .tap 0x13000000 files](1) (out of 318,836,024 resources), e.g. [Wheelie.tap](2) from 1999. Then, push them into a JavaScript-based emulator:
+Look for .tap files, e.g. the current JISC Search contains [121 .tap 0x13000000 files](1) (out of 318,836,024 resources), e.g. [Wheelie.tap](2) from 1999.
+Also, http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.tzx%22 857 of those.
+And http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.z80%22 -
+132 .z80, but this looks a bit confused (also getting image/cgm as a match) and a large range of FFBs.
+
+
+
+Then, push them into a JavaScript-based emulator:
 
 * [jsspeccy](https://github.com/gasman/jsspeccy2/blob/master/Embedding.txt) (quick win)
 * [JSMESS](http://jsmess.textfiles.com/) (more platforms)
