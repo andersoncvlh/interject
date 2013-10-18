@@ -41,6 +41,27 @@ import org.apache.tika.Tika;
  * 
  * But see below for notes on the complications that ensue.
  * 
+ * ALSO for testing, could include an example image conversion service: 
+ *  http://stackoverflow.com/a/14619218/6689 
+ *  ...reading and writing JPEG, PNG, BMP, WBMP and GIF.
+
+File inputFile = new File("...");
+File outputFile = new File("Test.jpg");
+try (InputStream is = new FileInputStream(inputFile)) {
+    ImageInputStream iis = ImageIO.createImageInputStream(is);
+    BufferedImage image = ImageIO.read(iis);
+    try (OutputStream os = new FileOutputStream(outputFile)) {
+        ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+        ImageIO.write(image, "jpg", ios);
+    } catch (Exception exp) {
+        exp.printStackTrace();
+    }
+} catch (Exception exp) {
+    exp.printStackTrace();
+}
+
+ * 
+ * 
  * @author Andrew.Jackson@bl.uk
  * 
  */
