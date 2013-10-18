@@ -89,11 +89,11 @@ public class InterjectRequestFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
-		logger.error("Loading Properties file: filter.properties" );	      
+		logger.error("Loading Properties file: interject-filter.properties" );	      
         
 		propertiesConfig = new Properties();
 		try {
-			InputStream in = this.getClass().getClassLoader().getResourceAsStream("filter.properties");
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream("interject-filter.properties");
 			propertiesConfig.load(in);
 		} catch (Exception e) {
 			logger.error("Unable to load properties from file", e);
