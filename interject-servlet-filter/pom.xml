@@ -26,6 +26,7 @@
                   </connector>
                </connectors>
                <stopPort>19999</stopPort>
+               <stopKey>nonrandomkey</stopKey>
                <webAppSourceDirectory>${basedir}/src/test/webapp</webAppSourceDirectory>
                <useTestScope>true</useTestScope>
                <systemProperties>
@@ -45,6 +46,54 @@
                   </systemProperty>
                </systemProperties>
             </configuration>
+            <executions>
+               <execution>
+                  <id>start-jetty</id>
+                  <phase>pre-integration-test</phase>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+                  <configuration>
+                     <daemon>true</daemon>
+                  </configuration>
+               </execution>
+               <execution>
+                  <id>stop-jetty</id>
+                  <phase>post-integration-test</phase>
+                  <goals>
+                     <goal>stop</goal>
+                  </goals>
+               </execution>
+            </executions>            
+         </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+               <excludes>
+                  <exclude>**/integration/*Test.java
+                  </exclude>
+               </excludes>
+            </configuration>
+            <executions>
+               <execution>
+                  <id>integration-tests</id>
+                  <phase>integration-test</phase>
+                  <goals>
+                     <goal>test</goal>
+                  </goals>
+                  <configuration>
+                     <skip>false</skip>
+                     <excludes>
+                        <exclude>none</exclude>
+                     </excludes>
+                     <includes>
+                        <include>**/integration/*Test.java
+                        </include>
+                     </includes>
+                  </configuration>
+               </execution>
+            </executions>
          </plugin>
       </plugins>
    </build>
