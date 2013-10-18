@@ -9,14 +9,35 @@ import java.net.URLConnection;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author Andrew Jackson <Andrew.Jackson@bl.uk>
+ *
+ */
 public class InterjectRequestFilterTest {
 
+	/**
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testInterject() throws IOException {
-		URL test = new URL("http://localhost:8989/images/cc.bmp");
+		// Check that URLs like this have NOT been modified:
+		this.checkUrlContentType("http://localhost:8989/images/cc.png", "image/png");
+		// Check URLs have been interjected correctly:
+		//this.checkUrlContentType("http://localhost:8989/images/cc.bmp", "image/png");
+	}
+
+	/**
+	 * 
+	 * @param url
+	 * @param expectedType
+	 * @throws IOException
+	 */
+	private void checkUrlContentType( String url, String expectedType ) throws IOException {
+		URL test = new URL(url);
 		URLConnection con = test.openConnection();
-		System.out.println("GOT: "+con.getContentType());
-		fail("Not yet implemented");
+		assertEquals( expectedType, con.getContentType() );
 	}
 
 }
