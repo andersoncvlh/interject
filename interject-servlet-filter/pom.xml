@@ -6,7 +6,7 @@
       <version>1.0.0-SNAPSHOT</version>
    </parent>
    <modelVersion>4.0.0</modelVersion>
-   <artifactId>interject-servlet-filter-test</artifactId>
+   <artifactId>interject-servlet-filter</artifactId>
    <packaging>jar</packaging>
    <properties>
       <jetty.version>8.1.11.v20130520</jetty.version>
@@ -138,5 +138,18 @@
          <artifactId>log4j-1.2-api</artifactId>
          <version>2.0-beta9</version>
       </dependency>
+      <dependency>
+<groupId>org.apache.commons</groupId>
+                 <artifactId>commons-imaging</artifactId>
+                 <version>1.0-SNAPSHOT</version>
+</dependency>
    </dependencies>
+
+<repositories>
+<repository>
+                    <id>apache.snapshots</id>
+                    <url>http://repository.apache.org/snapshots/</url>
+                 </repository>
+</repositories>
+
 </project>
