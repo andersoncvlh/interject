@@ -1,7 +1,7 @@
 /**
  * 
  */
-package uk.bl.wa.interject.servlet;
+package uk.bl.wa.interject.filter;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -15,6 +15,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * Starting from:
+ *   http://stackoverflow.com/a/8972088/6689
+ * 
+ * You need to create a Filter wherein you wrap the ServletResponse argument with a custom HttpServletResponseWrapper 
+ * implementation wherein you override the getOutputStream() and getWriter() to return a custom ServletOutputStream 
+ * implementation wherein you copy the written byte(s) in the base abstract OutputStream#write(int b) method. 
+ * Then, you pass the wrapped custom HttpServletResponseWrapper to the FilterChain#doFilter() call instead 
+ * and finally you should be able to get the copied response after the the call.
+ * 
  * @author Andrew Jackson <Andrew.Jackson@bl.uk>
  *
  */
@@ -69,6 +78,20 @@ public class HttpServletResponseCopier extends HttpServletResponseWrapper {
         } else if (outputStream != null) {
             copier.flush();
         }
+    }
+    
+    /* (non-Javadoc)
+	 * @see javax.servlet.ServletResponseWrapper#isCommitted()
+	 */
+	@Override
+	public boolean isCommitted() {
+		return copier.isCommitted();
+	}
+
+	public void reallyFlush() throws IOException {
+    	if( copier != null ) {
+    		copier.reallyFlush();
+    	}
     }
 
     public byte[] getCopy() {

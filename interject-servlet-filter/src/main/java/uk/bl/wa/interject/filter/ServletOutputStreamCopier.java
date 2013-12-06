@@ -1,7 +1,7 @@
 /**
  * 
  */
-package uk.bl.wa.interject.servlet;
+package uk.bl.wa.interject.filter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,7 +11,6 @@ import javax.servlet.ServletOutputStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tika.Tika;
 
 /**
  * 
@@ -26,28 +25,31 @@ public class ServletOutputStreamCopier extends ServletOutputStream {
     private OutputStream outputStream;
     private ByteArrayOutputStream copy;
     private long counter;
-    private int bufsize = 100;
+    private int bufsize = 10;
     private boolean written;
 
     public ServletOutputStreamCopier(OutputStream outputStream) {
     	logger.info("ServletOutputStreamCopier()");
         this.outputStream = outputStream;
-        this.copy = new ByteArrayOutputStream(bufsize);
+        this.copy = new ByteArrayOutputStream();
         this.counter = 0;
         written = false;
+    }
+    
+    private void writeBuf() throws IOException {
+    	outputStream.write(copy.toByteArray());
+    	written = true;    	
     }
 
     @Override
     public void write(int b) throws IOException {
-        copy.write(b);
-    	if( counter == bufsize) {
-    		outputStream.write(copy.toByteArray());
-    		written = true;
-    	}
         if( counter > bufsize ) {
         	outputStream.write(b);
+        } else {
+            copy.write(b);
+            if( counter == bufsize) writeBuf();
+            counter++;
         }
-        counter++;
     }
 
     /* (non-Javadoc)
@@ -56,10 +58,6 @@ public class ServletOutputStreamCopier extends ServletOutputStream {
 	@Override
 	public void close() throws IOException {
     	logger.info("close()");
-    	if( ! written ) { 
-    		write(copy.toByteArray()); 
-    		written = true;
-    	}
 		super.close();
 	}
 
@@ -69,18 +67,19 @@ public class ServletOutputStreamCopier extends ServletOutputStream {
 	@Override
 	public void flush() throws IOException {
     	logger.info("flush()");
-    	if( ! written ) { 
-    		write(copy.toByteArray()); 
-    		written = true;
-    	}
 		super.flush();
+	}
+	
+	public void reallyFlush() throws IOException {
+    	if( ! written ) writeBuf();
+	}
+	
+	public boolean isCommitted() {
+		return written;
 	}
 
 	public byte[] getCopy() {
-    	logger.info("getCopy() INNERMOST ");
-    	byte[] b = copy.toByteArray();
-    	logger.info("b = "+b.length);
-        return b;
+    	return copy.toByteArray();
     }
 
 }

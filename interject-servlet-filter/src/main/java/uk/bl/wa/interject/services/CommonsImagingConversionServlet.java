@@ -1,4 +1,4 @@
-package uk.bl.wa.interject.servlet;
+package uk.bl.wa.interject.services;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

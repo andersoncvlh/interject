@@ -30,7 +30,7 @@ public class InterjectRequestFilterTest {
 		// Check that URLs like this have NOT been modified:
 		this.checkUrlContentType("http://localhost:8989/images/cc.png", "image/png");
 		// Check URLs have been interjected correctly:
-		this.checkUrlContentType("http://localhost:8989/images/cc.bmp", "image/bmp");
+		this.checkUrlContentType("http://localhost:8989/images/cc.bmp", "image/png");
 	}
 
 	/**

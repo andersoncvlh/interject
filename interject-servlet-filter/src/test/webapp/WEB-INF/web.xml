@@ -9,7 +9,7 @@
 
     <filter>
         <filter-name>InterjectFilter</filter-name>
-        <filter-class>uk.bl.wa.interject.servlet.InterjectRequestFilter</filter-class>
+        <filter-class>uk.bl.wa.interject.filter.InterjectRequestFilter</filter-class>
     </filter>
     
     <filter-mapping>
@@ -21,13 +21,13 @@
     <description></description>
     <display-name>ImageIOConversionServlet</display-name>
     <servlet-name>ImageIOConversionServlet</servlet-name>
-    <servlet-class>uk.bl.wa.interject.servlet.ImageIOConversionServlet</servlet-class>
+    <servlet-class>uk.bl.wa.interject.services.ImageIOConversionServlet</servlet-class>
   </servlet>
   <servlet>
     <description></description>
     <display-name>CommonsImagingConversionServlet</display-name>
     <servlet-name>CommonsImagingConversionServlet</servlet-name>
-    <servlet-class>uk.bl.wa.interject.servlet.CommonsImagingConversionServlet</servlet-class>
+    <servlet-class>uk.bl.wa.interject.services.CommonsImagingConversionServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ImageIOConversionServlet</servlet-name>

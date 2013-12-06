@@ -1,7 +1,7 @@
 /**
  * 
  */
-package uk.bl.wa.interject.servlet;
+package uk.bl.wa.interject.filter;
 
 import java.io.IOException;
 

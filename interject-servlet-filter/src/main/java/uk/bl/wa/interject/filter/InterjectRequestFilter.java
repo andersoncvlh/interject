@@ -1,8 +1,9 @@
 /**
  * 
  */
-package uk.bl.wa.interject.servlet;
+package uk.bl.wa.interject.filter;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -26,6 +27,10 @@ import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
+import org.apache.tika.metadata.Metadata;
+
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 
 /**
@@ -60,6 +65,12 @@ public class InterjectRequestFilter implements Filter {
 	 */
 	public InterjectRequestFilter() {
 		logger.info("Starting up...");
+		Config conf = ConfigFactory.load();
+		for( Config s : conf.getConfigList("interject")) {
+			System.out.println("Service "+s.getString("endpoint"));
+			System.out.println("Types: "+s.getStringList("types"));
+		}
+		
 	}
 
 
@@ -70,8 +81,8 @@ public class InterjectRequestFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) req;
 		HttpServletResponse httpResponse = (HttpServletResponse) res;
 
-		logger.info("Checking MIME Type for: "+httpRequest.getRequestURL());
-
+		byte[] copy = null;
+		
 		// Perform the rest of the processing, so we have access to the payload:
 		//
 		// FIXME Doing this here does not work, as the initial response (e.g. status code etc is already 
@@ -81,18 +92,19 @@ public class InterjectRequestFilter implements Filter {
 		// A fairly similar example is included in the form of the HttpServletResponseCopier class.
 		//
 
-		//chain.doFilter(req, res);
-
-		// Sniff the type of the payload:
-		//BufferedInputStream in = new BufferedInputStream("test");
+		logger.info("Checking MIME Type for: "+httpRequest.getRequestURL());
 		Tika tika = new Tika();
-		String strMime = tika.detect(httpRequest.getRequestURL().toString());
+		String strMime = null;
+		strMime = tika.detect(httpRequest.getRequestURL().toString());
 		logger.info("Determined Content-Type to be: "+strMime);
-
 		
-		// Now decide what to do, based on the determined type:
-		Header accept = new BasicHeader("Accept", httpRequest.getHeader("Accept"));
+
+		// Default to NOT returning the original without question:
 		boolean originalRequested = false;
+
+		// Grab the Accept header:
+		Header accept = new BasicHeader("Accept", httpRequest.getHeader("Accept"));
+		// Check the Accept header, if any:
 		if( accept != null ) {
 			logger.info("Got Accept: "+accept.getValue());
 			for( HeaderElement e : accept.getElements() ) {
@@ -103,36 +115,65 @@ public class InterjectRequestFilter implements Filter {
 			}
 		}
 
+		// Check for a special no-transform parameter:
+		if( httpRequest.getParameter("interject_disabled") != null ) {
+			boolean interjectDisabled = Boolean.parseBoolean( httpRequest.getParameter("interject_disabled") );
+			if( interjectDisabled )
+				originalRequested = true;
+		}
+
+
+		// If we are not just passing through the original:
 		if( originalRequested == false ) {
-			// Redirect any filtered Mimetype
+			try {
+			// Now decide what to do, based on the determined type:
 			for(int i = 0;i < mimeTypes.size();i++){
 				String mimeType = mimeTypes.get(i);
 				if(mimeType.equalsIgnoreCase(strMime)){
 					logger.info("Redirecting: "+httpRequest.getRequestURL() + " to: " +  mimeRedirects.get(i));
 					httpResponse.sendRedirect(httpResponse.encodeRedirectURL(
 							mimeRedirects.get(i) 
-							+ httpRequest.getRequestURL().toString() 
+							+ "?url="+httpRequest.getRequestURL().toString() 
 							+ "&sourceContentType=" + strMime
 							));
 					return;
 				}
-			}	
+			}
+			} catch (Exception e ) {
+				logger.error("Failed: "+e);
+			}
 		}
-
+		
+		// Going slightly mad: this seems to work, down here, but does not work if I do it earlier in this method. NO IDEA WHY.
+		// It seems the precise timing of when buffers get written to depends on things I can't really control.
 
 		// Set up the response copier:
 		HttpServletResponseCopier hsrc = new HttpServletResponseCopier(httpResponse);
 		
 		// Pass down the chain:
+		res.setBufferSize(0);
 		chain.doFilter(req, hsrc);
 		
-		// output the result
-		byte[] copy = hsrc.getCopy();
+		// Flush the original response, and grab a copy:
+		String currentType = httpResponse.getContentType();
+		res.flushBuffer();
+		copy = hsrc.getCopy();
+
 		logger.info("Copier got: "+copy.length);
-		logger.info("Copier got: "+new String(copy).substring(0, 10));
-		logger.info("Type: "+tika.detect(copy));
+		logger.info("Copier got: "+new String(copy).substring(0, 5));
 		
+		// Flush
 		hsrc.flushBuffer();
+		hsrc.reallyFlush();
+
+		// Sniff the type of the payload:
+		if( copy != null ) {
+			Metadata md = new Metadata();
+			md.add(Metadata.RESOURCE_NAME_KEY, httpRequest.getRequestURL().toString());
+			//md.add(Metadata.CONTENT_TYPE, currentType);
+			strMime = tika.detect( new ByteArrayInputStream(copy),md);
+		}
+		logger.info("Determined Content-Type to be: "+strMime);
 
 	}
 

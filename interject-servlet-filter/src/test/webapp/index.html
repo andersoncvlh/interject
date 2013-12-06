@@ -1,39 +1,107 @@
 <html>
 <head>
-<title>Interject Test Homepage</title>
+<title>Interject Test Page</title>
+<style type="text/css">
+table {
+  text-align: center;
+  border: 1px solid #444;
+  background-color: #f8f8f8;
+  border-collapse: collapse;
+}
+table td, table th {
+  border: 1px solid #444;
+  padding: 0.5em;
+}
+table th {
+  background-color: #eee;
+}
+</style>
 </head>
 <body>
-<h1>Interject Test Homepage</h1>
+<h1>Interject Test Page</h1>
 
-<p>
-<a href="images/cc.png">images/cc.png</a> (master image)
-<br/>
+<table>
+<tr>
+<th>Master Image</th>
+<th>Converted Image</th>
+<th>Interjected Converted Image</th>
+</tr>
+
+<tr>
+<td>
 <img src="images/cc.png"/>
-</p>
-
-<p>
-<a href="images/cc.xpm">images/cc.xpm</a>
 <br/>
+<a href="images/cc.png">images/cc.png</a>
+</td>
+<td>
+<img src="images/cc.xpm?interject_disabled=true"/>
+<br/>
+<a href="images/cc.xpm?interject_disabled=true">images/cc.xpm</a>
+</td>
+<td>
 <img src="images/cc.xpm"/>
-</p>
-
-<p>
-<a href="images/cc.xbm">images/cc.xbm</a>
 <br/>
+<a href="images/cc.xpm">images/cc.xpm</a>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="images/cc.png"/>
+<br/>
+<a href="images/cc.png">images/cc.png</a>
+</td>
+<td>
+<img src="images/cc.xbm?interject_disabled=true"/>
+<br/>
+<a href="images/cc.xbm?interject_disabled=true">images/cc.xbm</a>
+</td>
+<td>
 <img src="images/cc.xbm"/>
-</p>
-
-<p>
-<a href="images/cc.tif">images/cc.tif</a>
 <br/>
+<a href="images/cc.xbm">images/cc.xbm</a>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="images/cc.png"/>
+<br/>
+<a href="images/cc.png">images/cc.png</a>
+</td>
+<td>
+<img src="images/cc.tif?interject_disabled=true"/>
+<br/>
+<a href="images/cc.tif?interject_disabled=true">images/cc.tif</a>
+</td>
+<td>
 <img src="images/cc.tif"/>
-</p>
-
-<p>
-<a href="images/cc.bmp">images/cc.bmp</a>
 <br/>
+<a href="images/cc.tif">images/cc.tif</a>
+</td>
+</tr>
+
+<tr>
+<td>
+<img src="images/cc.png"/>
+<br/>
+<a href="images/cc.png">images/cc.png</a>
+</td>
+<td>
+<img src="images/cc.bmp?interject_disabled=true"/>
+<br/>
+<a href="images/cc.bmp?interject_disabled=true">images/cc.bmp</a>
+</td>
+<td>
 <img src="images/cc.bmp"/>
-</p>
+<br/>
+<a href="images/cc.bmp">images/cc.bmp</a>
+</td>
+</tr>
+
+</table>
+
+
 
 </body>
 </html>
