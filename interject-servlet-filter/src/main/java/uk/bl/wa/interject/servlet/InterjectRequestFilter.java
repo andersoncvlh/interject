@@ -3,17 +3,22 @@
  */
 package uk.bl.wa.interject.servlet;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +31,9 @@ import org.apache.http.message.BasicHeader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
+
+import uk.bl.wa.interject.factory.ContentTypeFactory;
+import uk.bl.wa.interject.type.ProblemType;
 
 
 /**
@@ -67,8 +75,8 @@ public class InterjectRequestFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res,
             FilterChain chain) throws IOException, ServletException {
  
-		HttpServletRequest httpRequest = (HttpServletRequest) req;
-	    HttpServletResponse httpResponse = (HttpServletResponse) res;
+		final HttpServletRequest httpRequest = (HttpServletRequest) req;
+	    final HttpServletResponse httpResponse = (HttpServletResponse) res;
 	    
 	    logger.info("Checking MIME Type for: "+httpRequest.getRequestURL());
 	    
@@ -84,41 +92,88 @@ public class InterjectRequestFilter implements Filter {
 	    
 	    // Sniff the type of the payload:
 	    //BufferedInputStream in = new BufferedInputStream("test");
-	    Tika tika = new Tika();
-	    String strMime = tika.detect(httpRequest.getRequestURL().toString());
-	    logger.info("Determined Content-Type to be: "+strMime);
 	    
-	    Header accept = new BasicHeader("Accept", httpRequest.getHeader("Accept"));
-	    boolean originalRequested = false;
-	    if( accept != null ) {
-	    	logger.info("Got Accept: "+accept);
-	    	for( HeaderElement e : accept.getElements() ) {
-	    		if( e.getName().equals(strMime)) {
-	    			logger.info("Accept header matched original format.");
-	    			originalRequested = true;
-	    		}
-	    	}
-	    }
-	    
-	    if( originalRequested == false ) {
-	    // Redirect any filtered Mimetype
-        for(int i = 0;i < mimeTypes.size();i++){
-        	String mimeType = mimeTypes.get(i);
-        	if(mimeType.equalsIgnoreCase(strMime)){
-        		logger.info("Redirecting: "+httpRequest.getRequestURL() + " to: " +  mimeRedirects.get(i));
-        		httpResponse.sendRedirect(httpResponse.encodeRedirectURL(
-        					mimeRedirects.get(i) 
-        					+ httpRequest.getRequestURL().toString() 
-        					+ "&sourceContentType=" + strMime
-        				));
-        		return;
-        	}
-        }	
-        }
+//	    String url = httpRequest.getRequestURL().toString();
+
+//	    Header accept = new BasicHeader("Accept", httpRequest.getHeader("Accept"));
+//	    boolean originalRequested = false;
+//	    if( accept != null ) {
+//	    	logger.info("Got Accept: "+accept);
+//	    	for( HeaderElement e : accept.getElements() ) {
+//	    		if( e.getName().equals(strMime)) {
+//	    			logger.info("Accept header matched original format.");
+//	    			originalRequested = true;
+//	    		}
+//	    	}
+//	    }
+//	    
+//	    if( originalRequested == false ) {
+//	    // Redirect any filtered Mimetype
+//        for(int i = 0;i < mimeTypes.size();i++){
+//        	String mimeType = mimeTypes.get(i);
+//        	if(mimeType.equalsIgnoreCase(strMime)){
+//        		logger.info("Redirecting: "+httpRequest.getRequestURL() + " to: " +  mimeRedirects.get(i));
+//        		httpResponse.sendRedirect(httpResponse.encodeRedirectURL(
+//        					mimeRedirects.get(i) 
+//        					+ httpRequest.getRequestURL().toString() 
+//        					+ "&sourceContentType=" + strMime
+//        				));
+//        		return;
+//        	}
+//        }	
+//        }
+
+	    final ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
+
+	    HttpServletResponse wrappedResp = new HttpServletResponseWrapper(httpResponse) {
+	        @Override
+	        public PrintWriter getWriter() {
+	        	// stand in stream
+	            return new PrintWriter(baos);
+	        }
+
+	        @Override
+	        public ServletOutputStream getOutputStream() {
+	            return new ServletOutputStream() {
+	                @Override
+	                public void write(int b) {
+	                    baos.write(b);
+	                }
+	            };
+	        }
+	        
+	        @Override
+	        public void sendRedirect(String location) throws IOException {
+	        	logger.info("Do something with bytes: " + baos.toByteArray());
+	        	super.sendRedirect(location);
+	        }
+	    };
+
+	    chain.doFilter(req, wrappedResp);
+	    byte[] bytes = baos.toByteArray();
+
+        ProblemType problemType = null;
         
-        // Pass down the chain:
-	    chain.doFilter(req, res);
-		
+//        HttpServletResponseCopier responseCopier = new HttpServletResponseCopier(httpResponse);
+//		chain.doFilter(req, responseCopier);
+//        responseCopier.flushBuffer();
+//        byte[] bytes = responseCopier.getCopy();
+
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+
+        problemType = ContentTypeFactory.INSTANCE.findProblemType(byteArrayInputStream);        
+
+        StringBuilder redirectUrl = new StringBuilder(httpResponse.encodeRedirectURL(mimeRedirects.get(0))).append(
+				httpRequest.getRequestURL().toString()).append("&sourceContentType=").append(problemType.getMimeType());
+        
+        boolean isRedirect = false;
+        if (problemType != null) {
+        	isRedirect = true;
+        }
+        if (isRedirect) {
+			wrappedResp.sendRedirect(redirectUrl.toString());
+			return;
+        }
 	}
 
 	@Override
