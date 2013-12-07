@@ -25,7 +25,7 @@ public class ServletOutputStreamCopier extends ServletOutputStream {
     private OutputStream outputStream;
     private ByteArrayOutputStream copy;
     private long counter;
-    private int bufsize = 10;
+    private int bufsize = 1024*1024*1024;
     private boolean written;
 
     public ServletOutputStreamCopier(OutputStream outputStream) {
@@ -38,6 +38,7 @@ public class ServletOutputStreamCopier extends ServletOutputStream {
     
     private void writeBuf() throws IOException {
     	outputStream.write(copy.toByteArray());
+    	outputStream.flush();
     	written = true;    	
     }
 

@@ -102,6 +102,32 @@ public class InterjectRequestFilter implements Filter {
 		// Default to NOT returning the original without question:
 		boolean originalRequested = false;
 
+
+		// Going slightly mad: this seems to work, down here, but does not work if I do it earlier in this method. NO IDEA WHY.
+		// It seems the precise timing of when buffers get written to depends on things I can't really control.
+
+		// Set up the response copier:
+		HttpServletResponseCopier hsrc = new HttpServletResponseCopier(httpResponse);
+		
+		// Pass down the chain:
+		chain.doFilter(req, hsrc);
+		
+		// Flush the original response, and grab a copy:
+		hsrc.flushBuffer();
+		copy = hsrc.getCopy();
+
+		logger.info("Copier got: "+copy.length);
+		//logger.info("Copier got: "+new String(copy).substring(0, 5));
+		
+		// Sniff the type of the payload:
+		if( copy != null && copy.length > 0 ) {
+			Metadata md = new Metadata();
+			md.add(Metadata.RESOURCE_NAME_KEY, httpRequest.getRequestURL().toString());
+			//md.add(Metadata.CONTENT_TYPE, currentType);
+			strMime = tika.detect( new ByteArrayInputStream(copy),md);
+		}
+		logger.info("Determined Content-Type to be: "+strMime);
+
 		// Grab the Accept header:
 		Header accept = new BasicHeader("Accept", httpRequest.getHeader("Accept"));
 		// Check the Accept header, if any:
@@ -122,7 +148,7 @@ public class InterjectRequestFilter implements Filter {
 				originalRequested = true;
 		}
 
-
+		
 		// If we are not just passing through the original:
 		if( originalRequested == false ) {
 			try {
@@ -144,36 +170,9 @@ public class InterjectRequestFilter implements Filter {
 			}
 		}
 		
-		// Going slightly mad: this seems to work, down here, but does not work if I do it earlier in this method. NO IDEA WHY.
-		// It seems the precise timing of when buffers get written to depends on things I can't really control.
-
-		// Set up the response copier:
-		HttpServletResponseCopier hsrc = new HttpServletResponseCopier(httpResponse);
-		
-		// Pass down the chain:
-		res.setBufferSize(0);
-		chain.doFilter(req, hsrc);
-		
-		// Flush the original response, and grab a copy:
-		String currentType = httpResponse.getContentType();
-		res.flushBuffer();
-		copy = hsrc.getCopy();
-
-		logger.info("Copier got: "+copy.length);
-		logger.info("Copier got: "+new String(copy).substring(0, 5));
-		
 		// Flush
-		hsrc.flushBuffer();
+		httpResponse.flushBuffer();
 		hsrc.reallyFlush();
-
-		// Sniff the type of the payload:
-		if( copy != null ) {
-			Metadata md = new Metadata();
-			md.add(Metadata.RESOURCE_NAME_KEY, httpRequest.getRequestURL().toString());
-			//md.add(Metadata.CONTENT_TYPE, currentType);
-			strMime = tika.detect( new ByteArrayInputStream(copy),md);
-		}
-		logger.info("Determined Content-Type to be: "+strMime);
 
 	}
 
