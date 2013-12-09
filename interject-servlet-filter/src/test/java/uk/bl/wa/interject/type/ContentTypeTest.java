@@ -65,10 +65,11 @@ public class ContentTypeTest {
 	}
 
 	@Test
-	public void testEnumerationType() {
+	public void testEnumerationType() throws IOException {
 		String filename = "/test.tiff";
 		InputStream inputStream = getClass().getResourceAsStream(filename);
-		String problemType = InterjectionFactory.INSTANCE.findProblemType(inputStream).getMimeType();
+		String sourceType = tika.detect(inputStream);
+		String problemType = InterjectionFactory.INSTANCE.findProblemType(sourceType).getMimeType();
 		String expected = MediaType.image("tiff").toString();
 		String mimeType = problemType;
 		Assert.assertEquals(expected, mimeType);
