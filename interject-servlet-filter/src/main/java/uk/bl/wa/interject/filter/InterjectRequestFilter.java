@@ -29,8 +29,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
 import org.apache.tika.metadata.Metadata;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
+import uk.bl.wa.interject.factory.ContentTypeFactory;
+import uk.bl.wa.interject.type.MediaType;
 
 
 /**
@@ -55,22 +55,12 @@ import com.typesafe.config.ConfigFactory;
 public class InterjectRequestFilter implements Filter {
 
 	protected static Logger logger = LogManager.getLogger(InterjectRequestFilter.class);
-	public List<String> mimeTypes = new ArrayList<String>();
-	public List<String> mimeRedirects = new ArrayList<String>();
-	public Properties propertiesConfig;
-
 
 	/**
 	 * 
 	 */
 	public InterjectRequestFilter() {
 		logger.info("Starting up...");
-		Config conf = ConfigFactory.load();
-		for( Config s : conf.getConfigList("interject")) {
-			System.out.println("Service "+s.getString("endpoint"));
-			System.out.println("Types: "+s.getStringList("types"));
-		}
-		
 	}
 
 
@@ -96,7 +86,7 @@ public class InterjectRequestFilter implements Filter {
 		Tika tika = new Tika();
 		String strMime = null;
 		strMime = tika.detect(httpRequest.getRequestURL().toString());
-		logger.info("Determined Content-Type to be: "+strMime);
+		logger.info("Using the URL, determined Content-Type to be: "+strMime);
 		
 
 		// Default to NOT returning the original without question:
@@ -126,7 +116,7 @@ public class InterjectRequestFilter implements Filter {
 			//md.add(Metadata.CONTENT_TYPE, currentType);
 			strMime = tika.detect( new ByteArrayInputStream(copy),md);
 		}
-		logger.info("Determined Content-Type to be: "+strMime);
+		logger.info("Using the bytestream and URL, determined Content-Type to be: "+strMime);
 
 		// Grab the Accept header:
 		Header accept = new BasicHeader("Accept", httpRequest.getHeader("Accept"));
@@ -152,21 +142,18 @@ public class InterjectRequestFilter implements Filter {
 		// If we are not just passing through the original:
 		if( originalRequested == false ) {
 			try {
-			// Now decide what to do, based on the determined type:
-			for(int i = 0;i < mimeTypes.size();i++){
-				String mimeType = mimeTypes.get(i);
-				if(mimeType.equalsIgnoreCase(strMime)){
-					logger.info("Redirecting: "+httpRequest.getRequestURL() + " to: " +  mimeRedirects.get(i));
-					httpResponse.sendRedirect(httpResponse.encodeRedirectURL(
-							mimeRedirects.get(i) 
-							+ "?url="+httpRequest.getRequestURL().toString() 
-							+ "&sourceContentType=" + strMime
-							));
-					return;
-				}
-			}
+		    MediaType problemType = ContentTypeFactory.INSTANCE.findProblemType(strMime);        
+		    	if (problemType != null) {
+		    		logger.info("Redirecting: "+httpRequest.getRequestURL() + " to: " +  problemType.getRedirectUrl());
+		    		httpResponse.sendRedirect(httpResponse.encodeRedirectURL(
+		    			problemType.getRedirectUrl()
+		    			+ "?url="+httpRequest.getRequestURL().toString() 
+		    			+ "&sourceContentType=" + strMime
+		    			));
+		    		return;
+		    	}
 			} catch (Exception e ) {
-				logger.error("Failed: "+e);
+				logger.error("Redirect Failed: "+e);
 			}
 		}
 		
@@ -182,21 +169,6 @@ public class InterjectRequestFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-
-		logger.info("Loading Properties file: interject-filter.properties" );	      
-
-		propertiesConfig = new Properties();
-		try {
-			InputStream in = this.getClass().getClassLoader().getResourceAsStream("interject-filter.properties");
-			propertiesConfig.load(in);
-		} catch (Exception e) {
-			logger.error("Unable to load properties from file", e);
-
-		}
-
-		mimeTypes = new ArrayList<String>(Arrays.asList(propertiesConfig.getProperty("mimeType").split(";")));
-		mimeRedirects = new ArrayList<String>(Arrays.asList(propertiesConfig.getProperty("mimeType.redirect").split(";")));
-
 	}
 
 }
