@@ -1,4 +1,4 @@
-package uk.bl.wa.interject.servlet.integration;
+package uk.bl.wa.interject.type;
 
 import java.io.IOException;
 import java.io.InputStream;

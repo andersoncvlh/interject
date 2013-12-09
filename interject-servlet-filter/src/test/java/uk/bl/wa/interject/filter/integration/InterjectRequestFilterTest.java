@@ -1,4 +1,4 @@
-package uk.bl.wa.interject.servlet.integration;
+package uk.bl.wa.interject.filter.integration;
 
 import static org.junit.Assert.*;
 
