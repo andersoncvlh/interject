@@ -29,8 +29,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
 import org.apache.tika.metadata.Metadata;
 
-import uk.bl.wa.interject.factory.ContentTypeFactory;
-import uk.bl.wa.interject.type.MediaType;
+import uk.bl.wa.interject.factory.InterjectionFactory;
+import uk.bl.wa.interject.type.Interjection;
 
 
 /**
@@ -142,7 +142,7 @@ public class InterjectRequestFilter implements Filter {
 		// If we are not just passing through the original:
 		if( originalRequested == false ) {
 			try {
-		    MediaType problemType = ContentTypeFactory.INSTANCE.findProblemType(strMime);        
+		    Interjection problemType = InterjectionFactory.INSTANCE.findProblemType(strMime);        
 		    	if (problemType != null) {
 		    		logger.info("Redirecting: "+httpRequest.getRequestURL() + " to: " +  problemType.getRedirectUrl());
 		    		httpResponse.sendRedirect(httpResponse.encodeRedirectURL(

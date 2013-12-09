@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.bl.wa.interject.factory.ContentTypeFactory;
+import uk.bl.wa.interject.factory.InterjectionFactory;
 
 public class ContentTypeTest {
 
@@ -68,7 +68,7 @@ public class ContentTypeTest {
 	public void testEnumerationType() {
 		String filename = "/test.tiff";
 		InputStream inputStream = getClass().getResourceAsStream(filename);
-		String problemType = ContentTypeFactory.INSTANCE.findProblemType(inputStream).getMimeType();
+		String problemType = InterjectionFactory.INSTANCE.findProblemType(inputStream).getMimeType();
 		String expected = MediaType.image("tiff").toString();
 		String mimeType = problemType;
 		Assert.assertEquals(expected, mimeType);

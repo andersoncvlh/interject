@@ -1,11 +1,11 @@
 package uk.bl.wa.interject.type;
 
-public class MediaType {
+public class Interjection {
 	
 	private String mimeType;
 	private String redirectUrl;
 	
-	public MediaType(String mimeType, String redirectUrl) {
+	public Interjection(String mimeType, String redirectUrl) {
 		this.mimeType = mimeType;
 		this.redirectUrl = redirectUrl;
 	}

@@ -12,30 +12,30 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
 
-import uk.bl.wa.interject.type.MediaType;
+import uk.bl.wa.interject.type.Interjection;
 
-public enum ContentTypeFactory {
+public enum InterjectionFactory {
 
 	INSTANCE;
 
 	protected static Logger logger = LogManager
-			.getLogger(ContentTypeFactory.class);
+			.getLogger(InterjectionFactory.class);
 
-	private Map<String, MediaType> problemTypes;
+	private Map<String, Interjection> problemTypes;
 	
-	private ContentTypeFactory() {
+	private InterjectionFactory() {
 		PropertiesConfiguration propertiesConfig;
 		try {
 			propertiesConfig = new PropertiesConfiguration(
 					"interject-filter.properties");
 			List<Object> mimeTypes = propertiesConfig.getList("mimeType");
-			problemTypes = new HashMap<String, MediaType>();
+			problemTypes = new HashMap<String, Interjection>();
 			
 			for (Object mimeType : mimeTypes) {
 				String[] pairs = ((String)mimeType).split(";");
 			    String problemMimeType = pairs[0];
 			    String problemRedirect = pairs[1];
-			    MediaType problemType = newProblemTypeInstance(problemMimeType, problemRedirect);
+			    Interjection problemType = newProblemTypeInstance(problemMimeType, problemRedirect);
 				problemTypes.put(problemMimeType, problemType);
 			}
 		} catch (ConfigurationException e) {
@@ -45,13 +45,13 @@ public enum ContentTypeFactory {
 
 	}
 
-	public MediaType findProblemType(String url) {
+	public Interjection findProblemType(String url) {
 		String mimeType = newTikaInstance().detect(url);
 		return problemTypes.get(mimeType);
 	}
 
-	public MediaType findProblemType(InputStream inputStream) {
-		MediaType problemType = null;
+	public Interjection findProblemType(InputStream inputStream) {
+		Interjection problemType = null;
 		try {
 			String mimeType = newTikaInstance().detect(inputStream);
 			problemType = problemTypes.get(mimeType);
@@ -66,7 +66,7 @@ public enum ContentTypeFactory {
 		return new Tika();
 	}
 	
-	private MediaType newProblemTypeInstance(String mimeType, String redirectUrl) {
-		return new MediaType(mimeType, redirectUrl);
+	private Interjection newProblemTypeInstance(String mimeType, String redirectUrl) {
+		return new Interjection(mimeType, redirectUrl);
 	}
 }
