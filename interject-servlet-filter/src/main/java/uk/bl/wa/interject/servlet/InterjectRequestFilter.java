@@ -3,10 +3,10 @@
  */
 package uk.bl.wa.interject.servlet;
 
+import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 
 import javax.servlet.Filter;
@@ -20,21 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.message.BasicHeader;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tika.Tika;
 
 import uk.bl.wa.interject.factory.ContentTypeFactory;
-import uk.bl.wa.interject.type.ProblemType;
-
+import uk.bl.wa.interject.type.MediaType;
 
 /**
  *
@@ -58,11 +50,7 @@ import uk.bl.wa.interject.type.ProblemType;
 public class InterjectRequestFilter implements Filter {
 	
 	protected static Logger logger = LogManager.getLogger(InterjectRequestFilter.class);
-	public List<String> mimeTypes = new ArrayList<String>();
-	public List<String> mimeRedirects = new ArrayList<String>();
-	public Properties propertiesConfig;
-	
-	
+
 	/**
 	 * 
 	 */
@@ -152,8 +140,6 @@ public class InterjectRequestFilter implements Filter {
 	    chain.doFilter(req, wrappedResp);
 	    byte[] bytes = baos.toByteArray();
 
-        ProblemType problemType = null;
-        
 //        HttpServletResponseCopier responseCopier = new HttpServletResponseCopier(httpResponse);
 //		chain.doFilter(req, responseCopier);
 //        responseCopier.flushBuffer();
@@ -161,42 +147,21 @@ public class InterjectRequestFilter implements Filter {
 
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
-        problemType = ContentTypeFactory.INSTANCE.findProblemType(byteArrayInputStream);        
+        MediaType problemType = ContentTypeFactory.INSTANCE.findProblemType(byteArrayInputStream);        
 
-        StringBuilder redirectUrl = new StringBuilder(httpResponse.encodeRedirectURL(mimeRedirects.get(0))).append(
-				httpRequest.getRequestURL().toString()).append("&sourceContentType=").append(problemType.getMimeType());
-        
-        boolean isRedirect = false;
         if (problemType != null) {
-        	isRedirect = true;
-        }
-        if (isRedirect) {
-			wrappedResp.sendRedirect(redirectUrl.toString());
+	        StringBuilder redirectUrl = new StringBuilder(httpResponse.encodeRedirectURL(problemType.getRedirectUrl())).append(
+					httpRequest.getRequestURL().toString()).append("&sourceContentType=").append(problemType.getMimeType());
+        	logger.info("Redirecting to: " + redirectUrl);
+			httpResponse.sendRedirect(redirectUrl.toString());
 			return;
         }
 	}
 
 	@Override
-	public void destroy(){}
-
+	public void destroy() {}
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		
-		logger.info("Loading Properties file: interject-filter.properties" );	      
-        
-		propertiesConfig = new Properties();
-		try {
-			InputStream in = this.getClass().getClassLoader().getResourceAsStream("interject-filter.properties");
-			propertiesConfig.load(in);
-		} catch (Exception e) {
-			logger.error("Unable to load properties from file", e);
-
-		}
-        
-		mimeTypes = new ArrayList<String>(Arrays.asList(propertiesConfig.getProperty("mimeType").split(";")));
-		mimeRedirects = new ArrayList<String>(Arrays.asList(propertiesConfig.getProperty("mimeType.redirect").split(";")));
-		
-	}
+	public void init(FilterConfig filterConfig) throws ServletException {}
     
 }
