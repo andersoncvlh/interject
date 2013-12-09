@@ -16,14 +16,7 @@
         <filter-name>InterjectFilter</filter-name>
         <url-pattern>images/*</url-pattern>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>InterjectFilter</filter-name>
-        <url-pattern>*.tiff</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>InterjectFilter</filter-name>
-        <url-pattern>*.jpg</url-pattern>
-    </filter-mapping>
+    
   <servlet>
     <description></description>
     <display-name>ImageIOConversionServlet</display-name>

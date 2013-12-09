@@ -92,10 +92,6 @@ public class InterjectRequestFilter implements Filter {
 		// Default to NOT returning the original without question:
 		boolean originalRequested = false;
 
-
-		// Going slightly mad: this seems to work, down here, but does not work if I do it earlier in this method. NO IDEA WHY.
-		// It seems the precise timing of when buffers get written to depends on things I can't really control.
-
 		// Set up the response copier:
 		HttpServletResponseCopier hsrc = new HttpServletResponseCopier(httpResponse);
 		
@@ -107,7 +103,6 @@ public class InterjectRequestFilter implements Filter {
 		copy = hsrc.getCopy();
 
 		logger.info("Copier got: "+copy.length);
-		//logger.info("Copier got: "+new String(copy).substring(0, 5));
 		
 		// Sniff the type of the payload:
 		if( copy != null && copy.length > 0 ) {
@@ -142,7 +137,7 @@ public class InterjectRequestFilter implements Filter {
 		// If we are not just passing through the original:
 		if( originalRequested == false ) {
 			try {
-		    Interjection problemType = InterjectionFactory.INSTANCE.findProblemType(strMime);        
+				Interjection problemType = InterjectionFactory.INSTANCE.findProblemType(strMime);        
 		    	if (problemType != null) {
 		    		logger.info("Redirecting: "+httpRequest.getRequestURL() + " to: " +  problemType.getRedirectUrl());
 		    		httpResponse.sendRedirect(httpResponse.encodeRedirectURL(
@@ -151,6 +146,8 @@ public class InterjectRequestFilter implements Filter {
 		    			+ "&sourceContentType=" + strMime
 		    			));
 		    		return;
+		    	} else {
+		    		logger.info("No problem with format "+strMime);
 		    	}
 			} catch (Exception e ) {
 				logger.error("Redirect Failed: "+e);

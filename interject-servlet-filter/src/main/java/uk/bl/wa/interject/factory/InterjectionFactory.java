@@ -1,7 +1,5 @@
 package uk.bl.wa.interject.factory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +8,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tika.Tika;
-
 import uk.bl.wa.interject.type.Interjection;
 
 public enum InterjectionFactory {
@@ -45,27 +41,12 @@ public enum InterjectionFactory {
 
 	}
 
-	public Interjection findProblemType(String url) {
-		String mimeType = newTikaInstance().detect(url);
-		return problemTypes.get(mimeType);
-	}
-
-	public Interjection findProblemType(InputStream inputStream) {
+	public Interjection findProblemType(String mimeType) {
 		Interjection problemType = null;
-		try {
-			String mimeType = newTikaInstance().detect(inputStream);
-			problemType = problemTypes.get(mimeType);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		problemType = problemTypes.get(mimeType);
 		return problemType;
 	}
 
-	private Tika newTikaInstance() {
-		return new Tika();
-	}
-	
 	private Interjection newProblemTypeInstance(String mimeType, String redirectUrl) {
 		return new Interjection(mimeType, redirectUrl);
 	}
