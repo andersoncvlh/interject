@@ -13,9 +13,9 @@ import org.junit.Test;
 
 import uk.bl.wa.interject.factory.InterjectionFactory;
 
-public class ContentTypeTest {
+public class InterjectionTest {
 
-	protected static Logger logger = LogManager.getLogger(ContentTypeTest.class);
+	protected static Logger logger = LogManager.getLogger(InterjectionTest.class);
 	private Tika tika = null;
 	
 	@Before
