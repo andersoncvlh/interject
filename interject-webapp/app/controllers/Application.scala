@@ -14,12 +14,10 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
   
-  def passthrough(url: String) = Action {
-    Async {
+  def passthrough(url: String) = Action.async {
       WS.url(url).get().map { response =>
-      val asStream: InputStream = response.ahcResponse.getResponseBodyAsStream
-      Ok.stream(Enumerator.fromStream(asStream)).as("application/octet-stream").withHeaders( CONTENT_TRANSFER_ENCODING -> "binary" )
-      }
+	      val asStream: InputStream = response.ahcResponse.getResponseBodyAsStream
+	      Ok.chunked(Enumerator.fromStream(asStream)).as("application/octet-stream").withHeaders( CONTENT_TRANSFER_ENCODING -> "binary" )
     }
   }
   
