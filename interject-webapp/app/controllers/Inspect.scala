@@ -8,7 +8,13 @@ import play.api.libs.iteratee._
 import scala.concurrent._
 import java.io.InputStream
 import org.apache.tika.Tika
-import uk.bl.wa.interject.factory.InterjectionFactory
+import com.typesafe.config.ConfigFactory
+import com.typesafe.config.Config
+import scala.collection.Map
+import scala.collection.JavaConversions._
+import scala.collection.mutable.ArrayBuffer
+
+//import uk.bl.wa.interject.factory.InterjectionFactory
 
 object Inspect extends Controller {
   
@@ -17,11 +23,28 @@ object Inspect extends Controller {
 	  // http://www.webarchive.org.uk/interject/action/inspect/http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap
 	  // 1. identify contents using Apache Tika
 	  val tika = new Tika();
-	  val mimeType = tika.detect(url);
-	  val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
+	  var mimeType = tika.detect(url);
+//	  val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
 	  // 2. look up list of actions based on type
 	  // 3.
-	  Logger.debug("mimeType: " + mimeType + " " + interjection.getRedirectUrl() + " " + interjection.getMimeType())
-	  Ok(views.html.jsspeccy("/action/jsspeccy/"+url));
+	  
+	  val config = ConfigFactory.load()
+	  // A scala list of SimpleConfigObjects
+	  // just a test for speccy
+	  mimeType = "application/x-spectrum-z80"
+	  val options = "." + mimeType 
+	  var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_))
+	  println(actions.getClass.getName)
+
+	  actions.foreach(e => {
+		  println(mimeType + " " + e.getAction() + " " + e.getDescription())
+	  })
+
+//	  println("mimeType: " + mimeType + " " + interjection.getRedirectUrl() + " " + interjection.getMimeType())
+//	  Redirect("/action/" + action + "/" + url)
+	  
+	  Ok(views.html.inspect(url, actions));
+
+	  
   }  
 }

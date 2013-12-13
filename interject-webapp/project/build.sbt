@@ -10,4 +10,4 @@ scalaVersion := "2.10.2"
 resolvers += ("Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository")
 
 //libraryDependencies += "commons-configuration" % "commons-configuration" % "1.9"
-libraryDependencies +="uk.bl.wa.interject" % "interject-servlet-filter" % "1.0.0-SNAPSHOT"
+//libraryDependencies +="uk.bl.wa.interject" % "interject-servlet-filter" % "1.0.0-SNAPSHOT"
