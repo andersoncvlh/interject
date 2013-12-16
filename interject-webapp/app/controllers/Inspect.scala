@@ -13,8 +13,7 @@ import com.typesafe.config.Config
 import scala.collection.Map
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
-
-//import uk.bl.wa.interject.factory.InterjectionFactory
+import uk.bl.wa.interject.factory.InterjectionFactory
 
 object Inspect extends Controller {
   
@@ -24,9 +23,14 @@ object Inspect extends Controller {
 	  // 1. identify contents using Apache Tika
 	  val tika = new Tika();
 	  var mimeType = tika.detect(url);
-//	  val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
-	  // 2. look up list of actions based on type
-	  // 3.
+	  
+	  // 2. look up list of actions based on type - DO WE NEED THIS?
+	  val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
+	  if (interjection != null) {
+	    println("interjection : " + interjection)
+	  }
+	  
+	  // 3. Get list of actions based on mime type
 	  
 	  val config = ConfigFactory.load()
 	  // A scala list of SimpleConfigObjects
