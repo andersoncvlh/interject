@@ -11,10 +11,10 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 # ACTIONS:
 #
 # Passthrough
-GET     /passthrough/*url	controllers.Application.passthrough(url)
+GET     /action/passthrough/*url	controllers.Application.passthrough(url)
 #
 # JSSpeccy
-GET     /jsspeccy/*url       controllers.Application.jsspeccy(url)
+GET     /action/jsspeccy/*url       controllers.Application.jsspeccy(url)
 #
 # Inspect
 GET     /inspect/*url       		controllers.Inspect.inspect(url)

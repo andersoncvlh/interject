@@ -25,16 +25,10 @@
 		<select id="simple-list">
 					<option value="">Select one...</option>
 				@for(action<-actions) {
-					<option value="/@action.getAction/@url">@action.getDescription</option>
+					<option value="/action/@action.getAction/@url">@action.getDescription</option>
 				}
 		</select>
 
-		<ul>
-			@for(action<-actions) {
-				<li><a href="/@action.getAction/@url">@action.getDescription</a></li>
-			}
-		</ul>
-    
 		<div class="jsspeccy">
 			<div id="jsspeccy-viewport"></div>
 			<ul class="toolbar">
