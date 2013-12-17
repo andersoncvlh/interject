@@ -4,49 +4,16 @@
     <head>
         <title>List of Actions</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("jsspeccy-dist-2.2/jsspeccy.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-        <script src="/assets/jsspeccy-dist-2.2/jdataview.js"></script>
-        <script src="/assets/jsspeccy-dist-2.2/jsspeccy-core.min.js"></script>
-        <script src="/assets/jsspeccy-dist-2.2/ui.js"></script>
-        
-        <!-- put here for the moment -->
-		<script>
-            $(function() {
-            	$("#simple-list").change(function() {
-					window.location = $(this).val();
-            		console.log($(this).val())
-				});
-            });
-        </script>
     </head>
     <body>
-		<select id="simple-list">
-					<option value="">Select one...</option>
+		<ul id="simple-list">
 				@for(action<-actions) {
-					<option value="/action/@action.getAction/@url">@action.getDescription</option>
+					<li><a href="/action/@action.getAction/@url">@action.getDescription</a></li>
 				}
-		</select>
+		</ul>
 
-		<div class="jsspeccy">
-			<div id="jsspeccy-viewport"></div>
-			<ul class="toolbar">
-				<li><button class="stop-start" title="Stop / start">stop / start</button></li>
-				<li><button class="reset" title="Reset the Spectrum">reset</button></li>
-				<li><button class="audio" title="Audio on/off">audio on/off</button></li>
-				<li><button class="open" title="Open file">open file</button></li>
-				<li><button class="about" title="About JSSpeccy">about</button></li>
-				<li>
-					<div>
-						<select class="select-model"></select>
-					</div>
-					<div>
-						<label><input type="checkbox" class="autoload-tapes" checked="checked"> Autoload tapes</label>
-					</div>
-				</li>
-			</ul>
-		</div>
     </body>
 </html>
 

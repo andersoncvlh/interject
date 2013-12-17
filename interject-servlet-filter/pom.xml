@@ -155,7 +155,17 @@
          <groupId>commons-configuration</groupId>
          <artifactId>commons-configuration</artifactId>
          <version>1.9</version>
-      </dependency>      
+      </dependency>
+      <dependency>
+         <groupId>cglib</groupId>
+         <artifactId>cglib-nodep</artifactId>
+         <version>2.1_3</version>
+      </dependency>
+      <dependency>
+         <groupId>eu.scape-project.nanite</groupId>
+         <artifactId>nanite-core</artifactId>
+         <version>1.0.70.1</version>
+      </dependency>
    </dependencies>
 
    <repositories>
