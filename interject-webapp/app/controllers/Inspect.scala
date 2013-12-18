@@ -16,8 +16,6 @@ import scala.collection.Map
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
 import uk.bl.wa.interject.factory.InterjectionFactory
-import org.apache.tika.metadata.{Metadata}
-import org.apache.commons.io.IOUtils
 
 object Inspect extends Controller {
   
@@ -52,6 +50,7 @@ object Inspect extends Controller {
 //	  println("mimeType: " + mimeType + " " + interjection.getRedirectUrl() + " " + interjection.getMimeType())
 //	  Redirect("/action/" + action + "/" + url)
 	  
+	  println("forwarding url : " + url);
 	  Ok(views.html.inspect(url, actions));
 
 	  

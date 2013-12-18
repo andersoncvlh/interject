@@ -312,5 +312,19 @@ sl:generator="ibauthor"
     </magic>
     <glob pattern="*.tzx"/>
   </mime-type>
-
+  
+  <mime-type type="application/x-spectrum-z80">
+    <acronym>Z80</acronym>
+    <_comment>ZX Spectrum .Z80 tape image format</_comment>
+    <magic priority="50">
+      <match value="0x130000" type="string" offset="0">
+        <match value="0x00" type="string" offset="3"/>
+        <match value="0x01" type="string" offset="3"/>
+        <match value="0x02" type="string" offset="3"/>
+        <match value="0x03" type="string" offset="3"/>
+      </match>
+    </magic>
+    <glob pattern="*.z80"/>
+  </mime-type>
+  
 </mime-info>

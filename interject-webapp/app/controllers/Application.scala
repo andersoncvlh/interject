@@ -22,6 +22,6 @@ object Application extends Controller {
   }
   
   def jsspeccy(url: String) = Action {
-    Ok(views.html.jsspeccy("/action/jsspeccy/"+url));
+    Ok(views.html.jsspeccy(url));
   }
 }
