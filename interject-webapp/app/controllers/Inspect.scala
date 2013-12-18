@@ -10,7 +10,6 @@ import java.io.InputStream
 import java.net.URL
 import org.apache.tika.Tika
 import org.apache.tika.metadata.Metadata
-import uk.bl.wa.nanite.droid.DroidDetector
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.Config
 import scala.collection.Map
@@ -28,17 +27,7 @@ object Inspect extends Controller {
 	  val tika = new Tika();
 	  var mimeType = tika.detect(url);
 	  
-	  val inputStream = new URL(url).openStream();
-
-	  // TODO: still working on using nanite lib
-	  val bytes = IOUtils.toByteArray(inputStream);
-	  println("bytes : " + new String(bytes));
-	  
-	  val detector = new DroidDetector();
-	  val metadata = new Metadata();
-	  metadata.add("resourceName", url);
-	  val mt = detector.detect(inputStream, metadata);
-	  println("mt : " + mt)
+	  println("mimeType : " + mimeType)
 
 	  // 2. look up list of actions based on type - DO WE NEED THIS?
 	  val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
@@ -51,8 +40,8 @@ object Inspect extends Controller {
 	  val config = ConfigFactory.load()
 	  // A scala list of SimpleConfigObjects
 	  // just a test for speccy
-	  mimeType = "application/x-spectrum-z80"
-	  val options = "." + mimeType 
+	  val options = "." + mimeType
+	  println("Getting actions for mime type : " + options);
 	  var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_))
 	  println(actions.getClass.getName)
 

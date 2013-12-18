@@ -1,8 +1,16 @@
 package uk.bl.wa.interject.type;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
@@ -14,24 +22,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.schlichtherle.io.File;
-import uk.bl.wa.nanite.droid.DroidDetector;
 import uk.bl.wa.interject.factory.InterjectionFactory;
-import uk.gov.nationalarchives.droid.command.action.CommandExecutionException;
 
 public class InterjectionTest {
 
 	protected static Logger logger = LogManager
 			.getLogger(InterjectionTest.class);
 	private Tika tika = null;
+	private String spectrumResult;
 
 	@Before
 	public void setUp() throws Exception {
 		tika = new Tika();
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("version", "basic");
+		MediaType spectrumType = new MediaType("application", "x-spectrum-tap", params);
+		spectrumResult = spectrumType.toString(); 
 	}
 
 	@Test
 	public void testTika() {
-		Tika tika = new Tika();
 		String strMime = tika.detect("test.bmp");
 		Assert.assertEquals("image/x-ms-bmp", strMime);
 		Assert.assertNotSame("Mime doesn't match", "image/x-ms-png", strMime);
@@ -86,18 +96,42 @@ public class InterjectionTest {
 	}
 
 	@Test
-	public void testSpectrum() {
-		DroidDetector detector;
+	public void testSpectrumFile() {
 		try {
-			detector = new DroidDetector();
-			String f = getClass().getResource("/ZZOOM.TAP").getFile();
+			Tika tika = new Tika();
+			String f = getClass().getResource("/Wheelie.tap").getFile();
 			File file = new File(f);
-			MediaType mediaType = detector.detect(file);
-			Assert.assertNotNull(mediaType);
-			System.out.println("MediaType : " + mediaType);
-		} catch (CommandExecutionException e) {
+			String mimeType = tika.detect(file);
+			Assert.assertNotNull(mimeType);
+			Assert.assertEquals(spectrumResult, mimeType);
+			System.out.println("Type : " + mimeType);
+
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void testSpectrumStream() {
+		try {
+			Tika tika = new Tika();
+			InputStream inputStream = getClass().getResourceAsStream(
+					"/ZZOOM.tap");
+//			byte[] bytes = IOUtils.toByteArray(inputStream);
+//			System.out.println("Result via InputStream: "
+//					+ new String(bytes, "UTF8"));
+			String mimeType = tika.detect(inputStream, new Metadata());
+			Assert.assertNotNull(mimeType);
+			Assert.assertEquals(spectrumResult, mimeType);
+			System.out.println("Type via InputStream: " + mimeType);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }
