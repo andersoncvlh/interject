@@ -1,0 +1,3 @@
+[submodule "interject-webapp/public/bootstrap"]
+	path = interject-webapp/public/bootstrap
+	url = https://github.com/ukwa/bootstrap.git
