@@ -16,6 +16,7 @@ import scala.collection.Map
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
 import uk.bl.wa.interject.factory.InterjectionFactory
+import org.apache.commons.io.FilenameUtils
 
 object Inspect extends Controller {
 
@@ -23,8 +24,9 @@ object Inspect extends Controller {
     // http://www.webarchive.org.uk/interject/action/inspect/http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap
     // 1. identify contents using Apache Tika
     val tika = new Tika();
-    var mimeType = tika.detect(url);
-
+    val mimeType = tika.detect(url);
+    // TODO: get file name from url and store it
+    val filename = FilenameUtils.getName(url);
     println("mimeType : " + mimeType)
 
     // 2. look up list of actions based on type - Do we need this?
@@ -39,7 +41,7 @@ object Inspect extends Controller {
     // just a test for speccy
     val options = "." + mimeType
     println("Getting actions for mime type : " + options);
-    var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_))
+    var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_, filename, mimeType, null))
     println(actions.getClass.getName)
 
     actions.foreach(e => {
