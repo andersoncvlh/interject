@@ -49,9 +49,17 @@ $(function() {
 	});
 	
 	$('#feedback-close').click(function() {
+		dismiss();
+	});
+	
+	$('#dismiss-x').click(function() {
+		dismiss();
+	});
+	
+	function dismiss() {
 		var entry = $("#last-rated").html();
 		jsRoutes.controllers.Application.rate(entry).ajax({success:successFn, error:errorFn});
 		$("#feedback-form").modal('hide');
-		// close and reset form
-	});
+		// close and reset form		
+	}
 });
