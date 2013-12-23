@@ -1,5 +1,8 @@
 @(url: String, actions: Seq[ActionObject]) @main("List of actions:") {
 <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/panels.css")">
+<script src="@routes.Assets.at("bootstrap/js/bootstrap-modal.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("bootstrap/js/bootstrap-button.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/interject.js")" type="text/javascript"></script>
 
 <div class="container-fluid">
 	@for((action, index) <- actions.zipWithIndex) {
@@ -12,23 +15,25 @@
 			</ul>
 		</div>
 		<div class="span8">
-
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<span class="panel-title">@action.getAction</span>
+					<span id="action-name-@index" class="panel-title">@action.getAction</span>
 				</div>
 				<div class="panel-body">
 					<span class="action-image"> @if(!action.getImageUrl.isEmpty) {
 						<a href="/@action.getAction/@url"><image class="img-polaroid"
 								src="@routes.Assets.at(action.getImageUrl)" /></a> }
 					</span>
-					<span class="action-description">@action.getDescription</span> <span>
-						<button id="go-button-@index" class="btn btn-mini pull-right">GO</button>
-						<script>
-							$("#go-button-@index").click(function() {
-								window.location = "/@action.getAction/@url";
-							});
-						</script>
+					<span class="action-description">@action.getDescription</span>
+					<span>
+						<button id="go-button-@index" class="btn btn-mini pull-right button-go">GO</button>
+						<span id="action-url-@index" style="display:none;">/@action.getAction/@url</span>
+					</span>
+					<span>
+						<button id="rate-action-plus-@index" class="btn btn-success btn-mini rate-up">+1</button>
+					</span>
+					<span>
+						<button id="rate-action-minus-@index" class="btn btn-danger btn-mini rate-down">-1</button>
 					</span>
 				</div>
 			</div>
@@ -36,5 +41,24 @@
 	</div>
 	}
 </div>
+
+<span id="last-rated" style="display:none;"></span>
+
+<div id="feedback-form" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">&times;</button>
+		<h3>Thanks for you Rating - Please provide Feedback (Optional)</h3>
+	</div>
+	<div class="modal-body">
+		<textarea id="feedback-message" class="modal-textarea"></textarea>
+	</div>
+	<div class="modal-footer">
+		<button id="feedback-close" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		<button id="feedback-send" class="btn btn-primary">Send</button>
+	</div>
+</div>
+
+
 }
 

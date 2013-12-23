@@ -19,3 +19,13 @@ GET     /action/jsspeccy/*url       controllers.Application.jsspeccy(url)
 # Inspect
 GET     /inspect/*url       		controllers.Inspect.inspect(url)
 
+
+GET		/action/commons-imaging-conversion/*url			controllers.Application.commonsImagingConversion(url)
+
+GET		/action/image-io-conversion/*url		  		controllers.Application.imageIOConversion(url)
+
+GET 	/javascriptRoutes    		controllers.Application.javascriptRoutes
+
+GET 	/sendFeedback    			controllers.Application.sendFeedback(entry)
+
+GET 	/rate    					controllers.Application.rate(entry)
