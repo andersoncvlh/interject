@@ -1,23 +1,17 @@
 package uk.bl.wa.interject.services;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import uk.bl.wa.interject.converter.ImageConverter;
+import uk.bl.wa.interject.converter.ImageIOStrategy;
 
 /**
  * Servlet implementation class ImageIOConversionServlet
@@ -46,29 +40,21 @@ public class ImageIOConversionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = request.getParameter("url");
 		String sourceContentType = request.getParameter("sourceContentType");
-	    logger.info("Attempting to convert: "+url+" from "+sourceContentType);		
+	    logger.info("Attempting to convert: "+url+" from "+sourceContentType);
+	    
 		if (url != null) {
-			CloseableHttpClient httpclient = HttpClients.createDefault();
+		    ImageConverter imageConverter = new ImageConverter(new ImageIOStrategy());
 			try {
-				HttpGet httpGet = new HttpGet(url);
-				if( sourceContentType != null ) {
-					httpGet.addHeader("Accept", sourceContentType);
-				}
-				CloseableHttpResponse res = httpclient.execute(httpGet);
-				InputStream is = res.getEntity().getContent();
-				ImageInputStream iis = ImageIO.createImageInputStream(is);
-				BufferedImage image = ImageIO.read(iis);
-				//res.close();
-				// Now convert and respond:
+				byte[] imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
 				response.setContentType("image/png");
 				ServletOutputStream out = response.getOutputStream();
-				ImageIO.write(image, "png", out);
-				out.flush();
-			} catch (Exception exp) {
-				exp.printStackTrace();
-			} finally {
-				httpclient.close();
+				out.write(imageBytes, 0, imageBytes.length);
+				out.flush();			
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+
 		}
 	}
 

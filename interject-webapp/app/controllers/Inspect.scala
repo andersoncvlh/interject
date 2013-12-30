@@ -29,26 +29,34 @@ object Inspect extends Controller {
     val filename = FilenameUtils.getName(url);
     println("mimeType : " + mimeType)
 
-    // 2. look up list of actions based on type - Do we need this?
+    val config = ConfigFactory.load()
+
+    // 2. look up problem types
     val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
     if (interjection != null) {
-      println("interjection : " + interjection)
+      val redirectServletUrl = config.getString("redirect.servlet.url");
+      var redirectUrl = new StringBuilder(redirectServletUrl);
+      redirectUrl.append(interjection.getRedirectUrl());
+      redirectUrl.append("?url=").append(url);
+      redirectUrl.append("&sourceContentType=");
+      redirectUrl.append(mimeType);
+      println("Redirecting: " + redirectUrl.toString());
+      Redirect(redirectUrl.toString());
+    } else {
+	    // 3. Get list of actions based on mime type	  
+	    // A scala list of SimpleConfigObjects
+	    // just a test for speccy
+	    val options = "." + mimeType
+	    println("Getting actions for mime type : " + options);
+	    var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_, filename, mimeType, null))
+	    println(actions.getClass.getName)
+	
+	    actions.foreach(e => {
+	      println(mimeType + " " + e.getAction() + " " + e.getDescription())
+	    })
+	
+	    println("forwarding url : " + url);
+	    Ok(views.html.inspect(url, actions));
     }
-
-    // 3. Get list of actions based on mime type	  
-    val config = ConfigFactory.load()
-    // A scala list of SimpleConfigObjects
-    // just a test for speccy
-    val options = "." + mimeType
-    println("Getting actions for mime type : " + options);
-    var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_, filename, mimeType, null))
-    println(actions.getClass.getName)
-
-    actions.foreach(e => {
-      println(mimeType + " " + e.getAction() + " " + e.getDescription())
-    })
-
-    println("forwarding url : " + url);
-    Ok(views.html.inspect(url, actions));
   }
 }
