@@ -20,9 +20,11 @@ GET     /action/jsspeccy/*url       controllers.Application.jsspeccy(url)
 GET     /inspect/*url       		controllers.Inspect.inspect(url)
 
 
-GET		/action/commons-imaging-conversion/*url						controllers.Application.commonsImagingConversion(url)
+# Non-restful way - because we are using additional parameter sourceContentType
+# http://localhost:9000/action/image-io-conversion?url=http://localhost:9000/assets/images/test.bmp&sourceContentType=image/bmp
+GET		/action/commons-imaging-conversion		controllers.Application.commonsImagingConversion(url: String, sourceContentType: String)
 
-GET		/action/image-io-conversion/*url		  					controllers.Application.imageIOConversion(url)
+GET		/action/image-io-conversion		  		controllers.Application.imageIOConversion(url: String, sourceContentType: String)
 
 GET 	/javascriptRoutes    		controllers.Application.javascriptRoutes
 

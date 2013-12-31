@@ -43,7 +43,7 @@ public class ImageIOConversionServlet extends HttpServlet {
 	    logger.info("Attempting to convert: "+url+" from "+sourceContentType);
 	    
 		if (url != null) {
-		    ImageConverter imageConverter = new ImageConverter(new ImageIOStrategy());
+		    ImageConverter imageConverter = new ImageConverter(ImageIOStrategy.INSTANCE);
 			try {
 				byte[] imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
 				response.setContentType("image/png");

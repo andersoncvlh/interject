@@ -45,7 +45,7 @@ public class CommonsImagingConversionServlet extends HttpServlet {
 	    
 		if (url != null) {
 			try {
-			    ImageConverter imageConverter = new ImageConverter(new CommonsImageStrategy());
+			    ImageConverter imageConverter = new ImageConverter(CommonsImageStrategy.INSTANCE);
 			    byte[] imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
 				response.setContentType("image/png");
 				ServletOutputStream out = response.getOutputStream();

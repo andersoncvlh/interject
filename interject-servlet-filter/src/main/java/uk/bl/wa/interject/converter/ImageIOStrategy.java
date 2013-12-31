@@ -14,9 +14,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ImageIOStrategy implements ImageStrategy {
+public enum ImageIOStrategy implements ImageStrategy {
+
+	INSTANCE;
 
 	protected static Logger logger = LogManager.getLogger(ImageIOStrategy.class);
+
+	private ImageIOStrategy() {}
 
 	@Override
 	public byte[] convertFromUrlToPng(String url, String sourceContentType)

@@ -49,34 +49,24 @@ object Application extends Controller {
     Ok(views.html.jsspeccy("/action/passthrough/" + url));
   }
   
-  def commonsImagingConversion(url: String) = Action {
-	val tika = new Tika();
-    val sourceContentType = tika.detect(url);
+  def commonsImagingConversion(url: String, sourceContentType: String) = Action {
     println("Attempting to convert: "+url+ " from: " + sourceContentType);
     
-	val imageConverter = new ImageConverter(new CommonsImageStrategy());
+	val imageConverter = new ImageConverter(CommonsImageStrategy.INSTANCE);
 	val imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
 	
-	// just a test to see
-	println("sourceContentType: " + tika.detect(imageBytes));
-
 	SimpleResult(
 	    header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
 	    body = Enumerator(imageBytes)
 	)
   }
   
-  def imageIOConversion(url: String) = Action {
-	val tika = new Tika();
-    val sourceContentType = tika.detect(url);
+  def imageIOConversion(url: String, sourceContentType: String) = Action {
     println("Attempting to convert: "+url+" from "+sourceContentType);
     
-	val imageConverter = new ImageConverter(new ImageIOStrategy());
+	val imageConverter = new ImageConverter(ImageIOStrategy.INSTANCE);
 	val imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
 	
-	// just a test to see
-	println("sourceContentType: " + tika.detect(imageBytes));
-
 	SimpleResult(
 	    header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
 	    body = Enumerator(imageBytes)

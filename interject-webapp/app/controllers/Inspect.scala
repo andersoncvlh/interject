@@ -35,9 +35,9 @@ object Inspect extends Controller {
     val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
     if (interjection != null) {
       var redirectUrl = new StringBuilder(interjection.getRedirectUrl());
-      redirectUrl.append("/").append(url);
-//      redirectUrl.append("&sourceContentType=");
-//      redirectUrl.append(mimeType);
+      redirectUrl.append("?url=").append(url);
+      redirectUrl.append("&sourceContentType=");
+      redirectUrl.append(mimeType);
       println("Redirecting: " + redirectUrl.toString());
       Redirect(redirectUrl.toString());
     } else {

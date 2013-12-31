@@ -17,9 +17,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CommonsImageStrategy implements ImageStrategy {
+public enum CommonsImageStrategy implements ImageStrategy {
+
+	INSTANCE;
 
 	protected static Logger logger = LogManager.getLogger(CommonsImageStrategy.class);
+
+	private CommonsImageStrategy() {}
 
 	@Override
 	public byte[] convertFromUrlToPng(String url, String sourceContentType) throws Exception {

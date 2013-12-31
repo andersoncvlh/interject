@@ -37,7 +37,7 @@ object ApplicationBuild extends Build {
   
   val web = play.Project(appName, appVersion, mainDependencies).settings(
 	// Add your own project settings here
-    resolvers += "Local Maven Repository" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
+//    resolvers += "Local Maven Repository" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
   )
 //  .dependsOn(service)
   
