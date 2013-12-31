@@ -26,6 +26,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.tika.Tika
+import uk.bl.wa.interject.converter.CommonsImageStrategy
+import uk.bl.wa.interject.converter.ImageIOStrategy
+import uk.bl.wa.interject.converter.ImageConverter
+
 
 object Application extends Controller {
 
@@ -48,30 +52,14 @@ object Application extends Controller {
   def commonsImagingConversion(url: String) = Action {
 	val tika = new Tika();
     val sourceContentType = tika.detect(url);
-    println("Attempting to convert: "+url+ " from: " + sourceContentType);		
-	val httpclient = HttpClients.createDefault();
-	val httpGet = new HttpGet(url);
-	if(sourceContentType != null) {
-		httpGet.addHeader("Accept", sourceContentType);
-	}
-	val res = httpclient.execute(httpGet);
-	val is = res.getEntity().getContent();
-    // read image
-	val readParams = new HashMap[String, Object];
-	readParams.put(ImagingConstants.PARAM_KEY_FILENAME, url);
-	// Note that current version assumes TIFFs are not transparent.
-    val image = Imaging.getBufferedImage(is,readParams);
+    println("Attempting to convert: "+url+ " from: " + sourceContentType);
     
-	// Now convert and respond:
-	var writeParams = new HashMap[String, Object];
-	writeParams.put(PngConstants.PARAM_KEY_PNG_FORCE_TRUE_COLOR, Boolean.TRUE);
+	val imageConverter = new ImageConverter(new CommonsImageStrategy());
+	val imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
 	
-    val baos = new ByteArrayOutputStream();
-    Imaging.writeImage(image, baos, ImageFormat.IMAGE_FORMAT_PNG, writeParams);
-    baos.flush();
-    var imageBytes = baos.toByteArray();
-    println("imageBytes: " + imageBytes);
-	httpclient.close();
+	// just a test to see
+	println("sourceContentType: " + tika.detect(imageBytes));
+
 	SimpleResult(
 	    header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
 	    body = Enumerator(imageBytes)
@@ -79,7 +67,20 @@ object Application extends Controller {
   }
   
   def imageIOConversion(url: String) = Action {
-    Ok(views.html.jsspeccy("/action/passthrough/" + url));
+	val tika = new Tika();
+    val sourceContentType = tika.detect(url);
+    println("Attempting to convert: "+url+" from "+sourceContentType);
+    
+	val imageConverter = new ImageConverter(new ImageIOStrategy());
+	val imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
+	
+	// just a test to see
+	println("sourceContentType: " + tika.detect(imageBytes));
+
+	SimpleResult(
+	    header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
+	    body = Enumerator(imageBytes)
+	)
   }
   
   // -- Javascript routing
@@ -111,5 +112,5 @@ object Application extends Controller {
     var fileContents = Files.readFile(file);
     fileContents += entry + "\n"; 
     Files.writeFile(file, fileContents);
-  }
+  }  
 }

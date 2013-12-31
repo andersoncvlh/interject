@@ -34,12 +34,10 @@ object Inspect extends Controller {
     // 2. look up problem types
     val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
     if (interjection != null) {
-      val redirectServletUrl = config.getString("redirect.servlet.url");
-      var redirectUrl = new StringBuilder(redirectServletUrl);
-      redirectUrl.append(interjection.getRedirectUrl());
-      redirectUrl.append("?url=").append(url);
-      redirectUrl.append("&sourceContentType=");
-      redirectUrl.append(mimeType);
+      var redirectUrl = new StringBuilder(interjection.getRedirectUrl());
+      redirectUrl.append("/").append(url);
+//      redirectUrl.append("&sourceContentType=");
+//      redirectUrl.append(mimeType);
       println("Redirecting: " + redirectUrl.toString());
       Redirect(redirectUrl.toString());
     } else {
