@@ -17,24 +17,25 @@ import java.lang.Boolean
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
-import org.apache.commons.imaging.ImagingConstants;
-import org.apache.commons.imaging.Imaging;
-import org.apache.commons.imaging.ImageFormat;
-import org.apache.commons.imaging.formats.png.PngConstants;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.commons.imaging.ImagingConstants
+import org.apache.commons.imaging.Imaging
+import org.apache.commons.imaging.ImageFormat
+import org.apache.commons.imaging.formats.png.PngConstants
+import org.apache.http.client.methods.CloseableHttpResponse
+import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.CloseableHttpClient
+import org.apache.http.impl.client.HttpClients
 import org.apache.tika.Tika
 import uk.bl.wa.interject.converter.CommonsImageStrategy
 import uk.bl.wa.interject.converter.ImageIOStrategy
 import uk.bl.wa.interject.converter.ImageConverter
+import org.apache.commons.io.FilenameUtils
 
 
 object Application extends Controller {
 
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.index())
   }
 
   def passthrough(url: String) = Action.async {
@@ -46,7 +47,8 @@ object Application extends Controller {
 
   def jsspeccy(url: String) = Action {
     // call passthrough
-    Ok(views.html.jsspeccy("/action/passthrough/" + url));
+	val filename = FilenameUtils.getName(url);
+    Ok(views.html.jsspeccy("/action/passthrough/" + url, filename));
   }
   
   def commonsImagingConversion(url: String, sourceContentType: String) = Action {
@@ -96,8 +98,7 @@ object Application extends Controller {
   
   def writeToFile(entry: String) = {
     println(entry);
-    val config = ConfigFactory.load()
-    val path = config.getString("feedback.path");
+    val path = System.getProperty("user.dir") + "/tmp/feedback.txt";
     val file = new File(path);
     var fileContents = Files.readFile(file);
     fileContents += entry + "\n"; 

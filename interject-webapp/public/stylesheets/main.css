@@ -13,3 +13,7 @@ body {
 .modal-textarea {
 	width: 520px;
 }
+
+.center-section {
+	text-align: center
+}

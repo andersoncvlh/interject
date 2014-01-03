@@ -1,31 +1,26 @@
-@(url: String)
-
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title>My wonderful page</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("jsspeccy-dist-2.2/jsspeccy.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.at("jsspeccy-dist-2.2/jdataview.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.at("jsspeccy-dist-2.2/jsspeccy-core.min.js")" type="text/javascript"></script>
-        
-        <script>
-            $(function() {
-                var jsspeccy = JSSpeccy('speccy', {
-                    'autostart': true,
-                    'autoload': true,
-                    'scaleFactor': 2,
-                    'audio' : false,
-                    'loadFile': '@url'
-				});
-            });
-        </script>
-    </head>
-    <body>
-    	<div>Loading.... @url</div>
-        <div id="speccy" style="margin: 1em auto;"></div>
-    </body>
-</html>
-
+@(url: String, filename: String) @main(filename) {
+	<link rel="stylesheet" media="screen" href="@routes.Assets.at("jsspeccy-dist-2.2/jsspeccy.css")">
+	<script src="@routes.Assets.at("jsspeccy-dist-2.2/jdataview.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("jsspeccy-dist-2.2/jsspeccy-core.min.js")" type="text/javascript"></script>
+	
+	<script>
+		$(function() {
+			var jsspeccy = JSSpeccy('speccy', {
+				'autostart' : true,
+				'autoload' : true,
+				'scaleFactor' : 2,
+				'audio' : false,
+				'loadFile' : '@url'
+			});
+		});
+	</script>
+	
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12 center-section">
+				<h1>@filename</h1>
+				<div id="speccy" style="margin: 1em auto;"></div>
+			</div>
+		</div>
+	</div>
+}
