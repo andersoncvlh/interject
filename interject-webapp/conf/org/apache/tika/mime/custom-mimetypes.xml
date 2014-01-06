@@ -326,5 +326,12 @@ sl:generator="ibauthor"
     </magic>
     <glob pattern="*.z80"/>
   </mime-type>
-  
+
+
+  <!--
+       http://fileformats.archiveteam.org/wiki/CAS_(Atari)
+       <match value="FUJI" type="string" offset="0"/>
+       *.cas
+  -->
+
 </mime-info>
