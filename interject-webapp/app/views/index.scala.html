@@ -1,14 +1,12 @@
 @main("Examples") {
 
 	<h1>Example Files</h1>
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span12">
-				<ul class="list-unstyled">
-					<li><a href="/inspect/http://web.archive.org/web/20010513125307/http://www.antsplace.co.uk:80/GOBBLEMA.TAP">Gobbleman</a></li>
-					<li><a href="/inspect/http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap">Wheelie</a></li>
-				</ul>
-			</div>
+	<div class="row-fluid">
+		<div class="span12">
+			<ul class="list-unstyled">
+				<li><a href="@routes.Inspect.inspect("http://web.archive.org/web/20010513125307/http://www.antsplace.co.uk:80/GOBBLEMA.TAP")">Gobbleman</a></li>
+				<li><a href="@routes.Inspect.inspect("http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap")">Wheelie</a></li>
+			</ul>
 		</div>
 	</div>
 }

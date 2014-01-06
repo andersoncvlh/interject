@@ -4,41 +4,39 @@
 	<script src="@routes.Assets.at("bootstrap/js/bootstrap-button.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.at("javascripts/interject.js")" type="text/javascript"></script>
 	
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span4">
-				<ul class="list-unstyled">
-					<li id="filename">@fileObject.getFilename</li>
-					<li>Server Content Type Here</li>
-					<li>@fileObject.getMimeType</li>
-				</ul>
-			</div>
-			<div class="span8">
-				@for((action, index) <- fileObject.getActions.zipWithIndex) {
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<span id="action-name-@index" class="panel-title">@action.getAction</span>
-						</div>
-						<div class="panel-body">
-							<span class="action-image"> @if(!action.getImageUrl.isEmpty) {
-								<a href="/@action.getAction/@url"><image class="img-polaroid"
-										src="@routes.Assets.at(action.getImageUrl)" /></a> }
-							</span>
-							<span class="action-description">@action.getDescription</span>
-							<span>
-								<button id="go-button-@index" class="btn btn-mini pull-right button-go">GO</button>
-								<span id="action-url-@index" style="display:none;">/@action.getAction/@url</span>
-							</span>
-							<span>
-								<button id="rate-action-plus-@index" class="btn btn-success btn-mini rate-up">+1</button>
-							</span>
-							<span>
-								<button id="rate-action-minus-@index" class="btn btn-danger btn-mini rate-down">-1</button>
-							</span>
-						</div>
+	<div class="row-fluid">
+		<div class="span4">
+			<ul class="list-unstyled">
+				<li id="filename">@fileObject.getFilename</li>
+				<li>Server Content Type Here</li>
+				<li>@fileObject.getMimeType</li>
+			</ul>
+		</div>
+		<div class="span8">
+			@for((action, index) <- fileObject.getActions.zipWithIndex) {
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span id="action-name-@index" class="panel-title">@action.getAction</span>
 					</div>
-				}
-			</div>
+					<div class="panel-body">
+						<span class="action-image"> @if(!action.getImageUrl.isEmpty) {
+							<a href="/@action.getAction/@url"><image class="img-polaroid"
+									src="@routes.Assets.at(action.getImageUrl)" /></a> }
+						</span>
+						<span class="action-description">@action.getDescription</span>
+						<span>
+							<button id="go-button-@index" class="btn btn-mini pull-right button-go">GO</button>
+							<span id="action-url-@index" style="display:none;">/@action.getAction/@url</span>
+						</span>
+						<span>
+							<button id="rate-action-plus-@index" class="btn btn-success btn-mini rate-up">+1</button>
+						</span>
+						<span>
+							<button id="rate-action-minus-@index" class="btn btn-danger btn-mini rate-down">-1</button>
+						</span>
+					</div>
+				</div>
+			}
 		</div>
 	</div>
 	
