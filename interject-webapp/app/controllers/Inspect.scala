@@ -17,6 +17,10 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
 import uk.bl.wa.interject.factory.InterjectionFactory
 import org.apache.commons.io.FilenameUtils
+import com.typesafe.config.ConfigException
+import org.apache.commons.io.IOUtils
+import models.ActionObject
+import models.FileObject
 
 object Inspect extends Controller {
 
@@ -29,32 +33,46 @@ object Inspect extends Controller {
     val filename = FilenameUtils.getName(url);
     println("mimeType : " + mimeType)
 
-    val config = ConfigFactory.load()
+    
+    try {
+	    val config = ConfigFactory.load()
+	
+	    // 2. look up problem types
+	    val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
+	    if (interjection != null) {
+	      var redirectUrl = new StringBuilder(interjection.getRedirectUrl());
+	      redirectUrl.append("?url=").append(url);
+	      redirectUrl.append("&sourceContentType=");
+	      redirectUrl.append(mimeType);
+	      println("Redirecting: " + redirectUrl.toString());
+	      Redirect(redirectUrl.toString());
+	    } else {
+		    // 3. Get list of actions based on mime type	  
+		    // A scala list of SimpleConfigObjects
+		    // just a test for speccy
+		    val options = "." + mimeType
+		    println("Getting actions for mime type : " + options);
+		    var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_))
+		    println(actions.getClass.getName)
+		
+		    var fileObject = new FileObject(filename, mimeType, null, actions);
+		    
+//		    actions.foreach(e => {
+//		      println(mimeType + " " + e.getAction() + " " + e.getDescription())
+//		    })
+		
+		    println("forwarding url : " + url);
+		    Ok(views.html.inspect(url, fileObject));
+	    }
+    } catch {
+      case e: ConfigException => println("do something else " + e)
+      val inputStream = new URL(url).openStream();
+      val bytes = IOUtils.toByteArray(inputStream)
+      // #VRML V1.0 ascii
+      // #VRML V2.0 utf8
 
-    // 2. look up problem types
-    val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
-    if (interjection != null) {
-      var redirectUrl = new StringBuilder(interjection.getRedirectUrl());
-      redirectUrl.append("?url=").append(url);
-      redirectUrl.append("&sourceContentType=");
-      redirectUrl.append(mimeType);
-      println("Redirecting: " + redirectUrl.toString());
-      Redirect(redirectUrl.toString());
-    } else {
-	    // 3. Get list of actions based on mime type	  
-	    // A scala list of SimpleConfigObjects
-	    // just a test for speccy
-	    val options = "." + mimeType
-	    println("Getting actions for mime type : " + options);
-	    var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_, filename, mimeType, null))
-	    println(actions.getClass.getName)
-	
-	    actions.foreach(e => {
-	      println(mimeType + " " + e.getAction() + " " + e.getDescription())
-	    })
-	
-	    println("forwarding url : " + url);
-	    Ok(views.html.inspect(url, actions));
+      println(new String(bytes, "UTF-8"))
+      NotFound("")
     }
   }
 }

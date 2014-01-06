@@ -22,7 +22,8 @@ $(function() {
 		$(this).click(function() {
 			var actionName = $('#action-name-' + index + '').html();
 //			jsRoutes.controllers.Application.rate(actionName, 'up').ajax({success:successFn, error:errorFn});
-			var entry = actionName + ", up";
+			var filename = $("#filename").html();
+			var entry = filename + ", " + actionName + ", up";
 			$("#last-rated").html("" + entry + "");
 			$("#feedback-form").modal('show');
 		});
@@ -33,7 +34,8 @@ $(function() {
 		$(this).click(function() {
 			var actionName = $('#action-name-' + index + '').html();
 //			jsRoutes.controllers.Application.rate(actionName, 'down').ajax({success:successFn, error:errorFn});
-			var entry = actionName + ", down";
+			var filename = $("#filename").html();
+			var entry = filename + ", " + actionName + ", down";
 			$("#last-rated").html("" + entry + "");
 			$("#feedback-form").modal('show');
 		});

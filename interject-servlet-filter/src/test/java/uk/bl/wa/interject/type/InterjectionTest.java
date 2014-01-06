@@ -1,20 +1,22 @@
 package uk.bl.wa.interject.type;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.Tika;
-import org.apache.tika.detect.Detector;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.junit.Assert;
@@ -22,6 +24,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.bl.wa.interject.factory.InterjectionFactory;
+import uk.bl.wa.interject.util.ProcessRunner;
+import uk.bl.wa.interject.util.ProcessRunner.ProcessRunnerException;
+import uk.bl.wa.interject.util.ProcessRunnerImpl;
 
 public class InterjectionTest {
 
@@ -117,9 +122,6 @@ public class InterjectionTest {
 			Tika tika = new Tika();
 			InputStream inputStream = getClass().getResourceAsStream(
 					"/ZZOOM.tap");
-//			byte[] bytes = IOUtils.toByteArray(inputStream);
-//			System.out.println("Result via InputStream: "
-//					+ new String(bytes, "UTF8"));
 			String mimeType = tika.detect(inputStream, new Metadata());
 			Assert.assertNotNull(mimeType);
 			Assert.assertEquals(spectrumResult, mimeType);
@@ -132,5 +134,79 @@ public class InterjectionTest {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Test
+	public void testInputStream() {
+		InputStream inputStream = getClass().getResourceAsStream(
+				"/penguin3.wrl");
+		getBytesFromStream(inputStream);
+	}
+	
+	public byte[] getBytesFromStream(InputStream inputStream) {
+		byte[] bytes = null;
+		try {
+			bytes = IOUtils.toByteArray(inputStream);
+			System.out.println("Result via InputStream: "
+					+ new String(bytes, "UTF8"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bytes;
+	}
+	
+	@Test
+	public void testVrmlVersion1() {
+		Tika tika = new Tika();
+		String filename = "/penguin1.wrl";
+		InputStream inputStream = getClass().getResourceAsStream(
+				filename);
+		try {
+			String mimeType = tika.detect(inputStream);
+			System.out.println(filename + " mimeType : " + mimeType);
+			Assert.assertEquals("model/vrml; version=1.0", mimeType);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testVrmlVersion2() {
+		Tika tika = new Tika();
+		String filename = "/penguin2.wrl";
+		InputStream inputStream = getClass().getResourceAsStream(
+				filename);
+		try {
+			String mimeType = tika.detect(inputStream);
+			System.out.println(filename + " mimeType : " + mimeType);
+			Assert.assertEquals("model/vrml; version=97", mimeType);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void testProcess() {
+		ProcessRunner runner = new ProcessRunnerImpl();
+		List<String> commands = new ArrayList<String>();
+		try {
+	    	String path = "external";
+			commands.add(path + "/ivvrml.exe");
+			commands.add("-2");
+			commands.add(path + "/penguin1.wrl");
+			commands.add("-o");
+			commands.add(path + "/penguin3.wrl");
+			runner.setStartingDir(new File("."));
+			runner.setCommand(commands);
+			runner.execute();
+			System.out.println("output : " + runner.getProcessOutput());
+			System.out.println("Working Directory = " +
+		              System.getProperty("user.dir"));
+		} catch (ProcessRunnerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
