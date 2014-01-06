@@ -20,13 +20,13 @@
 					</div>
 					<div class="panel-body">
 						<span class="action-image"> @if(!action.getImageUrl.isEmpty) {
-							<a href="/@action.getAction/@url"><image class="img-polaroid"
+							<a href="@play.api.Play.current.configuration.getString("application.context")/@action.getAction/@url"><image class="img-polaroid"
 									src="@routes.Assets.at(action.getImageUrl)" /></a> }
 						</span>
 						<span class="action-description">@action.getDescription</span>
 						<span>
 							<button id="go-button-@index" class="btn btn-mini pull-right button-go">GO</button>
-							<span id="action-url-@index" style="display:none;">/@action.getAction/@url</span>
+							<span id="action-url-@index" style="display:none;">@play.api.Play.current.configuration.getString("application.context")/@action.getAction/@url</span>
 						</span>
 						<span>
 							<button id="rate-action-plus-@index" class="btn btn-success btn-mini rate-up">+1</button>
