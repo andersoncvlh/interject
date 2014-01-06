@@ -3,6 +3,29 @@ interject
 
 A web application to interject with some preservation options.
 
+Developer Notes
+---------------
+This web application uses a git submodule to inherit the UKWA Bootstrap theme. Therefore, to get a fully working copy, you may need to do this:
+
+    $ git submodule init
+    Submodule 'interject-webapp/public/bootstrap' (https://github.com/ukwa/bootstrap.git) registered for path 'interject-webapp/public/bootstrap'
+    $ git submodule update
+    Cloning into 'interject-webapp/public/bootstrap'...
+    remote: Counting objects: 24606, done.
+    remote: Compressing objects: 100% (8591/8591), done.
+    remote: Total 24606 (delta 15835), reused 24603 (delta 15833)
+    Receiving objects: 100% (24606/24606), 20.18 MiB | 502 KiB/s, done.
+    Resolving deltas: 100% (15835/15835), done.
+    Submodule path 'interject-webapp/public/bootstrap': checked out 'eb93fc5604bf745aeefe72567f6d6a3d942c97e0':
+
+Running with a proxy
+--------------------
+
+    $ mvn install
+    $ cd interject-webapp
+    $ play clean run -Dhttp.proxyHost=explorer.bl.uk -Dhttp.proxyPort=3127
+
+
 API
 ---
 

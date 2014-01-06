@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
@@ -138,5 +139,16 @@ public class BufferedHttpServletResponse extends HttpServletResponseWrapper {
         public void write(int b) {
             buf.write(b);
         }
+
+
+		@Override
+		public boolean isReady() {
+			return true;
+		}
+
+
+		@Override
+		public void setWriteListener(WriteListener writeListener) {
+		}
     }    
 }

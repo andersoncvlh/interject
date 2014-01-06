@@ -10,11 +10,28 @@ import javax.imageio.stream.ImageInputStream;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import uk.bl.wa.interject.factory.HttpClientFactory;
+
 public enum ImageIOStrategy implements ImageStrategy {
+
+	/*
+	private HttpClient getHttpClient() {
+    	HttpClient httpclient = new DefaultHttpClient();
+    	if( System.getProperty("http.proxyHost") != null ) {
+    		HttpHost proxy = new HttpHost( System.getProperty("http.proxyHost"), 
+    				Integer.parseInt(System.getProperty("http.proxyPort")), "http");
+    		httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+    		log.debug("Proxying via "+proxy);
+    	} else {
+    		log.debug("No web proxy.");
+    	}
+    	return httpclient;
+    }
+    */
+	
 
 	INSTANCE;
 
@@ -27,7 +44,7 @@ public enum ImageIOStrategy implements ImageStrategy {
 			throws Exception {
 	    logger.info("ImageIOStrategy convert: "+url+" from "+sourceContentType);
 		byte[] imageBytes = null;
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+		CloseableHttpClient httpclient = HttpClientFactory.createHttpClientOrProxy();
 		try {
 			HttpGet httpGet = new HttpGet(url);
 			if( sourceContentType != null ) {

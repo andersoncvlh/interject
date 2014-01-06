@@ -13,12 +13,13 @@ import org.apache.commons.imaging.formats.png.PngConstants;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public enum CommonsImageStrategy implements ImageStrategy {
+import uk.bl.wa.interject.factory.HttpClientFactory;
 
+public enum CommonsImageStrategy implements ImageStrategy {
+	
 	INSTANCE;
 
 	protected static Logger logger = LogManager.getLogger(CommonsImageStrategy.class);
@@ -29,7 +30,7 @@ public enum CommonsImageStrategy implements ImageStrategy {
 	public byte[] convertFromUrlToPng(String url, String sourceContentType) throws Exception {
 	    logger.info("CommonsImageStrategy convert: "+url+" from "+sourceContentType);
 		byte[] imageBytes = null;
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+		CloseableHttpClient httpclient = HttpClientFactory.createHttpClientOrProxy();
 		try {
 			HttpGet httpGet = new HttpGet(url);
 			if( sourceContentType != null ) {

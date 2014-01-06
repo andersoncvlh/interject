@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,5 +83,14 @@ public class ServletOutputStreamCopier extends ServletOutputStream {
 	public byte[] getCopy() {
     	return copy.toByteArray();
     }
+
+	@Override
+	public boolean isReady() {
+		return true;
+	}
+
+	@Override
+	public void setWriteListener(WriteListener writeListener) {
+	}
 
 }

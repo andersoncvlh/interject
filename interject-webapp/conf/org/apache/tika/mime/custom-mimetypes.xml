@@ -326,7 +326,6 @@ sl:generator="ibauthor"
     </magic>
     <glob pattern="*.z80"/>
   </mime-type>
-<<<<<<< HEAD
 
 
   <!--
@@ -336,10 +335,3 @@ sl:generator="ibauthor"
   -->
 
 </mime-info>
-=======
-  
-
-  
-  
-</mime-info>
->>>>>>> ea7518588e68d7be487797180a068f8d3c3f3ecd
