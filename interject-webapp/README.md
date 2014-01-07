@@ -18,6 +18,11 @@ This web application uses a git submodule to inherit the UKWA Bootstrap theme. T
     Resolving deltas: 100% (15835/15835), done.
     Submodule path 'interject-webapp/public/bootstrap': checked out 'eb93fc5604bf745aeefe72567f6d6a3d942c97e0':
 
+
+OR
+
+   $ git clone --recursive ...
+
 Running with a proxy
 --------------------
 
