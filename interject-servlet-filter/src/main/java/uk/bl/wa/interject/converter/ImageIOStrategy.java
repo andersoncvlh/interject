@@ -2,6 +2,7 @@ package uk.bl.wa.interject.converter;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
@@ -13,6 +14,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import uk.bl.wa.interject.exception.ConverterException;
 import uk.bl.wa.interject.factory.HttpClientFactory;
 
 public enum ImageIOStrategy implements ImageStrategy {
@@ -41,7 +43,7 @@ public enum ImageIOStrategy implements ImageStrategy {
 
 	@Override
 	public byte[] convertFromUrlToPng(String url, String sourceContentType)
-			throws Exception {
+			throws ConverterException {
 	    logger.info("ImageIOStrategy convert: "+url+" from "+sourceContentType);
 		byte[] imageBytes = null;
 		CloseableHttpClient httpclient = HttpClientFactory.createHttpClientOrProxy();
@@ -58,10 +60,15 @@ public enum ImageIOStrategy implements ImageStrategy {
 			ImageIO.write(image, "png", baos);
 		    baos.flush();
 		    imageBytes = baos.toByteArray();
-		} catch (Exception exp) {
-			exp.printStackTrace();
-		} finally {
-			httpclient.close();
+		} catch(Exception e) {
+			throw new ConverterException(e);
+		}
+		finally {
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				throw new ConverterException(e);
+			}
 		}
 		return imageBytes;
 	}

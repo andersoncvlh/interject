@@ -2,6 +2,7 @@ package uk.bl.wa.interject.converter;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import uk.bl.wa.interject.exception.ConverterException;
 import uk.bl.wa.interject.factory.HttpClientFactory;
 
 public enum CommonsImageStrategy implements ImageStrategy {
@@ -27,7 +29,7 @@ public enum CommonsImageStrategy implements ImageStrategy {
 	private CommonsImageStrategy() {}
 
 	@Override
-	public byte[] convertFromUrlToPng(String url, String sourceContentType) throws Exception {
+	public byte[] convertFromUrlToPng(String url, String sourceContentType) throws ConverterException {
 	    logger.info("CommonsImageStrategy convert: "+url+" from "+sourceContentType);
 		byte[] imageBytes = null;
 		CloseableHttpClient httpclient = HttpClientFactory.createHttpClientOrProxy();
@@ -51,8 +53,14 @@ public enum CommonsImageStrategy implements ImageStrategy {
 		    Imaging.writeImage(image, baos, ImageFormat.IMAGE_FORMAT_PNG, writeParams);
 		    baos.flush();
 		    imageBytes = baos.toByteArray();
+		} catch(Exception e) {
+			throw new ConverterException(e);
 		} finally {
-			httpclient.close();
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				throw new ConverterException(e);
+			}
 		}
 		return imageBytes;
 	}

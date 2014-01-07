@@ -1,6 +1,7 @@
 package uk.bl.wa.interject.services;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import uk.bl.wa.interject.converter.ImageConverter;
 import uk.bl.wa.interject.converter.ImageIOStrategy;
+import uk.bl.wa.interject.exception.ConverterException;
 
 /**
  * Servlet implementation class ImageIOConversionServlet
@@ -43,18 +45,16 @@ public class ImageIOConversionServlet extends HttpServlet {
 	    logger.info("Attempting to convert: "+url+" from "+sourceContentType);
 	    
 		if (url != null) {
-		    ImageConverter imageConverter = new ImageConverter(ImageIOStrategy.INSTANCE);
 			try {
+			    ImageConverter imageConverter = new ImageConverter(ImageIOStrategy.INSTANCE);
 				byte[] imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
 				response.setContentType("image/png");
 				ServletOutputStream out = response.getOutputStream();
 				out.write(imageBytes, 0, imageBytes.length);
 				out.flush();			
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (ConverterException e) {
+				throw new ServletException(e);
 			}
-
 		}
 	}
 

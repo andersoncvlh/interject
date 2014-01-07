@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import uk.bl.wa.interject.converter.CommonsImageStrategy;
 import uk.bl.wa.interject.converter.ImageConverter;
+import uk.bl.wa.interject.exception.ConverterException;
 
 /**
  * Servlet implementation class ImageIOConversionServlet
@@ -46,14 +47,15 @@ public class CommonsImagingConversionServlet extends HttpServlet {
 		if (url != null) {
 			try {
 			    ImageConverter imageConverter = new ImageConverter(CommonsImageStrategy.INSTANCE);
-			    byte[] imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
+			    byte[] imageBytes;
+					imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
 				response.setContentType("image/png");
 				ServletOutputStream out = response.getOutputStream();
 				out.write(imageBytes, 0, imageBytes.length);
 				out.flush();
-			} catch (Exception exp) {
-				exp.printStackTrace();
-			} 
+			} catch (ConverterException e) {
+				throw new ServletException(e);
+			}
 		}
 	}
 
