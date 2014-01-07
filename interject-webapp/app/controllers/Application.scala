@@ -48,7 +48,7 @@ object Application extends Controller {
   def jsspeccy(url: String) = Action {
     // call passthrough
 	val filename = FilenameUtils.getName(url);
-    Ok(views.html.jsspeccy("/action/passthrough/" + url, filename));
+    Ok(views.html.jsspeccy(routes.Application.passthrough(url).toString, filename));
   }
   
   def commonsImagingConversion(url: String, sourceContentType: String) = Action {

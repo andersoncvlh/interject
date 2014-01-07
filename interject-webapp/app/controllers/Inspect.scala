@@ -45,7 +45,7 @@ object Inspect extends Controller {
 	      redirectUrl.append("&sourceContentType=");
 	      redirectUrl.append(mimeType);
 	      println("Redirecting: " + redirectUrl.toString());
-	      Redirect(redirectUrl.toString());
+	      Redirect(routes.Application.index()+redirectUrl.toString().substring(1));
 	    } else {
 		    // 3. Get list of actions based on mime type	  
 		    // A scala list of SimpleConfigObjects
