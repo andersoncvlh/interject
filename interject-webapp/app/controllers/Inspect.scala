@@ -38,15 +38,15 @@ object Inspect extends Controller {
 	    val config = ConfigFactory.load()
 	
 	    // 2. look up problem types
-	    val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
-	    if (interjection != null) {
-	      var redirectUrl = new StringBuilder(interjection.getRedirectUrl());
-	      redirectUrl.append("?url=").append(url);
-	      redirectUrl.append("&sourceContentType=");
-	      redirectUrl.append(mimeType);
-	      println("Redirecting: " + redirectUrl.toString());
-	      Redirect(routes.Application.index()+redirectUrl.toString().substring(1));
-	    } else {
+//	    val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
+//	    if (interjection != null) {
+//	      var redirectUrl = new StringBuilder(interjection.getRedirectUrl());
+//	      redirectUrl.append("?url=").append(url);
+//	      redirectUrl.append("&sourceContentType=");
+//	      redirectUrl.append(mimeType);
+//	      println("Redirecting: " + redirectUrl.toString());
+//	      Redirect(routes.Application.index()+redirectUrl.toString().substring(1));
+//	    } else {
 		    // 3. Get list of actions based on mime type	  
 		    // A scala list of SimpleConfigObjects
 		    // just a test for speccy
@@ -63,7 +63,7 @@ object Inspect extends Controller {
 		
 		    println("forwarding url : " + url);
 		    Ok(views.html.inspect(url, fileObject));
-	    }
+//	    }
     } catch {
       case e: ConfigException => println("do something else " + e)
       val inputStream = new URL(url).openStream();

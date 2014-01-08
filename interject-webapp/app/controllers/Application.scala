@@ -51,7 +51,9 @@ object Application extends Controller {
     Ok(views.html.jsspeccy(routes.Application.passthrough(url).toString, filename));
   }
   
-  def commonsImagingConversion(url: String, sourceContentType: String) = Action {
+  def commonsImagingConversion(url: String) = Action {
+    val tika = new Tika();
+    val sourceContentType = tika.detect(url); 
     println("Attempting to convert: "+url+ " from: " + sourceContentType);
     
 	val imageConverter = new ImageConverter(CommonsImageStrategy.INSTANCE);
@@ -63,7 +65,9 @@ object Application extends Controller {
 	)
   }
   
-  def imageIOConversion(url: String, sourceContentType: String) = Action {
+  def imageIOConversion(url: String) = Action {
+    val tika = new Tika();
+    val sourceContentType = tika.detect(url); 
     println("Attempting to convert: "+url+" from "+sourceContentType);
     
 	val imageConverter = new ImageConverter(ImageIOStrategy.INSTANCE);
