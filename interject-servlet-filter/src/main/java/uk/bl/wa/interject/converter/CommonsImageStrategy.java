@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.imaging.ImageFormat;
+import org.apache.commons.imaging.ImageFormats;
 import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.ImagingConstants;
 import org.apache.commons.imaging.formats.png.PngConstants;
@@ -50,7 +50,7 @@ public enum CommonsImageStrategy implements ImageStrategy {
 			Map<String, Object> writeParams = new HashMap<String, Object>();
 			writeParams.put(PngConstants.PARAM_KEY_PNG_FORCE_TRUE_COLOR, Boolean.TRUE);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		    Imaging.writeImage(image, baos, ImageFormat.IMAGE_FORMAT_PNG, writeParams);
+		    Imaging.writeImage(image, baos, ImageFormats.PNG, writeParams);
 		    baos.flush();
 		    imageBytes = baos.toByteArray();
 		} catch(Exception e) {
