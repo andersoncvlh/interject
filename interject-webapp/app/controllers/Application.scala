@@ -46,9 +46,18 @@ object Application extends Controller {
   }
 
   def jsspeccy(url: String) = Action {
-    // call passthrough
+    // pass to JSSpeccy
 	val filename = FilenameUtils.getName(url);
     Ok(views.html.jsspeccy(routes.Application.passthrough(url).toString, filename));
+  }
+  
+  def qaop(url: String) = Action {
+    // call Qaop
+	val filename = FilenameUtils.getName(url);
+	QaopShot.takeScreenshot();
+	val asStream: InputStream = response.ahcResponse.getResponseBodyAsStream
+	Ok.chunked(Enumerator.fromStream(asStream)).as("application/octet-stream").withHeaders(CONTENT_TRANSFER_ENCODING -> "binary")
+	
   }
   
   def commonsImagingConversion(url: String) = Action {

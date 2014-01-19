@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
    <modules>
       <module>interject-servlet-filter</module>
+      <module>interject-access-qaop</module>
    </modules>
 <licenses>
       <license>

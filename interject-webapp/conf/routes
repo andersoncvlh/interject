@@ -16,6 +16,9 @@ GET     /action/passthrough/*url	controllers.Application.passthrough(url)
 # JSSpeccy
 GET     /action/jsspeccy/*url       controllers.Application.jsspeccy(url)
 #
+# QAOP
+GET     /action/qaop/*url       controllers.Application.qaop(url)
+#
 # Inspect
 GET     /inspect/*url       		controllers.Inspect.inspect(url)
 
