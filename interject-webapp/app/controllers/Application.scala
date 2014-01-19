@@ -51,15 +51,6 @@ object Application extends Controller {
     Ok(views.html.jsspeccy(routes.Application.passthrough(url).toString, filename));
   }
   
-  def qaop(url: String) = Action {
-    // call Qaop
-	val filename = FilenameUtils.getName(url);
-	QaopShot.takeScreenshot();
-	val asStream: InputStream = response.ahcResponse.getResponseBodyAsStream
-	Ok.chunked(Enumerator.fromStream(asStream)).as("application/octet-stream").withHeaders(CONTENT_TRANSFER_ENCODING -> "binary")
-	
-  }
-  
   def commonsImagingConversion(url: String) = Action {
     val tika = new Tika();
     val sourceContentType = tika.detect(url); 
