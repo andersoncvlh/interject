@@ -11,6 +11,7 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     jdbc,
     anorm,
+    cache,
     "org.apache.tika" % "tika-core" % "1.4",
 	"org.apache.commons" % "commons-io" % "1.3.2",
 	"uk.bl.wa.interject" % "interject-servlet-filter" % "1.0.0-SNAPSHOT",
