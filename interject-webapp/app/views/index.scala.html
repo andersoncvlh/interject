@@ -1,13 +1,14 @@
 @main("Examples") {
 
-	<h1>Example Files</h1>
+	<h1>Conversion/Emulation Examples</h1>
 	<div class="row">
 		<div class="col-md-12">
 		    <h2>Spectrum .TAP tape images</h2>
 			<ul class="list-unstyled">
 				<li>e.g. <a href="@routes.Inspect.inspect("http://web.archive.org/web/20010513125307/http://www.antsplace.co.uk:80/GOBBLEMA.TAP")">Gobbleman</a></li>
-				<li>e.g. <a href="@routes.Inspect.inspect("http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap")">Wheelie</a></li>
-				<li><a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.tap%22&f[1]=content_ffb%3A%2213000000%22">Search for more examples...</a></li>
+                <li>e.g. <a href="@routes.Inspect.inspect("http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap")">Wheelie</a></li>
+                <li>e.g. <a href="@routes.Inspect.inspect("http://web.archive.org/web/20010510212732/http://www.antsplace.co.uk:80/ATICATAC.SNA")">ATICATAC</a></li>
+				<li>Search for more examples: <a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.tap%22&f[1]=content_ffb%3A%2213000000%22">.TAP</a>, <a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.tzx%22&f[1]=content_ffb%3A%225a585461%22">.TZX</a>, <a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.z80%22">.Z80</a>, <a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.sna%22">.SNA</a></li>
 				<li><a href="http://fileformats.archiveteam.org/wiki/TAP_(ZX_Spectrum)">Learn more about this format...</a></li>
 			</ul>
 			<h2>X BitMap (XBM) images</h2>
@@ -31,6 +32,19 @@
                 <li><a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_ffb%3A%222356524d%22">Search for more examples...</a></li>
                 <li><a href="http://fileformats.archiveteam.org/wiki/Ext:wrl">Learn more about this format...</a></li>
             </ul>
+            http://localhost:9000/interject/inspect/
 		</div>
 	</div>
+	
+    <h1>Characterisation Examples</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>PDF Documents</h2>
+            <ul class="list-unstyled">
+                <li>e.g. <a href="@routes.Inspect.inspect("http://web.archive.org/web/20050513215231/http://www.advisorybodies.doh.gov.uk/agh/aghsecondannaulreport.pdf")">aghsecondannaulreport.pdf</a></li>
+                <li>Search for more examples: <a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_ffb%3A%2225504446%22">PDFs</a>
+                <li><a href="http://fileformats.archiveteam.org/wiki/PDF">Learn more about this format...</a></li>
+            </ul>
+        </div>
+    </div>
 }

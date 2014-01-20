@@ -10,6 +10,7 @@ import java.io.InputStream
 import java.net.URL
 import org.apache.tika.Tika
 import org.apache.tika.metadata.Metadata
+import org.apache.tika.sax.BodyContentHandler
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.Config
 import scala.collection.Map
@@ -23,19 +24,24 @@ import models.ActionObject
 import models.FileObject
 
 object Inspect extends Controller {
+  
+  val tika = new Tika();
 
   def inspect(url: String) = Action {
-    // http://www.webarchive.org.uk/interject/action/inspect/http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap
+    
+    // get file name from url and store it
+    val filename = FilenameUtils.getName(url)
+    val urlResource = new URL(url);
+    val urlConnection = urlResource.openConnection();
+    val serverContentType = urlConnection.getContentType();
+    
     // 1. identify contents using Apache Tika
-    val tika = new Tika();
-    val mimeType = tika.detect(url);
-    // TODO: get file name from url and store it
-    val filename = FilenameUtils.getName(url);
-    println("mimeType : " + mimeType)
-
+    Logger.info("Running Tika on "+filename);
+    val mimeType = tika.detect(urlConnection.getInputStream(), filename);
+    Logger.info("Got mimeType : " + mimeType)
+    val metadata = Actions.parseURL(url);
     
     try {
-	    val config = ConfigFactory.load()
 	
 	    // 2. look up problem types
 //	    val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
@@ -47,24 +53,14 @@ object Inspect extends Controller {
 //	      println("Redirecting: " + redirectUrl.toString());
 //	      Redirect(routes.Application.index()+redirectUrl.toString().substring(1));
 //	    } else {
-		    // 3. Get list of actions based on mime type	  
-		    // A scala list of SimpleConfigObjects
-		    // just a test for speccy
-		    val options = "." + mimeType
-		    println("Getting actions for mime type : " + options);
-		    var actions = config.getConfigList("mime.type.actions" + options).map(new ActionObject(_))
-		    println(actions.getClass.getName)
-		
-		    var fileObject = new FileObject(filename, mimeType, null, actions);
+      
+		    var actions = Actions.loadActions(mimeType);		
+		    var fileObject = new FileObject(filename, mimeType, serverContentType, metadata, actions);
 		    
-//		    actions.foreach(e => {
-//		      println(mimeType + " " + e.getAction() + " " + e.getDescription())
-//		    })
-		
-		    println("forwarding url : " + url);
 		    Ok(views.html.inspect(url, fileObject));
-//	    }
+		    
     } catch {
+      
       case e: ConfigException => println("do something else " + e)
       val inputStream = new URL(url).openStream();
       val bytes = IOUtils.toByteArray(inputStream)

@@ -13,9 +13,10 @@ object ApplicationBuild extends Build {
     anorm,
     cache,
     "org.apache.tika" % "tika-core" % "1.4",
-	"org.apache.commons" % "commons-io" % "1.3.2",
-	"uk.bl.wa.interject" % "interject-servlet-filter" % "1.0.0-SNAPSHOT",
-	"uk.bl.wa.access" % "qaop" % "1.4.1-SNAPSHOT"
+    "org.apache.tika" % "tika-parsers" % "1.4",
+    "org.apache.commons" % "commons-io" % "1.3.2",
+    "uk.bl.wa.interject" % "interject-servlet-filter" % "1.0.0-SNAPSHOT",
+    "uk.bl.wa.access" % "qaop" % "1.4.1-SNAPSHOT"
   )
   
 //  val filterDependencies = Seq(

@@ -1,21 +1,42 @@
-@(url: String, fileObject: FileObject) @main("List of actions") {
-	<script src="@routes.Assets.at("bootstrap/js/modal.js")" type="text/javascript"></script>
-	<script src="@routes.Assets.at("bootstrap/js/button.js")" type="text/javascript"></script>
-	<script src="@routes.Assets.at("javascripts/interject.js")" type="text/javascript"></script>
+@(url: String, fileObject: FileObject)
+@scripts = {
+    <script src="@routes.Assets.at("bootstrap/js/modal.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("bootstrap/js/button.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("bootstrap/js/tab.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("hexview/hexview.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("javascripts/interject.js")" type="text/javascript"></script>
+}
+@styles = {
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("hexview/hexview.default.css")">
+}
+@main("List of actions", styles, scripts) {
 	
+          <ul class="nav nav-tabs" id="inspectTabs">
+            <li><a href="#summary" data-toggle="tab">Summary & Actions</a></li>
+            <li><a href="#inspectMetadata" data-toggle="tab">Metadata View</a></li>
+            <li><a href="#inspectText" data-toggle="tab">Text View</a></li>
+            <li><a href="#inspectHex" data-toggle="tab">Hex View</a></li>
+          </ul>
+          
+          <div class="tab-content"> 
+            <div class="tab-pane active" id="summary">
+            
 	<div class="row">
-		<div class="col-xs-12 col-sm-4 col-md-4">
-			<div class="panel panel-default">
-				<div class="panel-body">
-		            <ul class="list-unstyled">
-			  			<li id="filename">@fileObject.getFilename</li>
-			  			<li>Server Content Type Here</li>
-			  			<li>@fileObject.getMimeType</li>
-					</ul>
-				</div>
-			</div>
+		<div class="col-xs-12 col-sm-5 col-md-5">
+          <p></p>
+					<table class="table table-striped">
+					<thead>
+                    <tr><th>Name:</th><th>@fileObject.getFilename</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr><th>Served as:</th><td>@fileObject.getContentType</td></tr>
+                    <tr><th>Identified as:</th><td>@fileObject.getMimeType</td></tr>
+                    </tbody>
+					</table>
+			
 		</div>
-		<div class="col-xs-12 col-sm-8 col-md-8" role="main">
+		<div class="col-xs-12 col-sm-7 col-md-7" role="main">
+          <p></p>
 			@for((action, index) <- fileObject.getActions.zipWithIndex) {
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -37,8 +58,44 @@
 				</div>
 			}
 		</div>
-	</div>
+			
+		</div>
+		
+            </div>
+            <div class="tab-pane" id="inspectMetadata">
+            ...TBA...
+            </div>
+            
+            <div class="tab-pane" id="inspectText">
+            ...TBA...
+            </div>
+            
+            <div class="tab-pane" id="inspectHex">
+    <div class="hexviewwindow" title=".exe file header">
+        TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5v
+        dCBiZSBydW4gaW4gRE9TIG1vZGUuDQ0KJAAAAAAAAABQRQAATAEHAMnPt0cAAAAA
+        AAAAAOAADgELAQMAAA4AAACeAQAAAAAAuRAAAAAQAAAAIAAAAABAAAAQAAAAAgAA
+        BAAAAAAAAAAEAAAAAAAAAAAAAgAABAAAzYhSAAIAAAAAABAAABAAAAAAEAAAEAAA
+        AAAAABAAAAAAAAAAAAAAAABAAAA8AAAAALABAExEAAAAAAAAAAAAADBFUgD4EgAA
+        AFAAAMwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAACgQAAAZAAAAAAAAAAAAAAAAAAA
+        <form id="hexviewwindow_params">
+            <input type="hidden" name="highlights" value="16:17:#F4FA58:Initial value of SP register,128:152:#54FAF8:Portable Executable signature and header" />
+            <input type="hidden" name="row_width" value="16" />
+            <input type="hidden" name="word_size" value="2" />
+            <input type="hidden" name="caption" value=".exe file header" />
+        </form>
+    </div>
+            </div>
+            
+            </div>
 	
+	
+    <script>
+      $('#inspectTabs a:first').tab('show')
+    </script>
+
 	<span id="last-rated" style="display:none;"></span>
 	
 	<div id="feedback-form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">

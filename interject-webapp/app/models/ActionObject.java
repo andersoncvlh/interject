@@ -2,7 +2,7 @@ package models;
 
 import com.typesafe.config.Config;
 
-public class ActionObject {
+public class ActionObject implements Comparable<ActionObject> {
 	
 	private final String action;
 	private final String description;
@@ -26,4 +26,11 @@ public class ActionObject {
 	public String getImageUrl() {
 		return imageUrl;
 	}
+	
+	
+	@Override
+	public int compareTo(ActionObject o) {
+		return action.compareTo(o.action);
+	}
+
 }
