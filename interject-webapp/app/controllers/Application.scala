@@ -16,6 +16,7 @@ import java.util.HashMap
 import java.lang.Boolean
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
+import java.net.URI
 
 import org.apache.commons.imaging.ImagingConstants
 import org.apache.commons.imaging.Imaging
@@ -47,7 +48,7 @@ object Application extends Controller {
 
   def jsspeccy(url: String) = Action {
     // pass to JSSpeccy
-	val filename = FilenameUtils.getName(url);
+    val filename = FilenameUtils.getName(URI.create(url).getPath);
     Ok(views.html.jsspeccy(routes.Application.passthrough(url).toString, filename));
   }
   

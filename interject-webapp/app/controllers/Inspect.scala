@@ -9,6 +9,7 @@ import scala.concurrent._
 import java.io.InputStream
 import java.io.StringWriter
 import java.net.URL
+import java.net.URI
 import org.apache.tika.Tika
 import org.apache.tika.metadata.Metadata
 import org.apache.tika.sax.BodyContentHandler
@@ -30,7 +31,7 @@ object Inspect extends Controller {
   def inspect(url: String) = Action { implicit request =>
     
     // get file name from url and store it
-    val filename = FilenameUtils.getName(url)
+    val filename = FilenameUtils.getName(URI.create(url).getPath);
     
     // 1. identify contents using Apache Tika
     Logger.info("Running Tika on "+filename);
