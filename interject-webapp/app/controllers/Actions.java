@@ -3,18 +3,22 @@
  */
 package controllers;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import models.ActionObject;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.Tika;
 import org.apache.tika.config.TikaConfig;
@@ -22,6 +26,8 @@ import org.apache.tika.exception.TikaException;
 import org.apache.tika.io.IOUtils;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
+import org.apache.tika.mime.MimeType;
+import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.sax.ToTextContentHandler;
@@ -110,9 +116,39 @@ public class Actions extends Controller {
 		
 		return false;
 	}
+	
+	public static MimeType lookupMimeType( String mimeType ) {
+		MimeType mt = null;
+		try {
+			mt = mimeTypes.getRegisteredMimeType(mimeType);
+		} catch ( MimeTypeException e ) {
+			Logger.warn("Could not find registered type: "+mimeType);
+		}
+		try {
+			mt = mimeTypes.forName(mimeType);
+		} catch ( MimeTypeException e ) {
+			Logger.warn("Could not create type: "+mimeType);
+		}
+		
+		Logger.info("Got mimeType: "+mt);
+		if( mt == null ) return null;
+		
+ 		Logger.info("Got mimeType: "+mt.getName());
+		Logger.info("Got mimeType: "+mt.getType());
+		Logger.info("Got mimeType: "+mt.getAcronym());
+		Logger.info("Got mimeType: "+mt.getDescription());
+		Logger.info("Got mimeType: "+mt.getExtension());
+		Logger.info("Got mimeType: "+mt.getExtensions());
+		Logger.info("Got mimeType: "+mt.getUniformTypeIdentifier());
+		Logger.info("Got mimeType: "+mt.getLinks());
+		
+		return mt;
+	}
 
+	private static Tika tika = new Tika();
+	
 	/**
-	 * TODO In the future, this should probably shift to the same core as the warc-discovery indexer.
+	 * TODO Currently opens the connection twice. In the future, this should probably shift to the same core as the warc-discovery indexer, as that would enhance the metadata and prevent multiple downloads.
 	 * 
 	 * @param url
 	 * @return
@@ -120,19 +156,27 @@ public class Actions extends Controller {
 	 * @throws SAXException
 	 * @throws TikaException
 	 */
-	public static Metadata parseURL( String url ) throws IOException, SAXException, TikaException {
+	public static Metadata parseURL( String url, Writer content ) throws IOException, SAXException, TikaException {
 		ParseContext context = new ParseContext();
-		StringWriter content = new StringWriter();
 		
 		Metadata md = new Metadata();
 		md.add(Metadata.RESOURCE_NAME_KEY, url);
 		URL urlResource = new URL(url);
+		URLConnection urlConnection = urlResource.openConnection();
+		md.add("Server-Content-Type", urlConnection.getContentType());
+		
+		// Detect:
+	    byte[] bytes = IOUtils.toByteArray(urlConnection.getInputStream());
+		String tikaType = tika.detect(bytes, url);
+		Logger.info("Dectected input type: "+tikaType);
+		Logger.info("Head: "+Base64.encodeBase64String(Arrays.copyOf(bytes,100)));
+		Logger.info("Tail: "+Base64.encodeBase64String(Arrays.copyOfRange(bytes,bytes.length-10, bytes.length)));
 		
 		// Parse it:
-		Tika tika = new Tika();
-		tika.getParser().parse( urlResource.openStream(), new ToTextContentHandler(content), md, context );
+		tika.getParser().parse( new ByteArrayInputStream(bytes), new ToTextContentHandler(content), md, context );
 		
-		md.add("TEXT", content.toString());
+		// Repair content type!
+		md.set("Content-Type", tikaType);
 		
 		return md;
 		

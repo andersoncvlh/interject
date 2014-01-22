@@ -7,6 +7,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.iteratee._
 import scala.concurrent._
 import java.io.InputStream
+import java.io.StringWriter
 import java.net.URL
 import org.apache.tika.Tika
 import org.apache.tika.metadata.Metadata
@@ -25,21 +26,18 @@ import models.FileObject
 
 object Inspect extends Controller {
   
-  val tika = new Tika();
-
   def inspect(url: String) = Action { implicit request =>
     
     // get file name from url and store it
     val filename = FilenameUtils.getName(url)
-    val urlResource = new URL(url);
-    val urlConnection = urlResource.openConnection();
-    val serverContentType = urlConnection.getContentType();
     
     // 1. identify contents using Apache Tika
     Logger.info("Running Tika on "+filename);
-    val mimeType = tika.detect(urlConnection.getInputStream(), filename);
+    val content = new StringWriter();
+    val metadata = Actions.parseURL(url, content);
+    val mimeType = metadata.get("Content-Type");
+    val servedContentType = metadata.get("Server-Content-Type");
     Logger.info("Got mimeType : " + mimeType)
-    val metadata = Actions.parseURL(url);
     
     try {
 	
@@ -58,19 +56,13 @@ object Inspect extends Controller {
 		    Logger.info("Got absolutePrefix: "+absolutePrefix);
 		    
 		    var actions = Actions.loadActions(mimeType, absolutePrefix);
-		    var fileObject = new FileObject(filename, mimeType, serverContentType, metadata, actions);
+		    var fileObject = new FileObject(filename, mimeType, servedContentType, metadata, actions);
 		    
 		    Ok(views.html.inspect(url, fileObject));
 		    
     } catch {
       
       case e: ConfigException => println("do something else " + e)
-      val inputStream = new URL(url).openStream();
-      val bytes = IOUtils.toByteArray(inputStream)
-      // #VRML V1.0 ascii
-      // #VRML V2.0 utf8
-
-      println(new String(bytes, "UTF-8"))
       NotFound("")
     }
   }

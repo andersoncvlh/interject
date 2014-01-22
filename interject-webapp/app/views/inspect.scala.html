@@ -32,8 +32,8 @@
                     <tr><th>Name:</th><th>@fileObject.getFilename</th></tr>
                     </thead>
                     <tbody>
-                    <tr><th>Served as:</th><td>@fileObject.getContentType</td></tr>
-                    <tr><th>Identified as:</th><td>@fileObject.getMimeType</td></tr>
+                    <tr><th>Served as:</th><td>@fileObject.getServedContentTypeDetails</td></tr>
+                    <tr><th>Identified as:</th><td>@fileObject.getContentTypeDetails</td></tr>
                     </tbody>
 					</table>
 			
@@ -43,19 +43,24 @@
 			@for((action, index) <- fileObject.getActions.zipWithIndex) {
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<span id="action-name-@index" class="panel-title">@action.getAction</span>
+					    <a href="@(action.getActionURL + url)">
+                        <span class="action-image"> @if(!action.getImageUrl.isEmpty) {
+                            <image class="img-polaroid"
+                                    src="@routes.Assets.at(action.getImageUrl)" />&nbsp; }
+                        </span>
+						<span id="action-name-@index" class="panel-title">@action.getName</span>
+						</a>
+                        <span class="pull-right">
+                            <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-default" role="button" title="Inspect the output of this action and determine any further access options.">INSPECT</a>
+                            &nbsp;
+                            <button type="button" id="rate-action-plus-@index" class="btn btn-xs btn-success rate-up" title="Rate this access option as: Good.">+1</button>
+                            <button type="button" id="rate-action-minus-@index" class="btn btn-xs btn-danger rate-down" title="Rate this access option as: Not Good.">-1</button>
+                            &nbsp;
+                            <a href="@(action.getActionURL + url)" class="btn btn-xs btn-primary btn-go" role="button" title="Access this option.">GO</a>
+                        </span>
 					</div>
 					<div class="panel-body">
-						<span class="action-image"> @if(!action.getImageUrl.isEmpty) {
-							<a href="@play.api.Play.current.configuration.getString("application.context")@action.getAction/@url"><image class="img-polaroid"
-									src="@routes.Assets.at(action.getImageUrl)" /></a> }
-						</span>
-						<span class="action-description">@action.getDescription</span>
-						<span class="pull-right">
-                            <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-primary button-go" role="button">INSPECT</a>
-							<button type="button" id="rate-action-plus-@index" class="btn btn-xs btn-success rate-up">+1</button>
-							<button type="button" id="rate-action-minus-@index" class="btn btn-xs btn-danger rate-down">-1</button>
-						</span>
+                        <span class="action-description">@Html(action.getDescription)</span>
 					</div>
 				</div>
 			}

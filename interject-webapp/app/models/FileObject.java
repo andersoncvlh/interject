@@ -3,7 +3,9 @@ package models;
 import java.util.List;
 
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MimeType;
 
+import controllers.Actions;
 import play.Logger;
 
 public class FileObject {
@@ -29,12 +31,20 @@ public class FileObject {
 		return filename;
 	}
 	
-	public String getMimeType() {
+	public String getContentType() {
 		return mimeType;
 	}
 	
-	public String getContentType() {
+	public MimeType getContentTypeDetails() {
+		return Actions.lookupMimeType(mimeType);
+	}
+	
+	public String getServedContentType() {
 		return contentType;
+	}
+	
+	public MimeType getServedContentTypeDetails() {
+		return Actions.lookupMimeType(contentType);
 	}
 	
 	public Metadata getMetadata() {
