@@ -70,30 +70,70 @@
 		
             </div>
             <div class="tab-pane" id="inspectMetadata">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <p></p>
+            
             ...TBA...
+            </div>
+            </div>
             </div>
             
             <div class="tab-pane" id="inspectText">
-            ...TBA...
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+          <p></p>
+    @if(!fileObject.getInspection.getText.isEmpty) {
+            <pre>
+            @fileObject.getInspection.getText
+            </pre>
+    }
+    </div>
+    </div>
             </div>
             
             <div class="tab-pane" id="inspectHex">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
             <!-- Via base 64 encoded binary data -->
-    <div class="hexviewwindow" title=".exe file header">
-        TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5v
-        dCBiZSBydW4gaW4gRE9TIG1vZGUuDQ0KJAAAAAAAAABQRQAATAEHAMnPt0cAAAAA
-        AAAAAOAADgELAQMAAA4AAACeAQAAAAAAuRAAAAAQAAAAIAAAAABAAAAQAAAAAgAA
-        BAAAAAAAAAAEAAAAAAAAAAAAAgAABAAAzYhSAAIAAAAAABAAABAAAAAAEAAAEAAA
-        AAAAABAAAAAAAAAAAAAAAABAAAA8AAAAALABAExEAAAAAAAAAAAAADBFUgD4EgAA
-        AFAAAMwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAACgQAAAZAAAAAAAAAAAAAAAAAAA
+    @if(fileObject.getInspection.getBinary != null) {
+    <div class="hexviewwindow" title="Binary file">
+        @fileObject.getInspection.getBinary
         <form id="hexviewwindow_params">
-            <input type="hidden" name="highlights" value="16:17:#F4FA58:Initial value of SP register,128:152:#54FAF8:Portable Executable signature and header" />
+            <input type="hidden" name="highlights" value="" /><!-- "16:17:#F4FA58:Initial value of SP register,128:152:#54FAF8:Portable Executable signature and header" -->
             <input type="hidden" name="row_width" value="16" />
             <input type="hidden" name="word_size" value="2" />
-            <input type="hidden" name="caption" value=".exe file header" />
+            <input type="hidden" name="caption" value="Binary file" />
         </form>
+    </div>
+    }
+    @if(fileObject.getInspection.getBinaryTail != null) {
+    <div class="hexviewwindow" title="Binary file header">
+        @fileObject.getInspection.getBinaryHead
+        <form id="hexviewwindow_params">
+            <input type="hidden" name="highlights" value="" />
+            <input type="hidden" name="row_width" value="16" />
+            <input type="hidden" name="word_size" value="2" />
+            <input type="hidden" name="caption" value="Binary file header" />
+        </form>
+    </div>
+    }
+    <p>
+    @(fileObject.getInspection.getBinaryText)
+    </p>
+    @if(fileObject.getInspection.getBinaryTail != null) {
+    <div class="hexviewwindow" title="Binary file tail">
+        @fileObject.getInspection.getBinaryTail
+        <form id="hexviewwindow_params">
+            <input type="hidden" name="highlights" value="" />
+            <input type="hidden" name="row_width" value="16" />
+            <input type="hidden" name="word_size" value="2" />
+            <input type="hidden" name="caption" value="Binary file tail" />
+        </form>
+    </div>
+    }
+    </div>
     </div>
             </div>
             

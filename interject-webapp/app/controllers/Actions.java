@@ -145,42 +145,5 @@ public class Actions extends Controller {
 		return mt;
 	}
 
-	private static Tika tika = new Tika();
-	
-	/**
-	 * TODO Currently opens the connection twice. In the future, this should probably shift to the same core as the warc-discovery indexer, as that would enhance the metadata and prevent multiple downloads.
-	 * 
-	 * @param url
-	 * @return
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws TikaException
-	 */
-	public static Metadata parseURL( String url, Writer content ) throws IOException, SAXException, TikaException {
-		ParseContext context = new ParseContext();
-		
-		Metadata md = new Metadata();
-		md.add(Metadata.RESOURCE_NAME_KEY, url);
-		URL urlResource = new URL(url);
-		URLConnection urlConnection = urlResource.openConnection();
-		md.add("Server-Content-Type", urlConnection.getContentType());
-		
-		// Detect:
-	    byte[] bytes = IOUtils.toByteArray(urlConnection.getInputStream());
-		String tikaType = tika.detect(bytes, url);
-		Logger.info("Dectected input type: "+tikaType);
-		Logger.info("Head: "+Base64.encodeBase64String(Arrays.copyOf(bytes,100)));
-		Logger.info("Tail: "+Base64.encodeBase64String(Arrays.copyOfRange(bytes,bytes.length-10, bytes.length)));
-		
-		// Parse it:
-		tika.getParser().parse( new ByteArrayInputStream(bytes), new ToTextContentHandler(content), md, context );
-		
-		// Repair content type!
-		md.set("Content-Type", tikaType);
-		
-		return md;
-		
-	}
-	
 }
 

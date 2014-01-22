@@ -23,6 +23,7 @@ import com.typesafe.config.ConfigException
 import org.apache.commons.io.IOUtils
 import models.ActionObject
 import models.FileObject
+import models.Inspection
 
 object Inspect extends Controller {
   
@@ -33,10 +34,8 @@ object Inspect extends Controller {
     
     // 1. identify contents using Apache Tika
     Logger.info("Running Tika on "+filename);
-    val content = new StringWriter();
-    val metadata = Actions.parseURL(url, content);
-    val mimeType = metadata.get("Content-Type");
-    val servedContentType = metadata.get("Server-Content-Type");
+    val metadata = new Inspection(url);
+    val mimeType = metadata.getContentType();
     Logger.info("Got mimeType : " + mimeType)
     
     try {
@@ -56,7 +55,7 @@ object Inspect extends Controller {
 		    Logger.info("Got absolutePrefix: "+absolutePrefix);
 		    
 		    var actions = Actions.loadActions(mimeType, absolutePrefix);
-		    var fileObject = new FileObject(filename, mimeType, servedContentType, metadata, actions);
+		    var fileObject = new FileObject(filename, metadata, actions);
 		    
 		    Ok(views.html.inspect(url, fileObject));
 		    

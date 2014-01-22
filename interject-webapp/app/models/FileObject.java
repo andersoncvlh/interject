@@ -6,49 +6,45 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MimeType;
 
 import controllers.Actions;
-import play.Logger;
 
 public class FileObject {
 	
 	private final String filename;
-	private final String mimeType;
-	private final String contentType;
+	private Inspection inspection;
 	private final List<ActionObject> actions;
-	private Metadata metadata;
 	
-	public FileObject(String filename, String mimeType, String contentType, Metadata metadata, List<ActionObject> actions) {
+	public FileObject(String filename, Inspection inspection, List<ActionObject> actions) {
 		this.filename = filename;
-		this.mimeType = mimeType;
-		this.contentType = contentType;
-		this.metadata = metadata;
+		this.inspection = inspection;
 		this.actions = actions;
-		for( String name : metadata.names() ) {
-			Logger.info("Metadata: "+ name + " => "+ metadata.get(name));
-		}
 	}
 
 	public String getFilename() {
 		return filename;
 	}
 	
+	public Inspection getInspection() {
+		return this.inspection;
+	}
+ 	
 	public String getContentType() {
-		return mimeType;
+		return inspection.getContentType();
 	}
 	
 	public MimeType getContentTypeDetails() {
-		return Actions.lookupMimeType(mimeType);
+		return Actions.lookupMimeType(inspection.getContentType());
 	}
 	
 	public String getServedContentType() {
-		return contentType;
+		return inspection.getServerContentType();
 	}
 	
 	public MimeType getServedContentTypeDetails() {
-		return Actions.lookupMimeType(contentType);
+		return Actions.lookupMimeType(inspection.getServerContentType());
 	}
 	
 	public Metadata getMetadata() {
-		return metadata;
+		return inspection.getMetadata();
 	}
 	
 	public List<ActionObject> getActions() {
