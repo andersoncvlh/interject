@@ -68,10 +68,10 @@ public class Actions extends Controller {
     /* Static code for managing types and actions */
     
     /* ---- */
-	
+    
 	static MimeTypes mimeTypes = TikaConfig.getDefaultConfig().getMimeRepository();
 	
-	public static List<ActionObject> loadActions( String contentType ) {
+	public static List<ActionObject> loadActions( String contentType, String prefix ) {
 		HashMap<String,ActionObject> actions = new HashMap<String,ActionObject>();
 		Config conf = ConfigFactory.load();
 		
@@ -79,7 +79,7 @@ public class Actions extends Controller {
 		Logger.info("Looking for actions that match type: "+type);
 
 		for( Config a : conf.getConfigList("actions") ) {
-			ActionObject ao = new ActionObject(a);
+			ActionObject ao = new ActionObject(a, prefix);
 			//Logger.debug("Looking at action: "+ao.action);
 			
 			// Look for a match:

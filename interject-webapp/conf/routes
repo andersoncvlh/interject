@@ -10,6 +10,10 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 #
 # ACTIONS:
 #
+
+# List actions:
+GET     /action/                    controllers.Actions.index()
+
 # Passthrough
 GET     /action/passthrough/*url	controllers.Application.passthrough(url)
 #
@@ -17,7 +21,7 @@ GET     /action/passthrough/*url	controllers.Application.passthrough(url)
 GET     /action/jsspeccy/*url       controllers.Application.jsspeccy(url)
 #
 # QAOP
-GET     /action/qaop/*url       controllers.Actions.qaop(url)
+GET     /action/qaop/*url           controllers.Actions.qaop(url)
 #
 # Inspect
 GET     /inspect/*url       		controllers.Inspect.inspect(url)

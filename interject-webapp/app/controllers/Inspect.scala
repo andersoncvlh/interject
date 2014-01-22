@@ -27,7 +27,7 @@ object Inspect extends Controller {
   
   val tika = new Tika();
 
-  def inspect(url: String) = Action {
+  def inspect(url: String) = Action { implicit request =>
     
     // get file name from url and store it
     val filename = FilenameUtils.getName(url)
@@ -54,7 +54,10 @@ object Inspect extends Controller {
 //	      Redirect(routes.Application.index()+redirectUrl.toString().substring(1));
 //	    } else {
       
-		    var actions = Actions.loadActions(mimeType);		
+		    val absolutePrefix = routes.Application.index().absoluteURL();
+		    Logger.info("Got absolutePrefix: "+absolutePrefix);
+		    
+		    var actions = Actions.loadActions(mimeType, absolutePrefix);
 		    var fileObject = new FileObject(filename, mimeType, serverContentType, metadata, actions);
 		    
 		    Ok(views.html.inspect(url, fileObject));
