@@ -9,3 +9,7 @@ body {
 .action-description {
 	margin-left: 10px; 
 }
+
+.hexviewwindow table {
+	margin: 0 auto;
+}

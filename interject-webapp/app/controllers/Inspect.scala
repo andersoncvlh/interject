@@ -40,18 +40,6 @@ object Inspect extends Controller {
     Logger.info("Got mimeType : " + mimeType)
     
     try {
-	
-	    // 2. look up problem types
-//	    val interjection = InterjectionFactory.INSTANCE.findProblemType(mimeType);
-//	    if (interjection != null) {
-//	      var redirectUrl = new StringBuilder(interjection.getRedirectUrl());
-//	      redirectUrl.append("?url=").append(url);
-//	      redirectUrl.append("&sourceContentType=");
-//	      redirectUrl.append(mimeType);
-//	      println("Redirecting: " + redirectUrl.toString());
-//	      Redirect(routes.Application.index()+redirectUrl.toString().substring(1));
-//	    } else {
-      
 		    val absolutePrefix = routes.Application.index().absoluteURL();
 		    Logger.info("Got absolutePrefix: "+absolutePrefix);
 		    

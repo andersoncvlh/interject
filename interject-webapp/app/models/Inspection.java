@@ -35,13 +35,17 @@ public class Inspection {
 	
 	private String text;
 	
+	private long size;
+	
 	private String binary;
+	private String binaryText;
 	
 	private String binaryHead;
+	private String binaryHeadText;
 	
 	private String binaryTail;
+	private String binaryTailText;
 	
-	private String binaryText;
 	
 
 	/* --- */
@@ -77,15 +81,18 @@ public class Inspection {
 				this.binaryText = "Hexadecimal representation of all "+bytes.length+" bytes.";
 			} else {
 				this.binaryHead = Base64.encodeBase64String(Arrays.copyOf(bytes,binaryMax));
+				this.binaryHeadText = "Hexadecimal representation of the first [0.."+binaryMax+"] bytes.";
 				this.binaryTail = Base64.encodeBase64String(Arrays.copyOfRange(bytes,bytes.length-binaryMax, bytes.length));
-				this.binaryText = "Hexadecimal representation of bytes [0.."+binaryMax+"] and ["+(bytes.length-binaryMax)+".."+(bytes.length)+"].";
+				this.binaryTailText = "Hexadecimal representation of the last ["+(bytes.length-binaryMax)+".."+(bytes.length)+"] bytes.";
 			}
+			// Also store the size
+			this.size = bytes.length;
 			
 			// Parse it:
 			tika.getParser().parse( new ByteArrayInputStream(bytes), new ToTextContentHandler(content), metadata, context );
 
 			// Store the text:
-			this.text = content.toString();
+			this.text = content.toString().trim();
 			
 			// Log the metadata for information purposes:
 			for( String name : metadata.names() ) {
@@ -113,6 +120,14 @@ public class Inspection {
 		public String getServerContentType() {
 			return serverContentType;
 		}
+		
+		/**
+		 * 
+		 * @return size
+		 */
+		public long getSize() {
+			return this.size;
+		}
 
 		/**
 		 * @return the text
@@ -129,10 +144,24 @@ public class Inspection {
 		}
 
 		/**
+		 * @return the binaryText
+		 */
+		public String getBinaryText() {
+			return binaryText;
+		}
+
+		/**
 		 * @return the binaryHead
 		 */
 		public String getBinaryHead() {
 			return binaryHead;
+		}
+
+		/**
+		 * @return the binaryText
+		 */
+		public String getBinaryHeadText() {
+			return binaryHeadText;
 		}
 
 		/**
@@ -145,9 +174,8 @@ public class Inspection {
 		/**
 		 * @return the binaryText
 		 */
-		public String getBinaryText() {
-			return binaryText;
+		public String getBinaryTailText() {
+			return binaryTailText;
 		}
-
 		
 }

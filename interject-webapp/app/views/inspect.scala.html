@@ -16,9 +16,9 @@
 	
           <ul class="nav nav-tabs" id="inspectTabs">
             <li><a href="#summary" data-toggle="tab">Summary & Actions</a></li>
-            <li><a href="#inspectMetadata" data-toggle="tab">Metadata View</a></li>
-            <li><a href="#inspectText" data-toggle="tab">Text View</a></li>
-            <li><a href="#inspectHex" data-toggle="tab">Hex View</a></li>
+            <li><a href="#inspectMetadata" data-toggle="tab">Metadata</a></li>
+            <li><a href="#inspectText" data-toggle="tab">Extracted Text</a></li>
+            <li><a href="#inspectHex" data-toggle="tab">Binary Representation</a></li>
           </ul>
           
           <div class="tab-content"> 
@@ -34,6 +34,9 @@
                     <tbody>
                     <tr><th>Served as:</th><td>@fileObject.getServedContentTypeDetails</td></tr>
                     <tr><th>Identified as:</th><td>@fileObject.getContentTypeDetails</td></tr>
+                    <tr><th>Length in bytes:</th><td>@fileObject.getInspection.getSize</td></tr>
+                    <tr><th>No. metadata properties:</th><td>@fileObject.getInspection.getMetadata.size</td></tr>
+                    <tr><th>Length of extracted text:</th><td>@fileObject.getInspection.getText.length</td></tr>
                     </tbody>
 					</table>
 			
@@ -73,8 +76,18 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
           <p></p>
+                    <table class="table table-striped">
+                    <thead>
+                    <tr><th>Property Name</th><th>Property Value</th></tr>
+                    </thead>
+                    <tbody>
             
-            ...TBA...
+            @for( name <- fileObject.getInspection.getMetadata.names) {
+                    <tr><th>@name</th><td>@(fileObject.getInspection.getMetadata.get(name))</td></tr>
+            }
+            
+                    </tbody>
+                    </table>
             </div>
             </div>
             </div>
@@ -99,38 +112,36 @@
         <p></p>
             <!-- Via base 64 encoded binary data -->
     @if(fileObject.getInspection.getBinary != null) {
-    <div class="hexviewwindow" title="Binary file">
+    <div class="hexviewwindow" title="@(fileObject.getInspection.getBinaryText)">
         @fileObject.getInspection.getBinary
         <form id="hexviewwindow_params">
             <input type="hidden" name="highlights" value="" /><!-- "16:17:#F4FA58:Initial value of SP register,128:152:#54FAF8:Portable Executable signature and header" -->
             <input type="hidden" name="row_width" value="16" />
             <input type="hidden" name="word_size" value="4" />
-            <input type="hidden" name="caption" value="Binary file" />
+            <input type="hidden" name="caption" value="@(fileObject.getInspection.getBinaryText)" />
         </form>
     </div>
     }
-    @if(fileObject.getInspection.getBinaryTail != null) {
-    <div class="hexviewwindow" title="Binary file header">
+    @if(fileObject.getInspection.getBinaryHead != null) {
+    <div class="hexviewwindow" title="@(fileObject.getInspection.getBinaryHead)">
         @fileObject.getInspection.getBinaryHead
         <form id="hexviewwindow_params">
             <input type="hidden" name="highlights" value="" />
             <input type="hidden" name="row_width" value="16" />
             <input type="hidden" name="word_size" value="4" />
-            <input type="hidden" name="caption" value="Binary file header" />
+            <input type="hidden" name="caption" value="@(fileObject.getInspection.getBinaryHeadText)" />
         </form>
     </div>
+    <hr/>
     }
-    <p>
-    @(fileObject.getInspection.getBinaryText)
-    </p>
     @if(fileObject.getInspection.getBinaryTail != null) {
-    <div class="hexviewwindow" title="Binary file tail">
+    <div class="hexviewwindow" title="@(fileObject.getInspection.getBinaryTailText)">
         @fileObject.getInspection.getBinaryTail
         <form id="hexviewwindow_params">
             <input type="hidden" name="highlights" value="" />
             <input type="hidden" name="row_width" value="16" />
             <input type="hidden" name="word_size" value="4" />
-            <input type="hidden" name="caption" value="Binary file tail" />
+            <input type="hidden" name="caption" value="@(fileObject.getInspection.getBinaryTailText)" />
         </form>
     </div>
     }

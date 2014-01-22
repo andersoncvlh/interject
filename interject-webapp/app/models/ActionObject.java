@@ -28,6 +28,8 @@ public class ActionObject implements Comparable<ActionObject> {
 	}
 	
 	public String getActionURL() {
+		if( action.startsWith("http://") || action.startsWith("https://")) 
+			return action+"/";
 		return prefix+action+"/";
 	}
 	
