@@ -192,21 +192,25 @@ public class InterjectionTest {
 		ProcessRunner runner = new ProcessRunnerImpl();
 		List<String> commands = new ArrayList<String>();
 		try {
-	    	String path = "external";
-			commands.add(path + "/ivvrml.exe");
+	    	String path = "src/test/resources";
+	    	commands.add("/usr/local/bin/wine");
+			commands.add("external/ivvrml.exe");
 			commands.add("-2");
 			commands.add(path + "/penguin1.wrl");
 			commands.add("-o");
-			commands.add(path + "/penguin3.wrl");
+			commands.add(path + "/penguin4.wrl");
 			runner.setStartingDir(new File("."));
 			runner.setCommand(commands);
+			runner.setCollection(true);
 			runner.execute();
-			System.out.println("output : " + runner.getProcessOutput());
+			System.out.println("output : " + runner.getProcessOutputAsString());
+			System.out.println("stderr : " + runner.getProcessErrorAsString());
 			System.out.println("Working Directory = " +
 		              System.getProperty("user.dir"));
 		} catch (ProcessRunnerException e) {
-			// TODO Auto-generated catch block
+			System.err.println("ERROR: "+e);
 			e.printStackTrace();
+			System.err.println("Commands: "+commands);
 		}
 	}
 }

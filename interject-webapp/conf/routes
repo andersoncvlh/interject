@@ -7,6 +7,22 @@ GET     /                           controllers.Application.index
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
+GET     /javascriptRoutes           controllers.Application.javascriptRoutes
+
+#
+# Feedback
+#
+
+GET     /sendFeedback               controllers.Application.sendFeedback(entry)
+
+GET     /rate                       controllers.Application.rate(entry)
+
+#
+# Types
+#
+
+GET     /types/:type/*subtype       controllers.Actions.types(type, subtype)
+
 #
 # ACTIONS:
 #
@@ -26,16 +42,9 @@ GET     /action/qaop/*url           controllers.Actions.qaop(url)
 # Inspect
 GET     /inspect/*url       		controllers.Inspect.inspect(url)
 
-
 # Non-restful way - because we are using additional parameter sourceContentType
 # http://localhost:9000/action/image-io-conversion?url=http://localhost:9000/assets/images/test.bmp&sourceContentType=image/bmp
 
 GET		/action/commons-imaging-conversion/*url			controllers.Application.commonsImagingConversion(url)
 
 GET		/action/image-io-conversion/*url		  		controllers.Application.imageIOConversion(url)
-
-GET 	/javascriptRoutes    		controllers.Application.javascriptRoutes
-
-GET 	/sendFeedback    			controllers.Application.sendFeedback(entry)
-
-GET 	/rate    					controllers.Application.rate(entry)

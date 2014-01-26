@@ -38,6 +38,7 @@ import com.typesafe.config.ConfigFactory;
 
 import play.*;
 import play.mvc.*;
+
 import uk.bl.wa.access.qaop.QaopShot;
 
 /**
@@ -66,6 +67,44 @@ public class Actions extends Controller {
     	response().setHeader("Content-Disposition", "inline;");
     	response().setContentType("image/png");
     	return ok(tmp);
+    }
+    
+    public static Result types( String type, String subtype ) {
+    	// No type supplied:
+    	if( type == null ) {
+    		Logger.info("Should return list of all types.");
+    		ok();
+    	}
+    	// Only type supplied:
+    	if (subtype == null ) {
+    		Logger.info("Should return list of all subtypes.");
+    		ok();
+    	}
+    	MediaType fulltype = MediaType.parse(type+"/"+subtype);
+    	MimeType mt = null;
+    	try {
+			mt = mimeTypes.getRegisteredMimeType(fulltype.toString());
+		} catch (MimeTypeException e) {
+			Logger.error("Unknown type.");
+			e.printStackTrace();
+		}
+    	
+    	Logger.info("Got mime type: "+mt);   	
+		Logger.info("Got: "+mimeTypes.getMediaTypeRegistry().getSupertype(fulltype));
+		Logger.info("Got: "+mimeTypes.getMediaTypeRegistry().getAliases(fulltype));
+		
+		List<MediaType> childTypes = new ArrayList<MediaType>();
+		for( MediaType at : mimeTypes.getMediaTypeRegistry().getTypes() ) {
+			if( fulltype.equals(mimeTypes.getMediaTypeRegistry().getSupertype(at)) ) {
+				childTypes.add(at);
+			}
+		}
+		
+/*		return ok(
+			      views.html.search.render(msb, queryForm.fill(q))
+			    );		*/
+		
+    	return ok(views.html.types.render(mt, scala.collection.JavaConversions.asScalaBuffer(childTypes).toSeq()));
     }
 
     
@@ -132,15 +171,6 @@ public class Actions extends Controller {
 		
 		Logger.info("Got mimeType: "+mt);
 		if( mt == null ) return null;
-		
- 		Logger.info("Got mimeType: "+mt.getName());
-		Logger.info("Got mimeType: "+mt.getType());
-		Logger.info("Got mimeType: "+mt.getAcronym());
-		Logger.info("Got mimeType: "+mt.getDescription());
-		Logger.info("Got mimeType: "+mt.getExtension());
-		Logger.info("Got mimeType: "+mt.getExtensions());
-		Logger.info("Got mimeType: "+mt.getUniformTypeIdentifier());
-		Logger.info("Got mimeType: "+mt.getLinks());
 		
 		return mt;
 	}

@@ -15,10 +15,10 @@
 @main("List of actions", styles, scripts) {
 	
           <ul class="nav nav-tabs" id="inspectTabs">
-            <li><a href="#summary" data-toggle="tab">Summary & Actions</a></li>
-            <li><a href="#inspectMetadata" data-toggle="tab">Metadata</a></li>
-            <li><a href="#inspectText" data-toggle="tab">Extracted Text</a></li>
-            <li><a href="#inspectHex" data-toggle="tab">Binary Representation</a></li>
+            <li><a href="#summary" data-toggle="tab" id="summaryTab">Summary & Actions</a></li>
+            <li><a href="#inspectMetadata" data-toggle="tab" id="metadataTab">Metadata</a></li>
+            <li><a href="#inspectText" data-toggle="tab" id="textTab">Extracted Text</a></li>
+            <li><a href="#inspectHex" data-toggle="tab" id="binaryTab">Binary Representation</a></li>
           </ul>
           
           <div class="tab-content"> 
@@ -35,8 +35,8 @@
                     <tr><th>Served as:</th><td>@fileObject.getServedContentTypeDetails</td></tr>
                     <tr><th>Identified as:</th><td>@fileObject.getContentTypeDetails</td></tr>
                     <tr><th>Length in bytes:</th><td>@fileObject.getInspection.getSize</td></tr>
-                    <tr><th>No. metadata properties:</th><td>@fileObject.getInspection.getMetadata.size</td></tr>
-                    <tr><th>Length of extracted text:</th><td>@fileObject.getInspection.getText.length</td></tr>
+                    <tr><th>No. metadata properties:</th><td><a href="#" onclick="$('a#metadataTab').tab('show')">@fileObject.getInspection.getMetadata.size</a></td></tr>
+                    <tr><th>Length of extracted text:</th><td><a href="#" onclick="$('a#textTab').tab('show')">@fileObject.getInspection.getText.length</a></td></tr>
                     </tbody>
 					</table>
 			

@@ -262,6 +262,7 @@ public class ProcessRunnerImpl implements Runnable, ProcessRunner {
 				pError = collectProcessOutput(p.getErrorStream(), this.maxError);
 				this.return_code = execute(p);
 				waitForThreads();
+				p.waitFor();
 				this.processOutput = new ByteArrayInputStream(
 						pOut.toByteArray());
 				this.processError = new ByteArrayInputStream(
@@ -272,9 +273,9 @@ public class ProcessRunnerImpl implements Runnable, ProcessRunner {
 				this.processError = p.getErrorStream();
 				this.return_code = execute(p);
 			}
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(
-					"An io error occurred when running the command", e);
+					"An io error occurred when running the command: "+e, e);
 		} finally {
 			IOUtils.closeQuietly(pOut);
 			IOUtils.closeQuietly(pError);
@@ -332,8 +333,8 @@ public class ProcessRunnerImpl implements Runnable, ProcessRunner {
 					InputStream reader = null;
 					OutputStream writer = null;
 					try {
-						reader = new BufferedInputStream(inputStream);
-						writer = new BufferedOutputStream(stream);
+						reader = inputStream;
+						writer = stream;
 						int c;
 						int counter = 0;
 						while ((c = reader.read()) != -1) {

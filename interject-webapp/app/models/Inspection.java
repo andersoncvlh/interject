@@ -94,10 +94,6 @@ public class Inspection {
 			// Store the text:
 			this.text = content.toString().trim();
 			
-			// Log the metadata for information purposes:
-			for( String name : metadata.names() ) {
-				Logger.info("Metadata: "+ name + " => "+ metadata.get(name));
-			}
 		}
 
 		/**
