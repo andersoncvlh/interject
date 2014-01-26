@@ -23,7 +23,13 @@
                     <tr><th>Uniform Type Identifier:</th><td>@mt.getUniformTypeIdentifier</td></tr>
                     <tr><th>Links:</th><td>
                     @for( l <- mt.getLinks ) {
-                        <a href="@l">@l</a><br/>
+                        <a href="@l">
+                    @if(l.toString.length > 20) {
+                    @(l.toString.substring(0,20))…
+                    } else {
+                    @l
+                    }
+                        </a><br/>
                     }
                     </td></tr>
                     </tbody>
