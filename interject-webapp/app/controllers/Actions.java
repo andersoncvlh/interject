@@ -3,43 +3,34 @@
  */
 package controllers;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.SortedSet;
 
 import models.ActionObject;
+import models.ContentType;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.tika.Tika;
 import org.apache.tika.config.TikaConfig;
-import org.apache.tika.exception.TikaException;
 import org.apache.tika.io.IOUtils;
-import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.mime.MimeType;
 import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.sax.ToTextContentHandler;
-import org.xml.sax.SAXException;
+
+import play.Logger;
+import play.mvc.Controller;
+import play.mvc.Result;
+import uk.bl.wa.access.qaop.QaopShot;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-
-import play.*;
-import play.mvc.*;
-
-import uk.bl.wa.access.qaop.QaopShot;
 
 /**
  * @author Andrew Jackson <Andrew.Jackson@bl.uk>
@@ -69,29 +60,33 @@ public class Actions extends Controller {
     	return ok(tmp);
     }
     
-    public static Result types( String type, String subtype ) {
+    public static Result types( String type ) {
     	// No type supplied:
-    	if( type == null ) {
-    		Logger.info("Should return list of all types.");
-    		ok();
-    	}
+//    	if( type == null ) {
+//    		Logger.info("Should return list of all types.");
+//    		ok();
+//    	}
     	// Only type supplied:
-    	if (subtype == null ) {
-    		Logger.info("Should return list of all subtypes.");
-    		ok();
-    	}
-    	MediaType fulltype = MediaType.parse(type+"/"+subtype);
+//    	if (subtype == null ) {
+//    		Logger.info("Should return list of all subtypes.");
+//    		ok();
+//    	}
+    	// The ';' is actually valid to interpret as '&', so change it back:
+    	type = type.replaceFirst("&",";");
+    	Logger.info("Got type string "+type);
+    	MediaType fulltype = MediaType.parse(type);
+    	Logger.info("Got fulltype "+fulltype);
+    	Logger.info("Looking up "+fulltype.getBaseType());
     	MimeType mt = null;
     	try {
-			mt = mimeTypes.getRegisteredMimeType(fulltype.toString());
+			mt = mimeTypes.getRegisteredMimeType(fulltype.getBaseType().toString());
 		} catch (MimeTypeException e) {
 			Logger.error("Unknown type.");
 			e.printStackTrace();
 		}
     	
-    	Logger.info("Got mime type: "+mt);   	
-		Logger.info("Got: "+mimeTypes.getMediaTypeRegistry().getSupertype(fulltype));
-		Logger.info("Got: "+mimeTypes.getMediaTypeRegistry().getAliases(fulltype));
+    	MediaType parent = mimeTypes.getMediaTypeRegistry().getSupertype(fulltype);
+    	SortedSet<MediaType> aliases = mimeTypes.getMediaTypeRegistry().getAliases(fulltype);
 		
 		List<MediaType> childTypes = new ArrayList<MediaType>();
 		for( MediaType at : mimeTypes.getMediaTypeRegistry().getTypes() ) {
@@ -100,11 +95,7 @@ public class Actions extends Controller {
 			}
 		}
 		
-/*		return ok(
-			      views.html.search.render(msb, queryForm.fill(q))
-			    );		*/
-		
-    	return ok(views.html.types.render(mt, scala.collection.JavaConversions.asScalaBuffer(childTypes).toSeq()));
+    	return ok( views.html.types.render( new ContentType(fulltype, mt, parent, aliases, childTypes) ) );
     }
 
     

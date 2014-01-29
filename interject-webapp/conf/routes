@@ -21,7 +21,7 @@ GET     /rate                       controllers.Application.rate(entry)
 # Types
 #
 
-GET     /types/:type/*subtype       controllers.Actions.types(type, subtype)
+GET     /types/*type       controllers.Actions.types(type)
 
 #
 # ACTIONS:

@@ -15,11 +15,14 @@ import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.io.IOUtils;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.sax.ToTextContentHandler;
 import org.xml.sax.SAXException;
 
 import play.Logger;
+import uk.bl.wa.nanite.droid.DroidDetector;
+import uk.gov.nationalarchives.droid.command.action.CommandExecutionException;
 
 /**
  * @author Andrew Jackson <Andrew.Jackson@bl.uk>
@@ -30,9 +33,11 @@ public class Inspection {
 	private Metadata metadata;
 
 	private String contentType;
-	
+
 	private String serverContentType;
 	
+	private MediaType droidContentType;
+
 	private String text;
 	
 	private long size;
@@ -45,12 +50,23 @@ public class Inspection {
 	
 	private String binaryTail;
 	private String binaryTailText;
-	
+
 	
 
 	/* --- */
 	
 	private static Tika tika = new Tika();
+	
+	private static DroidDetector dd;
+	
+	static {
+		try {
+			dd = new DroidDetector();
+		} catch (CommandExecutionException e) {
+			Logger.error("Could not instanciate the Droid Detector: "+e);
+			e.printStackTrace();
+		}
+	}
 	
 		/**
 		 * TODO Currently opens the connection twice. In the future, this should probably shift to the same core as the warc-discovery indexer, as that would enhance the metadata and prevent multiple downloads.
@@ -90,6 +106,10 @@ public class Inspection {
 			
 			// Parse it:
 			tika.getParser().parse( new ByteArrayInputStream(bytes), new ToTextContentHandler(content), metadata, context );
+			
+			// Also DROID it:
+			droidContentType = dd.detect(new ByteArrayInputStream(bytes), metadata);
+			Logger.info("DROID: " + droidContentType);
 
 			// Store the text:
 			this.text = content.toString().trim();
@@ -115,6 +135,13 @@ public class Inspection {
 		 */
 		public String getServerContentType() {
 			return serverContentType;
+		}
+		
+		/**
+		 * @return the droidContentType
+		 */
+		public String getDroidContentType() {
+			return droidContentType.toString();
 		}
 		
 		/**
