@@ -73,6 +73,7 @@ public class Actions extends Controller {
 //    	}
     	// The ';' is actually valid to interpret as '&', so change it back:
     	type = type.replaceFirst("&",";");
+    	type = type.replaceFirst("%20"," ");
     	Logger.info("Got type string "+type);
     	MediaType fulltype = MediaType.parse(type);
     	Logger.info("Got fulltype "+fulltype);

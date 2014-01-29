@@ -32,9 +32,9 @@
                     <tr><th>Name:</th><th>@fileObject.getFilename</th></tr>
                     </thead>
                     <tbody>
-                    <tr><th>Served as:</th><td>@fileObject.getServedContentTypeDetails<a href="@(routes.Actions.types(fileObject.getServedContentType ))" class="btn btn-primary btn-xs pull-right" role="button"><span class="glyphicon glyphicon-search"></span></a></td></tr>
-                    <tr><th>Identified as (via Tika):</th><td>@fileObject.getContentTypeDetails<a href="@(routes.Actions.types(fileObject.getContentType ))" class="btn btn-primary btn-xs pull-right" role="button"><span class="glyphicon glyphicon-search"></span></a></td></tr>
-                    <tr><th>Identified as (via DROID):</th><td>@fileObject.getInspection.getDroidContentType<a href="@(routes.Actions.types(fileObject.getInspection.getDroidContentType.toString ))" class="btn btn-primary btn-xs pull-right" role="button"><span class="glyphicon glyphicon-search"></span></a></td></tr>
+                    <tr><th>Served as:</th><td><a href="@(routes.Actions.types(fileObject.getServedContentType ))">@fileObject.getServedContentTypeDetails</a></td></tr>
+                    <tr><th>Identified as (via Tika):</th><td><a href="@(routes.Actions.types(fileObject.getContentType ))">@fileObject.getContentTypeDetails</a></td></tr>
+                    <tr><th>Identified as (via DROID):</th><td><a href="@(routes.Actions.types(fileObject.getInspection.getDroidContentType.toString ))">@fileObject.getInspection.getDroidContentType</a></td></tr>
                     <tr><th>Length in bytes:</th><td>@fileObject.getInspection.getSize</td></tr>
                     <tr><th>No. metadata properties:</th><td><a href="#" onclick="$('a#metadataTab').tab('show')">@fileObject.getInspection.getMetadata.size</a></td></tr>
                     <tr><th>Length of extracted text:</th><td><a href="#" onclick="$('a#textTab').tab('show')">@fileObject.getInspection.getText.length</a></td></tr>
