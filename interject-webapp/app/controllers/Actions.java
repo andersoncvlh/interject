@@ -95,7 +95,11 @@ public class Actions extends Controller {
 			}
 		}
 		
-    	return ok( views.html.types.render( new ContentType(fulltype, mt, parent, aliases, childTypes) ) );
+		// Actions
+		List<ActionObject> actions = loadActions(type,"");
+		
+		// Build the page:
+    	return ok( views.html.types.render( new ContentType(fulltype, mt, parent, aliases, childTypes, actions) ) );
     }
 
     

@@ -20,14 +20,16 @@ public class ContentType {
 	private MediaType parentType;
 	private List<MediaType> childTypes;
 	private SortedSet<MediaType> aliases;
+	private List<ActionObject> actions;
 
 	public ContentType(MediaType fulltype, MimeType mt, MediaType parentType,
-			SortedSet<MediaType> aliases, List<MediaType> childTypes) {
+			SortedSet<MediaType> aliases, List<MediaType> childTypes, List<ActionObject> actions) {
 		this.type = fulltype;
 		this.mimeType = mt;
 		this.parentType = parentType;
 		this.aliases = aliases;
 		this.childTypes = childTypes;
+		this.actions = actions;
 	}
 	
 	/**
@@ -65,4 +67,11 @@ public class ContentType {
 		return childTypes;
 	}
 
+	/**
+	 * @return the actions
+	 */
+	public List<ActionObject> getActions() {
+		return actions;
+	}
+	
 }

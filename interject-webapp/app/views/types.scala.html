@@ -11,15 +11,20 @@
             
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 col-md-6">
-          <p></p>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                     <h3 class="panel-title">Summary of @ct.getType:</h3>
+                    </div>
+                    <div class="panel-body">
 					<table class="table table-striped">
-					<thead>
-                    <tr><th>Name:</th><th>@ct.getType</th></tr>
-                    </thead>
                     <tbody>
                     <tr><th>Acronym:</th><td>@ct.getMimeType.getAcronym</td></tr>
                     <tr><th>Description:</th><td>@ct.getMimeType.getDescription</td></tr>
-                    <tr><th>Extensions:</th><td>@ct.getMimeType.getExtensions</td></tr>
+                    <tr><th>Extensions:</th><td>
+                    @for( ext <- ct.getMimeType.getExtensions ) {
+                        @ext&nbsp;
+                    }
+                    </td></tr>
                     <tr><th>Uniform Type Identifier:</th><td>@ct.getMimeType.getUniformTypeIdentifier</td></tr>
                     <tr><th>Links:</th><td>
                     @for( l <- ct.getMimeType.getLinks ) {
@@ -34,17 +39,32 @@
                     </td></tr>
                     </tbody>
                     </table>
+                </div>
+            </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Actions:</h3>
+                    </div>
+                    <div class="panel-body">
+                    <table class="table table-striped">
+                    <tbody>
+                    @for( act <- ct.getActions) {
+                        <tr><th>@act.getName</th><td>@Html(act.getDescription)</td></tr>
+                    }
+                    </tbody>
+                    </table>
+                    </div>
+               </div>
                     
 		</div>
 		<div class="col-xs-12 col-sm-6 col-md-6" role="main">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                     Related types:
+                      <h3 class="panel-title">Related types:</h3>
                     </div>
                     <div class="panel-body">
                     <table class="table table-striped">
-                    <thead>
-                    </thead>
                     <tbody>
                     <tr><th>Is subtype of:</th><td>
                     @if( ct.getParentType != null ) {
@@ -70,6 +90,7 @@
             
                     </div>
                 </div>
+                
 		</div>
 			
 		</div>
