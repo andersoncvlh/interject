@@ -8,7 +8,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.tika.Tika;
@@ -23,6 +27,9 @@ import org.xml.sax.SAXException;
 import play.Logger;
 import uk.bl.wa.nanite.droid.DroidDetector;
 import uk.gov.nationalarchives.droid.command.action.CommandExecutionException;
+import uk.gov.nationalarchives.droid.container.ContainerSignatureDefinitions;
+import uk.gov.nationalarchives.droid.core.signature.FileFormat;
+import uk.gov.nationalarchives.droid.core.signature.droid6.FFSignatureFile;
 
 /**
  * @author Andrew Jackson <Andrew.Jackson@bl.uk>
@@ -66,6 +73,83 @@ public class Inspection {
 			Logger.error("Could not instanciate the Droid Detector: "+e);
 			e.printStackTrace();
 		}
+	}
+	
+	public static FFSignatureFile getDroidBinarySignatures() {
+		return dd.getBinarySignatures();
+	}
+	
+	public static ContainerSignatureDefinitions getDroidContainerSignatures() {
+		return dd.getContainerSignatures();
+	}
+	
+	public static List<FileFormat> getDroidFormatsForMediaType( MediaType mediaType ) {
+		List<FileFormat> ffs = new ArrayList<FileFormat>();
+		for( FileFormat dff : Inspection.getDroidBinarySignatures().getFileFormatCollection().getFileFormats() ) { 
+			if( mediaType.getBaseType().toString().equalsIgnoreCase(dff.getMimeType()) ) {
+				if( mediaType.getParameters().containsKey("version") ) {
+					MediaType droidType = MediaType.parse(dff.getMimeType()+"; version=\""+dff.getVersion()+"\"");
+					if( mediaType.equals(droidType)) {
+						ffs.add(dff);
+						//Logger.info("Versioned type matching: "+droidType);
+					} else {
+						//Logger.info("Versioned type did not match: "+droidType);
+					}
+				} else {
+					ffs.add(dff);
+					//Logger.info("Type matching: "+dff.getPUID());
+				}
+			}
+		}
+		return ffs;
+	}
+
+	/*
+	 * TODO Move the following two utilities into DroidDetector. 
+	 */
+	
+	protected static MediaType getMimeTypeFromFileFormat( FileFormat dff ) {
+		return getMimeTypeFromResults(dff.getMimeType(), dff.getVersion(), dff.getPUID(), dff.getName(), 1);
+	}
+
+	protected static MediaType getMimeTypeFromResults( String mimeType, String version, String puid, String name, int numMatches ) {
+		if( mimeType != null && ! "".equals(mimeType.trim()) ) {
+			// This sometimes has ", " separated multiple types
+			String[] mimeTypeList = mimeType.split(", ");
+			// Taking first (highest priority) MIME type:
+			mimeType = mimeTypeList[0];
+			// Fix case where no base type is supplied (e.g. "vnd.wordperfect"):
+			if( mimeType.indexOf('/') == -1 ) 
+				mimeType = "application/" + mimeType;
+		}
+		// Build a MediaType
+		MediaType mediaType = MediaType.parse(mimeType);
+		Map<String,String> parameters = null;
+		// Is there a MIME Type?
+		if( mimeType != null && ! "".equals(mimeType) ) {
+			parameters = new HashMap<String,String>(mediaType.getParameters());
+			// Patch on a version parameter if there isn't one there already:
+			if( parameters.get("version") == null && 
+					version != null && (! "".equals(version)) &&
+					// But ONLY if there is ONLY one result.
+					numMatches == 1 ) {
+				parameters.put("version", version);
+			}
+		} else {
+			parameters = new HashMap<String,String>();
+			// If there isn't a MIME type, make one up:
+			String id = "puid-"+puid.replace("/", "-");
+			name = name.replace("\"","'");
+			// Lead with the PUID:
+			mediaType = MediaType.parse("application/x-"+id);
+			parameters.put("name", name);
+			// Add the version, if set:
+			if( version != null && !"".equals(version) && !"null".equals(version) ) {
+				parameters.put("version", version);
+			}
+		}
+		
+		return new MediaType(mediaType,parameters);
 	}
 	
 		/**

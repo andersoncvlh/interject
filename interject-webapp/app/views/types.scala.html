@@ -16,6 +16,7 @@
                      <h3 class="panel-title">Summary of @ct.getType</h3>
                     </div>
                     <div class="panel-body">
+                    @if( ct.getMimeType != null ) {
 					<table class="table table-striped">
                     <tbody>
                     <tr><th>Acronym:</th><td>@ct.getMimeType.getAcronym</td></tr>
@@ -39,23 +40,30 @@
                     </td></tr>
                     </tbody>
                     </table>
-                </div>
-            </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                      <h3 class="panel-title">Actions</h3>
-                    </div>
-                    <div class="panel-body">
+                    } else {
+                    <p>Nothing known about this MIME type.</p>
+                    }
+                    
+                    @if( ct.getDroidFormats != null && ct.getDroidFormats.size > 0 ) {
                     <table class="table table-striped">
+                    <thead>
+                    <tr><th colspan="2">Related PRONOM entries (via DROID):</th></tr>
+                    </thead>
                     <tbody>
-                    @for( act <- ct.getActions) {
-                        <tr><th>@act.getName</th><td>@Html(act.getDescription)</td></tr>
+                    @for( df <- ct.getDroidFormats) {
+                        <tr><th><a href="https://www.nationalarchives.gov.uk/pronom/@df.getPUID">@df.getPUID</a></th><td>
+                        @df.getName
+                        @if( df.getVersion != null && df.getVersion.trim != "" ) {
+                            [@df.getVersion]
+                        }
+                        </td></tr>
                     }
                     </tbody>
                     </table>
-                    </div>
-               </div>
+                    }
+                    
+                </div>
+            </div>
                     
 		</div>
 		<div class="col-xs-12 col-sm-6 col-md-6" role="main">
@@ -90,6 +98,21 @@
             
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">Actions</h3>
+                    </div>
+                    <div class="panel-body">
+                    <table class="table table-striped">
+                    <tbody>
+                    @for( act <- ct.getActions) {
+                        <tr><th>@act.getName</th><td>@Html(act.getDescription)</td></tr>
+                    }
+                    </tbody>
+                    </table>
+                    </div>
+               </div>
                 
 		</div>
 			

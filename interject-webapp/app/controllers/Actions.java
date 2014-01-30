@@ -15,6 +15,7 @@ import java.util.SortedSet;
 
 import models.ActionObject;
 import models.ContentType;
+import models.Inspection;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.config.TikaConfig;
@@ -28,6 +29,7 @@ import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 import uk.bl.wa.access.qaop.QaopShot;
+import uk.gov.nationalarchives.droid.core.signature.FileFormat;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -96,11 +98,14 @@ public class Actions extends Controller {
 			}
 		}
 		
+		// DROID info for this type:
+		List<FileFormat> dffs = Inspection.getDroidFormatsForMediaType(fulltype);
+		
 		// Actions
 		List<ActionObject> actions = loadActions(type,"");
 		
 		// Build the page:
-    	return ok( views.html.types.render( new ContentType(fulltype, mt, parent, aliases, childTypes, actions) ) );
+    	return ok( views.html.types.render( new ContentType(fulltype, mt, parent, aliases, childTypes, dffs, actions) ) );
     }
 
     

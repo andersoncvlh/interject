@@ -9,6 +9,8 @@ import java.util.SortedSet;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.mime.MimeType;
 
+import uk.gov.nationalarchives.droid.core.signature.FileFormat;
+
 /**
  * @author Andrew Jackson <Andrew.Jackson@bl.uk>
  *
@@ -20,15 +22,17 @@ public class ContentType {
 	private MediaType parentType;
 	private List<MediaType> childTypes;
 	private SortedSet<MediaType> aliases;
+	private List<FileFormat> droidFormats;
 	private List<ActionObject> actions;
 
 	public ContentType(MediaType fulltype, MimeType mt, MediaType parentType,
-			SortedSet<MediaType> aliases, List<MediaType> childTypes, List<ActionObject> actions) {
+			SortedSet<MediaType> aliases, List<MediaType> childTypes, List<FileFormat> dffs, List<ActionObject> actions) {
 		this.type = fulltype;
 		this.mimeType = mt;
 		this.parentType = parentType;
 		this.aliases = aliases;
 		this.childTypes = childTypes;
+		this.droidFormats = dffs;
 		this.actions = actions;
 	}
 	
@@ -65,6 +69,13 @@ public class ContentType {
 	 */
 	public List<MediaType> getChildTypes() {
 		return childTypes;
+	}
+
+	/**
+	 * @return the droidFormats
+	 */
+	public List<FileFormat> getDroidFormats() {
+		return droidFormats;
 	}
 
 	/**
