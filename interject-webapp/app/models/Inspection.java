@@ -174,7 +174,14 @@ public class Inspection {
 			// Detect:
 		    byte[] bytes = IOUtils.toByteArray(urlConnection.getInputStream());
 			contentType = tika.detect(bytes, url);
-			Logger.info("Dectected input type: "+contentType);
+			Logger.info("Tika.detect input type: "+contentType);
+			// Allow for case where text/plain overrides more specific type accidentally:
+			String extContentType = tika.detect(url);
+			Logger.info("TEST: "+extContentType);
+			if( contentType.startsWith("text/plain") && ! extContentType.equals("application/octet-stream") )
+				contentType = extContentType;
+				
+		    // Binary display
 			int binaryMax = 256;
 			if ( bytes.length < 2*binaryMax ) {
 				this.binary = Base64.encodeBase64String(bytes);

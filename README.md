@@ -10,6 +10,7 @@ A proof-of-concept on-demand format conversion system build with web archives in
 To Do
 -----
 
+* Add really big 'Beta prototype service' warnings, and to AADDA too.
 * Should cache properly: http://www.playframework.com/documentation/2.2.1/JavaCache
 * Should async properly: http://www.playframework.com/documentation/2.2.1/JavaAsync
 * Make front-page look good.

@@ -40,7 +40,7 @@ object Inspect extends Controller {
     Logger.info("Got mimeType : " + mimeType)
     
     try {
-		    val absolutePrefix = routes.Application.index().absoluteURL();
+		    val absolutePrefix = routes.Application.index().toString;
 		    Logger.info("Got absolutePrefix: "+absolutePrefix);
 		    
 		    var actions = Actions.loadActions(mimeType, absolutePrefix);
