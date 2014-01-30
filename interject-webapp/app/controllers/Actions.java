@@ -44,9 +44,6 @@ public class Actions extends Controller {
         return ok("It works!");
     }
     
-    // Should cache properly: http://www.playframework.com/documentation/2.2.1/JavaCache
-    // Should async properly: http://www.playframework.com/documentation/2.2.1/JavaAsync
-    
     public static Result qaop( String urlparam ) throws IOException { 
     	Logger.warn("URL Param: "+urlparam);
     	URL url = new URL(urlparam);
@@ -60,6 +57,10 @@ public class Actions extends Controller {
     	response().setHeader("Content-Disposition", "inline;");
     	response().setContentType("image/png");
     	return ok(tmp);
+    }
+    
+    public static Result allTypes() {
+    	return types( "application/octet-stream" );
     }
     
     public static Result types( String type ) {

@@ -10,10 +10,13 @@ A proof-of-concept on-demand format conversion system build with web archives in
 To Do
 -----
 
+* Should cache properly: http://www.playframework.com/documentation/2.2.1/JavaCache
+* Should async properly: http://www.playframework.com/documentation/2.2.1/JavaAsync
+* Make front-page look good.
+* Finish VRML support methods.
+    * Implement wine/ivvrml conversion.
+    * Add VRML97/X3D renderer.
 * Ensure download link is always last in the list.
-* Add MIME type detailed to pop-up/hover.
-* Implement wine/ivvrml conversion.
-* Add VRML97/X3D renderer.
 
 More speculatively:
 
