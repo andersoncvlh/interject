@@ -96,6 +96,12 @@ public class Actions extends Controller {
 			if( fulltype.equals(mimeTypes.getMediaTypeRegistry().getSupertype(at)) ) {
 				childTypes.add(at);
 			}
+			// Also build alias back-links:
+			for( MediaType alias : mimeTypes.getMediaTypeRegistry().getAliases(at) ) {
+				if( fulltype.equals(alias) ) {
+					aliases.add(at);
+				}
+			}
 		}
 		
 		// DROID info for this type:
