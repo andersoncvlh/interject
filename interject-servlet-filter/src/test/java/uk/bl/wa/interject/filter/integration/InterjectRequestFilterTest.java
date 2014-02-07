@@ -7,11 +7,10 @@ import java.io.IOException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.tika.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-
-import uk.bl.wa.interject.factory.HttpClientFactory;
 
 /**
  * 
@@ -39,7 +38,7 @@ public class InterjectRequestFilterTest {
 	 * @throws IOException
 	 */
 	private void checkUrlContentType( String url, String expectedType ) throws IOException {
-		CloseableHttpClient httpclient = HttpClientFactory.createHttpClientOrProxy();
+		CloseableHttpClient httpclient = HttpClients.createSystem();
 		HttpGet httpGet = new HttpGet(url);
 		CloseableHttpResponse res = httpclient.execute(httpGet);
 		// Check response exists:

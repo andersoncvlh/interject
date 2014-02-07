@@ -181,7 +181,7 @@ public class InterjectionTest {
 		try {
 			String mimeType = tika.detect(inputStream);
 			System.out.println(filename + " mimeType : " + mimeType);
-			Assert.assertEquals("model/vrml; version=97", mimeType);
+			Assert.assertEquals("model/vrml; version=2.0", mimeType);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
