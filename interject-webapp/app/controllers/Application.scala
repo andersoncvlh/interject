@@ -5,9 +5,11 @@ import play.api.mvc._
 import play.api.libs.ws.WS
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.iteratee._
+import play.api.libs.Files
+import play.api.cache.Cache
+import play.api.Play.current
 import scala.concurrent._
 import java.io._
-import play.api.libs.Files
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.Config
 
@@ -53,6 +55,7 @@ object Application extends Controller {
   }
   
   def commonsImagingConversion(url: String) = Action {
+   Cache.getOrElse[Result]("commons-imaging-conv-"+url){
     val tika = new Tika();
     val sourceContentType = tika.detect(url); 
     println("Attempting to convert: "+url+ " from: " + sourceContentType);
@@ -64,9 +67,11 @@ object Application extends Controller {
 	    header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
 	    body = Enumerator(imageBytes)
 	)
+   }
   }
   
   def imageIOConversion(url: String) = Action {
+   Cache.getOrElse[Result]("commons-imageio-conv-"+url){
     val tika = new Tika();
     val sourceContentType = tika.detect(url); 
     println("Attempting to convert: "+url+" from "+sourceContentType);
@@ -78,6 +83,7 @@ object Application extends Controller {
 	    header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
 	    body = Enumerator(imageBytes)
 	)
+   }
   }
   
   // -- Javascript routing

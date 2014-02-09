@@ -27,6 +27,8 @@ GET     /types/*type                controllers.Actions.types(type)
 #
 # ACTIONS:
 #
+GET     /act/:action/*url           controllers.Actions.act(action,url)
+
 
 # List actions:
 GET     /action/                    controllers.Actions.index()

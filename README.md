@@ -32,3 +32,5 @@ More speculatively:
     * JSMESS and more disk image types
     * fuse-utils tapconv to support TZX screenshotting via TAP
     * OpenJPEG for JP2
+    * PDF/TIFF Summaries:  montage -density 150x150 -geometry 200x200+0+0 -tile 4 ~/Downloads/aghsecondannaulreport.pdf tiledoverview.jpg
+    * http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=23010

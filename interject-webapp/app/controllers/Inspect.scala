@@ -5,6 +5,8 @@ import play.api.mvc._
 import play.api.libs.ws.WS
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.iteratee._
+import play.api.cache.Cache
+import play.api.Play.current
 import scala.concurrent._
 import java.io.InputStream
 import java.io.StringWriter
@@ -29,7 +31,9 @@ import models.Inspection
 object Inspect extends Controller {
   
   def inspect(url: String) = Action { implicit request =>
-    
+
+   Cache.getOrElse[Result]("inspect-"+url) {
+
     // get file name from url and store it
     val filename = FilenameUtils.getName(URI.create(url).getPath);
     
@@ -53,5 +57,6 @@ object Inspect extends Controller {
       case e: ConfigException => println("do something else " + e)
       NotFound("")
     }
+   }
   }
 }

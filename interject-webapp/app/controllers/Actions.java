@@ -5,13 +5,13 @@ package controllers;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.concurrent.Callable;
 
 import models.ActionObject;
 import models.ContentType;
@@ -26,6 +26,7 @@ import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
 
 import play.Logger;
+import play.cache.Cache;
 import play.mvc.Controller;
 import play.mvc.Result;
 import uk.bl.wa.access.qaop.QaopShot;
@@ -40,19 +41,33 @@ import com.typesafe.config.ConfigFactory;
  */
 public class Actions extends Controller {
 
-    public static Result index() {
+    private static final int DURATION = 3600*24; // 24 hour cache.
+
+	public static Result act( String action, String url ) {
+        return ok("ACT: "+action+" ON "+url);
+	}
+	
+	public static Result index() {
         return ok("It works!");
     }
     
-    public static Result qaop( String urlparam ) throws IOException { 
+    public static Result qaop( final String urlparam ) throws Exception { 
     	Logger.warn("URL Param: "+urlparam);
-    	URL url = new URL(urlparam);
-    	String filename = FilenameUtils.getName(urlparam);
-    	File input = File.createTempFile("input", filename);
-    	Logger.info("Writing to temp file: "+input.getAbsolutePath());
-    	IOUtils.copy(url.openStream(), new FileOutputStream(input));
-    	File tmp = File.createTempFile("spectrum", ".png");
-    	QaopShot.takeScreenshot(input.getAbsolutePath(), tmp.getAbsolutePath(), 5);
+    	File tmp = Cache.getOrElse("qaop-" + urlparam, new Callable<File>() {
+            @Override
+            public File call() throws Exception {
+            	URL url = new URL(urlparam);
+            	String filename = FilenameUtils.getName(urlparam);
+            	File input = File.createTempFile("input", filename);
+            	Logger.info("Writing to temp file: "+input.getAbsolutePath());
+            	IOUtils.copy(url.openStream(), new FileOutputStream(input));
+            	File tmp = File.createTempFile("spectrum", ".png");
+            	QaopShot.takeScreenshot(input.getAbsolutePath(), tmp.getAbsolutePath(), 5);
+            	Logger.info("Setting headers...");
+            	return tmp;
+            }
+        }, DURATION );
+    	// Caching the ok(tmp) doesn't work due to stream-reuse failing I think.
     	Logger.info("Setting headers...");
     	response().setHeader("Content-Disposition", "inline;");
     	response().setContentType("image/png");
