@@ -43,7 +43,8 @@ GET     /action/jsspeccy/*url       controllers.Application.jsspeccy(url)
 GET     /action/qaop/*url           controllers.Actions.qaop(url)
 #
 # Inspect
-GET     /inspect/*url       		controllers.Inspect.inspect(url)
+GET     /inspect                    controllers.Inspect.inspectForm()
+GET     /inspect/*url               controllers.Inspect.inspect(url)
 
 # Non-restful way - because we are using additional parameter sourceContentType
 # http://localhost:9000/action/image-io-conversion?url=http://localhost:9000/assets/images/test.bmp&sourceContentType=image/bmp

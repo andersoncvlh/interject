@@ -67,7 +67,7 @@ public class Actions extends Controller {
             	return tmp;
             }
         }, DURATION );
-    	// Caching the ok(tmp) doesn't work due to stream-reuse failing I think.
+    	// Caching the whole Result 'ok(tmp)' doesn't work due to stream-reuse failing I think.
     	Logger.info("Setting headers...");
     	response().setHeader("Content-Disposition", "inline;");
     	response().setContentType("image/png");

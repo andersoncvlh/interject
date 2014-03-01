@@ -29,34 +29,39 @@ import models.FileObject
 import models.Inspection
 
 object Inspect extends Controller {
-  
+
+  def inspectForm() = Action { implicit request =>
+    Ok("OK");
+  }
+
   def inspect(url: String) = Action { implicit request =>
 
-   Cache.getOrElse[Result]("inspect-"+url) {
+    Cache.getOrElse[Result]("inspect-" + url) {
 
-    // get file name from url and store it
-    val filename = FilenameUtils.getName(URI.create(url).getPath);
-    
-    // 1. identify contents using Apache Tika
-    Logger.info("Running Tika on "+filename);
-    val metadata = new Inspection(url);
-    val mimeType = metadata.getContentType();
-    Logger.info("Got mimeType : " + mimeType)
-    
-    try {
-		    val absolutePrefix = routes.Application.index().toString;
-		    Logger.info("Got absolutePrefix: "+absolutePrefix);
-		    
-		    var actions = Actions.loadActions(mimeType, absolutePrefix);
-		    var fileObject = new FileObject(filename, metadata, actions);
-		    
-		    Ok(views.html.inspect(url, fileObject));
-		    
-    } catch {
-      
-      case e: ConfigException => println("do something else " + e)
-      NotFound("")
+      // get file name from url and store it
+      val filename = FilenameUtils.getName(URI.create(url).getPath);
+
+      // 1. identify contents using Apache Tika
+      Logger.info("Running Tika on " + filename);
+      val metadata = new Inspection(url);
+      val mimeType = metadata.getContentType();
+      Logger.info("Got mimeType : " + mimeType)
+
+      try {
+        val absolutePrefix = routes.Application.index().absoluteURL();
+        Logger.info("Got absolutePrefix: " + absolutePrefix);
+
+        var actions = Actions.loadActions(mimeType, absolutePrefix);
+        var fileObject = new FileObject(filename, metadata, actions);
+
+        Ok(views.html.inspect(url, fileObject));
+
+      } catch {
+
+        case e: ConfigException =>
+          println("do something else " + e)
+          NotFound("")
+      }
     }
-   }
   }
 }
