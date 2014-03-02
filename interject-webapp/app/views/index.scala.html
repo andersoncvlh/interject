@@ -5,30 +5,61 @@
 
 @main("Interject: User-driven Preservation Actions") {
 
-<div class="page-header">
-	<h1>
-		Interject <small>User-driven Preservation Actions</small>
-	</h1>
-</div>
-
 <div class="row">
+
+    <div class="col-md-4">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            <h3 class="panel-title">Interject</h3> User-Driven Digital Preservation
+            </div>
+            <div class="panel-body">
+            <p>
+            This prototype demonstrates how a mixture of preservation actions can be smoothly integrated into the search infrastructure of the UK Web Archive, by acting as an 'access helper' for end users.
+            </p>
+            <p>
+            This page picks a few specific examples of difficult or interesting cases, and allows you to inspect what the system knows about those formats. You can also view transformed versions of those resources (combining format conversion and emulation techniques), as illustrated by the thumbnail images shown here.
+            </p>
+            <p>
+            The examples provide links to our <a href="http://www.webarchive.org.uk/aadda-discovery/">experimental search interface</a> so you can look for more instances of each format. Every result found via that front-end contains a link back to this access helper service.
+            </p>
+            <p>
+            By allowing our visitors to decide between the available options, the real needs of our designated communities can be expressed directly to us and so taken into account as part of the preservation planning process.
+            </p>
+            <p>
+            Developed at the <a href="http://www.webarchive.org.uk/ukwa/">UK Web Archive</a>, as part of the <a href="http://www.scape-project.eu/">SCAPE Project</a>.
+            </p>
+            <p>
+             <a href="http://www.scape-project.eu/">
+              <img src="@routes.Assets.at("images/SCAPE_Logo.png")"/>
+             </a>
+            </p>
+            </div>
+        </div>
+        
+    </div>
+    
 	<div class="col-md-4">
 
 		<div class="panel panel-default">
 			<div class="panel-heading">
-			Spectrum .TAP tape images
-            <span class="pull-right">
-              <a href="http://fileformats.archiveteam.org/wiki/TAP_(ZX_Spectrum)" class="btn btn-xs btn-default" role="button" title="Learn more about this format."><span class="glyphicon glyphicon-info-sign"></span></a>
-            </span>
+			Spectrum tape images
             </div>
 			<div class="panel-body">
 			    <a href="@routes.Inspect.inspect("http://web.archive.org/web/20010510212732/http://www.antsplace.co.uk:80/ATICATAC.SNA")" class="thumbnail pull-right">
 			    <img alt="" width="176" src="/interject/action/qaop/http://web.archive.org/web/20010510212732/http://www.antsplace.co.uk:80/ATICATAC.SNA"/>
 			    </a>
-                <p>e.g.
-                    <a href="@routes.Inspect.inspect("http://web.archive.org/web/20010510212732/http://www.antsplace.co.uk:80/ATICATAC.SNA")">ATICATAC</a>,
+			    <p>
+			    The traces of ZX Spectrum software that can be found in our web archive are in the form of tape images
+                (<a href="http://fileformats.archiveteam.org/wiki/TAP_(ZX_Spectrum)">.TAP</a>, <a href="http://fileformats.archiveteam.org/wiki/TZX">.TZX</a>)
+                or raw system RAM snapshots
+                (<a href="http://fileformats.archiveteam.org/wiki/Z80">.Z80</a>, <a href="http://fileformats.archiveteam.org/wiki/SNA">.SNA</a>).
+                These formats can only be used via emulation, which can be used to generate screenshots as well as provide access.
+			    </p>
+                <p>Some examples are: 
+                    <a href="@routes.Inspect.inspect("http://web.archive.org/web/20010510212732/http://www.antsplace.co.uk:80/ATICATAC.SNA")">ATICATAC</a> (shown above),
 					<a href="@routes.Inspect.inspect("http://web.archive.org/web/20010513125307/http://www.antsplace.co.uk:80/GOBBLEMA.TAP")">Gobbleman</a>,
-					<a href="@routes.Inspect.inspect("http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap")">Wheelie</a>
+					<a href="@routes.Inspect.inspect("http://web.archive.org/web/19991001051504/http://wkweb1.cableinet.co.uk:80/malkc/Wheelie.tap")">Wheelie</a>.
 				</p>
 				<p>Search for more examples: <a
 						href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.tap%22&f[1]=content_ffb%3A%2213000000%22">.TAP</a>,
@@ -37,25 +68,28 @@
 						<a
 						href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.z80%22">.Z80</a>,
 						<a
-						href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.sna%22">.SNA</a>
+						href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.sna%22">.SNA</a>.
 				</p>
 			</div>
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 			Virtual Reality Markup Language
-            <span class="pull-right">
-              <a href="http://fileformats.archiveteam.org/wiki/Ext:wrl" class="btn btn-xs btn-default" role="button" title="Learn more about this format."><span class="glyphicon glyphicon-info-sign"></span></a>
-            </span>
 			</div>
 			<div class="panel-body">
+			    <p>
+			    <a href="http://fileformats.archiveteam.org/wiki/Ext:wrl">VRML 1 and VRML97</a> were early web-based formats for 3D environments. 
+			    They have been superseded by the <a href="http://fileformats.archiveteam.org/wiki/X3D">X3D</a> format, but unfortunately this series of three formats 
+			    are not backward compatible with each other. Worse still, VRML 1 was based on a very different underlying information model to the later formats, 
+			    and is poorly supported by the currently available tools.
+			    </p>
 				<p>
 					<b>WARNING: </b> no migrations implemented yet...
 				</p>
-				<p>e.g. 
+				<p>Some examples are:
                     <a href="@routes.Inspect.inspect("http://web.archive.org/web/19961031121001/http://watt.ccir.ed.ac.uk:80/projects/vrml/penguin1.wrl")">penguin1.wrl (VRML 1)</a>,
                     <a href="@routes.Inspect.inspect("http://web.archive.org/web/20090508084347/http://www.web3dguide.org.uk:80/tutorials/vrml97/worlds/tut32c.wrl")">tut32c.wrl (VRML 97)</a>,
-                    <a href="@routes.Inspect.inspect("http://web.archive.org/web/20090619161004/http://www.archviz.co.uk:80/1026/ensuite.txt")">ensuite.txt (VRML 97)</a>
+                    <a href="@routes.Inspect.inspect("http://web.archive.org/web/20090619161004/http://www.archviz.co.uk:80/1026/ensuite.txt")">ensuite.txt (VRML 97)</a>.
 				</p>
 			    <p><a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_ffb%3A%222356524d%22">Search
 							for more examples...</a></p>
@@ -66,15 +100,20 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 			X BitMap (XBM) images
-            <span class="pull-right">
-              <a href="http://fileformats.archiveteam.org/wiki/XBM" class="btn btn-xs btn-default" role="button" title="Learn more about this format."><span class="glyphicon glyphicon-info-sign"></span></a>
-            </span>
 			</div>
 			<div class="panel-body">
                 <a href="@routes.Inspect.inspect("http://web.archive.org/web/19961102050932/http://vulture.dcs.king.ac.uk:80/icons/image.xbm")" class="thumbnail pull-right">
                 <img alt="" src="/interject/action/commons-imaging-conversion/http://web.archive.org/web/19961102050932/http://vulture.dcs.king.ac.uk:80/icons/image.xbm"/>
                 </a>
-				<p>e.g. <a href="@routes.Inspect.inspect("http://web.archive.org/web/19961102050932/http://vulture.dcs.king.ac.uk:80/icons/image.xbm")">image.xbm</a></p>
+                <p>
+                The <a href="http://fileformats.archiveteam.org/wiki/XBM">X BitMap</a> image format was <a href="http://1997.webhistory.org/www.lists/www-talk.1993q1/0182.html" title="proposed new tag: IMG">the first image format on the web</a>.
+                However, despite this early and important role, these formats are not widely support today and so usually require format conversion for access.
+                </p>
+				<p>Some examples are:
+                <a href="@routes.Inspect.inspect("http://web.archive.org/web/19961102050932/http://vulture.dcs.king.ac.uk:80/icons/image.xbm")">image.xbm</a> (shown above),
+                <a href="@routes.Inspect.inspect("http://web.archive.org/web/19990128151646/http://www.alcd.soton.ac.uk:80/~dder/bugs/_8917_tex2html_wrap1129.xbm")">_8917_tex2html_wrap1129.xbm</a>,
+                <a href="@routes.Inspect.inspect("http://web.archive.org/web/19970110213935/http://aether.cms.dmu.ac.uk:80/General/WWW/Docs/guide/separator.xbm")">separator.xbm</a>.
+                </p>
 				<p><a
 						href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.xbm%22&f[1]=content_ffb%3A%2223646566%22">Search
 							for more examples...</a></p>
@@ -83,68 +122,54 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 			X PixMap (XPM) images
-            <span class="pull-right">
-              <a href="http://fileformats.archiveteam.org/wiki/XPM" class="btn btn-xs btn-default" role="button" title="Learn more about this format."><span class="glyphicon glyphicon-info-sign"></span></a>
-            </span>
 			</div>
 			<div class="panel-body">
                 <a href="@routes.Inspect.inspect("http://web.archive.org/web/19971121061547/http://wwwcache.rl.ac.uk:80/CDROM/docs/linux-2.0.30/xterm-linux.xpm")" class="thumbnail pull-right">
                 <img alt="" src="/interject/action/commons-imaging-conversion/http://web.archive.org/web/19971121061547/http://wwwcache.rl.ac.uk:80/CDROM/docs/linux-2.0.30/xterm-linux.xpm"/>
                 </a>
                 <p>
-                <a href="@routes.Inspect.inspect("http://web.archive.org/web/19971121061547/http://wwwcache.rl.ac.uk:80/CDROM/docs/linux-2.0.30/xterm-linux.xpm")">xterm-linux.xpm</a>,
+                The <a href="http://fileformats.archiveteam.org/wiki/XPM">X PixMap</a> format is the colour version of the X BitMap format outline above, and suffers the same accessibility issues.
+                </p>
+                <p>Some examples are:
+                <a href="@routes.Inspect.inspect("http://web.archive.org/web/19971121061547/http://wwwcache.rl.ac.uk:80/CDROM/docs/linux-2.0.30/xterm-linux.xpm")">xterm-linux.xpm</a> (shown above),
 			    <a class="to-tooltip" data-toggle="tooltip" href="@routes.Inspect.inspect("http://web.archive.org/web/19970719033231/http://www-mice.cs.ucl.ac.uk:80/misc/uk/london/tube.xpm")" title="image that the conversion may not be handling correctly (looks broken)">tube.xpm <span class="glyphicon glyphicon-info-sign"></span></a>,
-				<a class="to-tooltip" data-toggle="tooltip" href="@routes.Inspect.inspect("http://web.archive.org/web/19970318012049/http://aether.cms.dmu.ac.uk:80/People/iv/iv/images/guitar.xpm")" title="slightly malformed XPM file which we cannot detect or handle at present.">guitar.xpm <span class="glyphicon glyphicon-info-sign"></span></a>
+				<a class="to-tooltip" data-toggle="tooltip" href="@routes.Inspect.inspect("http://web.archive.org/web/19970318012049/http://aether.cms.dmu.ac.uk:80/People/iv/iv/images/guitar.xpm")" title="slightly malformed XPM file which we cannot detect or handle at present.">guitar.xpm <span class="glyphicon glyphicon-info-sign"></span></a>.
 				</p>
 				<p><a
 						href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.xpm%22&f[1]=content_ffb%3A%222f2a2058%22">Search
 							for more examples...</a></p>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-4">
 
-		<div class="panel panel-default">
-			<div class="panel-heading">
-			Characterisation Examples
-            <span class="pull-right">
-              <a href="http://fileformats.archiveteam.org/wiki/PDF" class="btn btn-xs btn-default" role="button" title="Learn more about this format."><span class="glyphicon glyphicon-info-sign"></span></a>
-            </span>
-			</div>
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-md-12">
-						<p>e.g. 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            Characterisation Examples
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>
+                        Although this framework is primarily aimed at enabling access to resources, it can also be used as a characterisation system.
+                        This allows users to explore what information we can extract from individual resources (in terms of formats, metadata and full text) via a relatively simple web interface.
+                        </p>
+                        <p>Some examples are:
                         <a href="@routes.Inspect.inspect("http://web.archive.org/web/20050513215231/http://www.advisorybodies.doh.gov.uk/agh/aghsecondannaulreport.pdf")">aghsecondannaulreport.pdf</a>, 
                         <a href="@routes.Inspect.inspect("http://web.archive.org/web/19961101023442/http://zeus.codex.co.uk:80/sem-demo/semwebpl.doc")">semwebpl.doc</a>,
                         <a href="@routes.Inspect.inspect("http://web.archive.org/web/19961125193819/http://web.robert-gordon.ac.uk:80/admin/aas/dcd/design/arch/heritag.doc")">heritag.doc</a>,
                         <a href="@routes.Inspect.inspect("http://web.archive.org/web/20061211225225/http://www.alexdscott.co.uk:80/files/cv.docx")">cv.docx</a>.
-						</p>
-					    <p>Search for more examples: 
+                        </p>
+                        <p>Search for more examples:
                          <a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_ffb%3A%2225504446%22">PDFs</a>,
                          <a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.doc%22&f[1]=content_ffb%3A%22d0cf11e0%22">DOCs</a>,
                          <a href="http://www.webarchive.org.uk/aadda-discovery/formats?f[0]=content_type_ext%3A%22.docx%22&f[1]=content_ffb%3A%22504b0304%22">DOCXs</a>.
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-        <div class="panel panel-default">
-            <div class="panel-body">
-            <p>
-            This prototype demonstrates how a mixture of preservation actions can be smoothly integrated into the search infrastructure of the UK Web Archive, by acting as access helpers for end users.
-            </p>
-            <p>
-            By allowing our visitors to decide between the available options, the real needs of our designated communities can be expressed directly to us and so taken into account as part of the preservation planning process.
-            </p>
-            <p>
-            Developed at the <a href="http://www.webarchive.org.uk/ukwa/">UK Web Archive</a>, as part of the <a href="http://www.scape-project.eu/">SCAPE Project</a>.
-            </p>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-        
+		
 	</div>
+
 </div>
 
 }
