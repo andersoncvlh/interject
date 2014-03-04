@@ -12,11 +12,13 @@
     
     <div class="row">
       <h1 class="text-center">@filename</h1>
-      <x3d id='x3dID' showStat='false' showLog='false' x='0px' y='0px' width='400px' height='400px'>
+      <div style="width: 800px; margin: 0 auto;">
+       <x3d id='x3dID' showStat='true' showLog='true' x='0px' y='0px' width='800px' height='600px'>
         <scene>
           <inline url='@url' ></inline>
         <scene>
-      </x3d>
+       </x3d>
+      </div>
     </div>
 
     <!-- Based on http://x3dom.org/x3dom/example/blenderExport/horse-inline.html -->
