@@ -1,9 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
-   <groupId>uk.bl.wa.interject</groupId>
    <artifactId>interject-servlet-filter</artifactId>
-   <version>1.0.0-SNAPSHOT</version>
    <packaging>jar</packaging>
    <properties>
       <jetty.version>9.1.1.v20140108</jetty.version>
@@ -155,4 +153,9 @@
       </dependency>
    </dependencies>
 
+   <parent>
+      <groupId>uk.bl.wa.interject</groupId>
+      <artifactId>interject</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+   </parent>
 </project>

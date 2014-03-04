@@ -182,6 +182,63 @@ public class Actions extends Controller {
 		return null;
 	}
 
+	public static Result view3dsceneToPNG(final String urlparam)
+			throws Exception {
+		Logger.warn("view3dsceneToPNG URL Param: " + urlparam);
+		final URL url = new URL(urlparam);
+		File tmp = Cache.getOrElse("view3dsceneToPNG-" + urlparam,
+				new Callable<File>() {
+					@Override
+					public File call() throws Exception {
+						return view3dsceneToPNG(url);
+					}
+				}, DURATION);
+		// TODO Fix up the name correctly, adding extension to existing
+		// filename:
+		response().setHeader("Content-Disposition",
+				"inline;filename=converted.png");
+		response().setContentType("image/png");
+		return ok(tmp);
+	}
+
+	/**
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public static File view3dsceneToPNG(final URL url) {
+		try {
+			// Need the right extension to work, which is not always given.
+			File tempIn = File.createTempFile("to97in",
+					"." +
+					FilenameUtils.getExtension(url.getPath()));
+			tempIn.deleteOnExit();
+			IOUtils.copy(url.openStream(), new FileOutputStream(tempIn));
+			//
+			File tempOut = File.createTempFile("to97out", ".png");
+			tempOut.deleteOnExit();
+			// Assemble the command:
+			String[] command = new String[] {
+					"../interject-access-external-tools/view3dscene",
+					tempIn.getAbsolutePath(), "--screenshot", "0",
+					tempOut.getCanonicalPath() };
+			// Execute:
+			ProcessBuilder pb = new ProcessBuilder(command);
+			pb.inheritIO();
+			Logger.warn("EXECUTING: " + pb.command());
+			Process p = pb.start();
+			int rc = p.waitFor();
+			// Return:
+			tempIn.delete();
+			return tempOut;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/* -------- -------- -------- -------- -------- -------- -------- */
 
     public static Result allTypes() {

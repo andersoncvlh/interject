@@ -5,16 +5,17 @@ A proof-of-concept on-demand format conversion system build with web archives in
 
 [![Build Status](https://travis-ci.org/ukwa/interject.png?branch=master)](https://travis-ci.org/ukwa/interject/)
 
+NOTE: view3dscene needs to be installed separately and symlinked in to work.
 
 To Do
 -----
 
-* Finish VRML support methods.
-    * Check for V$ML97 renderer support.
-    * Add X3D renderer.
-
 Possible future work:
 
+* Much better error handling.
+    * It's not clear if/when an action goes wrong, or when type detection fails.
+    * Little/no debug information is passed back.
+* Some actions require proper extension to succeed, so need to use ID result to fix up input and output extensions.
 * Properly generalise output format specification, including setting the content-disposition filename appropriately following conversions.
 * Ensure download link is always last in the list.
 * Should async properly: http://www.playframework.com/documentation/2.2.1/JavaAsync

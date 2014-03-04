@@ -20,7 +20,6 @@ import com.typesafe.config.Config
 import scala.collection.Map
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
-import uk.bl.wa.interject.factory.InterjectionFactory
 import org.apache.commons.io.FilenameUtils
 import com.typesafe.config.ConfigException
 import org.apache.commons.io.IOUtils
