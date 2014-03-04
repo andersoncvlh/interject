@@ -364,12 +364,12 @@ sl:generator="ibauthor"
     </magic>
   </mime-type>
   
-  <!-- X3D -->
+  <!-- X3D - signature taken from https://www.nationalarchives.gov.uk/PRONOM/Format/proFormatSearch.aspx?status=detailReport&id=1367&strPageToDisplay=signatures -->
   <mime-type type="model/x3d+xml">
     <acronym>X3D XML</acronym>
     <_comment>X3D, encoded as XML.</_comment>
     <magic priority="50">
-      <match value="&gt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#x0a;&gt;!DOCTYPE X3D PUBLIC &quot;ISO//Web3D//DTD X3D 3.0//EN&quot;" type="string" offset="0">
+      <match value="0x3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D38223F3E0A3C21444F435459504520583344205055424C4943202249534F2F2F57656233442F2F4454442058334420332E302F2F454E22" type="string" offset="0">
       </match>
     </magic>
   </mime-type>
