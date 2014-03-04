@@ -107,14 +107,16 @@ public class Actions extends Controller {
 	 */
 	public static Result vrml97toX3D(final String urlparam) throws Exception {
 		Logger.warn("VRML97toX3D URL Param: " + urlparam);
+		final URL url = new URL(urlparam);
 		File tmp = Cache.getOrElse("vrml97toX3D-" + urlparam,
 				new Callable<File>() {
 					@Override
 					public File call() throws Exception {
-						URL url = new URL(urlparam);
 						return vrml97toX3D(url);
 					}
 				}, DURATION);
+		// TODO Fix up the name correctly, adding extension to existing
+		// filename:
 		response().setHeader("Content-Disposition",
 				"inline;filename=converted.x3d");
 		response().setContentType("model/x3d+xml");
@@ -139,7 +141,7 @@ public class Actions extends Controller {
 			// Assemble the command:
 			String[] command = new String[] {
 					"wine",
-					"../interject-servlet-filter/external/ivTools-3.0/ivvrml.exe",
+					"../interject-access-external-tools/ivTools-3.0/ivvrml.exe",
 					"-2", tempIn.getAbsolutePath(), "-o",
 					tempOut.getCanonicalPath() };
 			// Execute:

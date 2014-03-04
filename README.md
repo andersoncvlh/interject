@@ -15,9 +15,10 @@ To Do
 
 Possible future work:
 
+* Properly generalise output format specification, including setting the content-disposition filename appropriately following conversions.
 * Ensure download link is always last in the list.
 * Should async properly: http://www.playframework.com/documentation/2.2.1/JavaAsync
-* Provide transformed version inside an iframe, for inline feedback? How to cope with use via transclusion?
+* Provide transformed version inside an iframe, for in-line feedback? How to cope with use via transclusion?
 * Highlight signature matching sections in the hex view. (Need Tika API changes to access Magic Clause classes).
 * Link to related holdings via Solr?
 * For characterisation:

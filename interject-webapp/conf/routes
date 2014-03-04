@@ -45,6 +45,8 @@ GET     /action/qaop/*url           controllers.Actions.qaop(url)
 GET     /action/vrml1to97/*url      controllers.Actions.vrml1to97(url)
 # VRML97toX3D
 GET     /action/vrml97toX3D/*url    controllers.Actions.vrml97toX3D(url)
+# X3DOM
+GET     /action/x3dom/*url          controllers.Application.x3dom(url)
 
 #
 # Inspect

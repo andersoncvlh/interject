@@ -34,7 +34,6 @@ import uk.bl.wa.interject.converter.ImageIOStrategy
 import uk.bl.wa.interject.converter.ImageConverter
 import org.apache.commons.io.FilenameUtils
 
-
 object Application extends Controller {
 
   def index = Action {
@@ -53,66 +52,67 @@ object Application extends Controller {
     val filename = FilenameUtils.getName(URI.create(url).getPath);
     Ok(views.html.jsspeccy(routes.Application.passthrough(url).toString, filename));
   }
-  
+
+  def x3dom(url: String) = Action {
+    val filename = FilenameUtils.getName(URI.create(url).getPath);
+    Ok(views.html.x3dom(routes.Application.passthrough(url).toString, filename));
+  }
+
   def commonsImagingConversion(url: String) = Action {
-   Cache.getOrElse[Result]("commons-imaging-conv-"+url){
-    val tika = new Tika();
-    val sourceContentType = tika.detect(url); 
-    println("Attempting to convert: "+url+ " from: " + sourceContentType);
-    
-	val imageConverter = new ImageConverter(CommonsImageStrategy.INSTANCE);
-	val imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
-	
-	SimpleResult(
-	    header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
-	    body = Enumerator(imageBytes)
-	)
-   }
+    Cache.getOrElse[Result]("commons-imaging-conv-" + url) {
+      val tika = new Tika();
+      val sourceContentType = tika.detect(url);
+      println("Attempting to convert: " + url + " from: " + sourceContentType);
+
+      val imageConverter = new ImageConverter(CommonsImageStrategy.INSTANCE);
+      val imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
+
+      SimpleResult(
+        header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
+        body = Enumerator(imageBytes))
+    }
   }
-  
+
   def imageIOConversion(url: String) = Action {
-   Cache.getOrElse[Result]("commons-imageio-conv-"+url){
-    val tika = new Tika();
-    val sourceContentType = tika.detect(url); 
-    println("Attempting to convert: "+url+" from "+sourceContentType);
-    
-	val imageConverter = new ImageConverter(ImageIOStrategy.INSTANCE);
-	val imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
-	
-	SimpleResult(
-	    header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
-	    body = Enumerator(imageBytes)
-	)
-   }
+    Cache.getOrElse[Result]("commons-imageio-conv-" + url) {
+      val tika = new Tika();
+      val sourceContentType = tika.detect(url);
+      println("Attempting to convert: " + url + " from " + sourceContentType);
+
+      val imageConverter = new ImageConverter(ImageIOStrategy.INSTANCE);
+      val imageBytes = imageConverter.convertFromUrlToPng(url, sourceContentType);
+
+      SimpleResult(
+        header = ResponseHeader(200, Map(CONTENT_TYPE -> "image/png")),
+        body = Enumerator(imageBytes))
+    }
   }
-  
+
   // -- Javascript routing
   def javascriptRoutes = Action { implicit request =>
-  	import routes.javascript._
-  	Ok(
-  	  Routes.javascriptRouter("jsRoutes")(
-  	    routes.javascript.Application.rate,
-  	    routes.javascript.Application.sendFeedback
-  	  )
-  	).as("text/javascript")
+    import routes.javascript._
+    Ok(
+      Routes.javascriptRouter("jsRoutes")(
+        routes.javascript.Application.rate,
+        routes.javascript.Application.sendFeedback)).as("text/javascript")
   }
-  
+
   def rate(entry: String) = Action { implicit request =>
     writeToFile(entry);
-	Ok("false")
+    Ok("false")
   }
 
   def sendFeedback(entry: String) = Action { implicit request =>
     writeToFile(entry);
-	Ok("false")
+    Ok("false")
   }
-  
+
   def writeToFile(entry: String) = {
     println(entry);
     val path = System.getProperty("user.dir") + "/tmp/feedback.txt";
     val file = new File(path);
     var fileContents = Files.readFile(file);
-    fileContents += entry + "\n"; 
+    fileContents += entry + "\n";
     Files.writeFile(file, fileContents);
-  }  
+  }
 }

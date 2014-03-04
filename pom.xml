@@ -10,9 +10,10 @@
 	<version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
    <modules>
-      <module>interject-servlet-filter</module>
+      <module>interject-access-core</module>
       <module>interject-access-qaop</module>
       <module>interject-access-vrml97tox3d</module>
+      <module>interject-servlet-filter</module>
    </modules>
 <licenses>
       <license>
