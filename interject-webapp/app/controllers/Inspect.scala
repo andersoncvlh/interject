@@ -47,7 +47,10 @@ object Inspect extends Controller {
       Logger.info("Got mimeType : " + mimeType)
 
       try {
-        val absolutePrefix = routes.Application.index().absoluteURL();
+        val configPrefix = Play.configuration.getString("application.urlprefix");
+        Logger.info("Got configPrefix: " + configPrefix);
+        val absolutePrefix = if (configPrefix != None) configPrefix.get else routes.Application.index().absoluteURL();
+        //val absolutePrefix = routes.Application.index().absoluteURL();
         Logger.info("Got absolutePrefix: " + absolutePrefix);
 
         var actions = Actions.loadActions(mimeType, absolutePrefix);
