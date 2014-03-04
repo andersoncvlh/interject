@@ -273,7 +273,7 @@ public class ProcessRunnerImpl implements Runnable, ProcessRunner {
 				this.processError = p.getErrorStream();
 				this.return_code = execute(p);
 			}
-		} catch (IOException | InterruptedException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(
 					"An io error occurred when running the command: "+e, e);
 		} finally {
