@@ -19,7 +19,8 @@ object ApplicationBuild extends Build {
     "eu.scape-project.nanite" % "nanite-core" % "1.0.72.2",
     "cglib" % "cglib-nodep" % "2.1_3", // DROID tries to bring in 2.2.2, which doesn't work.
     "uk.bl.wa.interject" % "interject-servlet-filter" % "1.0.0-SNAPSHOT",
-    "uk.bl.wa.access" % "qaop" % "1.4.1-SNAPSHOT"
+    "uk.bl.wa.access" % "qaop" % "1.4.1-SNAPSHOT",
+    "uk.bl.wa.access" % "VRML97toX3D" % "1.0"
   )
   
 //  val filterDependencies = Seq(

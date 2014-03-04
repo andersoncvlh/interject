@@ -12,6 +12,7 @@
    <modules>
       <module>interject-servlet-filter</module>
       <module>interject-access-qaop</module>
+      <module>interject-access-vrml97tox3d</module>
    </modules>
 <licenses>
       <license>
@@ -37,7 +38,7 @@
       <url>git@github.com:ukwa/interject.git</url>
    </scm>
    <properties>
-     <tika.version>1.4</tika.version>
+     <tika.version>1.5</tika.version>
      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
    </properties>
 	<build>

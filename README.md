@@ -10,8 +10,8 @@ To Do
 -----
 
 * Finish VRML support methods.
-    * Implement wine/ivvrml conversion.
-    * Add VRML97/X3D renderer.
+    * Check for V$ML97 renderer support.
+    * Add X3D renderer.
 
 Possible future work:
 

@@ -41,6 +41,11 @@ GET     /action/jsspeccy/*url       controllers.Application.jsspeccy(url)
 #
 # QAOP
 GET     /action/qaop/*url           controllers.Actions.qaop(url)
+# VRML1to97
+GET     /action/vrml1to97/*url      controllers.Actions.vrml1to97(url)
+# VRML97toX3D
+GET     /action/vrml97toX3D/*url    controllers.Actions.vrml97toX3D(url)
+
 #
 # Inspect
 GET     /inspect                    controllers.Inspect.inspectForm()

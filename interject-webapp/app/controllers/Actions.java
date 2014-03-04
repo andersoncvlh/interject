@@ -3,8 +3,11 @@
  */
 package controllers;
 
+import iicm.vrml.vrml2x3d.vrml2x3d;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,21 +62,126 @@ public class Actions extends Controller {
             	URL url = new URL(urlparam);
             	String filename = FilenameUtils.getName(urlparam);
             	File input = File.createTempFile("input", filename);
+				input.deleteOnExit();
             	Logger.info("Writing to temp file: "+input.getAbsolutePath());
             	IOUtils.copy(url.openStream(), new FileOutputStream(input));
             	File tmp = File.createTempFile("spectrum", ".png");
+				tmp.deleteOnExit();
             	QaopShot.takeScreenshot(input.getAbsolutePath(), tmp.getAbsolutePath(), 5);
             	Logger.info("Setting headers...");
             	return tmp;
             }
         }, DURATION );
     	// Caching the whole Result 'ok(tmp)' doesn't work due to stream-reuse failing I think.
-    	Logger.info("Setting headers...");
     	response().setHeader("Content-Disposition", "inline;");
     	response().setContentType("image/png");
     	return ok(tmp);
     }
     
+	/**
+	 * 
+	 * @param urlparam
+	 * @return
+	 * @throws Exception
+	 */
+	public static Result vrml1to97(final String urlparam) throws Exception {
+		Logger.warn("VRML1to97 URL Param: " + urlparam);
+		File tmp = Cache.getOrElse("vrml1to97-" + urlparam,
+				new Callable<File>() {
+					@Override
+					public File call() throws Exception {
+						URL url = new URL(urlparam);
+						return vrml1to97(url);
+					}
+				}, DURATION);
+		response().setHeader("Content-Disposition", "inline;");
+		response().setContentType("model/vrml; version=2.0");
+		return ok(tmp);
+	}
+
+	/**
+	 * 
+	 * @param urlparam
+	 * @return
+	 * @throws Exception
+	 */
+	public static Result vrml97toX3D(final String urlparam) throws Exception {
+		Logger.warn("VRML97toX3D URL Param: " + urlparam);
+		File tmp = Cache.getOrElse("vrml97toX3D-" + urlparam,
+				new Callable<File>() {
+					@Override
+					public File call() throws Exception {
+						URL url = new URL(urlparam);
+						return vrml97toX3D(url);
+					}
+				}, DURATION);
+		response().setHeader("Content-Disposition",
+				"inline;filename=converted.x3d");
+		response().setContentType("model/x3d+xml");
+		return ok(tmp);
+	}
+
+	/**
+	 * Code to invoke the command on some temp files.
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public static File vrml1to97(final URL url) {
+		try {
+			//
+			File tempIn = File.createTempFile("to97in", ".wrl");
+			tempIn.deleteOnExit();
+			IOUtils.copy(url.openStream(), new FileOutputStream(tempIn));
+			//
+			File tempOut = File.createTempFile("to97out", ".wrl");
+			tempOut.deleteOnExit();
+			// Assemble the command:
+			String[] command = new String[] {
+					"wine",
+					"../interject-servlet-filter/external/ivTools-3.0/ivvrml.exe",
+					"-2", tempIn.getAbsolutePath(), "-o",
+					tempOut.getCanonicalPath() };
+			// Execute:
+			ProcessBuilder pb = new ProcessBuilder(command);
+			pb.inheritIO();
+			Logger.warn("EXECUTING: " + pb.command());
+			Process p = pb.start();
+			int rc = p.waitFor();
+			// Return:
+			tempIn.delete();
+			return tempOut;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static File vrml97toX3D(final URL url) {
+		try {
+			//
+			File tempIn = File.createTempFile("toX3Din", ".wrl");
+			tempIn.deleteOnExit();
+			IOUtils.copy(url.openStream(), new FileOutputStream(tempIn));
+			//
+			File tempOut = File.createTempFile("toX3Dout", ".x3d");
+			tempOut.deleteOnExit();
+			// Perform the transformation:
+			vrml2x3d.main(new String[] { tempIn.getAbsolutePath(),
+					tempOut.getAbsolutePath() });
+			// Return:
+			tempIn.delete();
+			return tempOut;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/* -------- -------- -------- -------- -------- -------- -------- */
+
     public static Result allTypes() {
     	return types( "application/octet-stream" );
     }
