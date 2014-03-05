@@ -29,7 +29,13 @@
           <p></p>
 					<table class="table table-striped">
 					<thead>
-                    <tr><th>Name:</th><th>@fileObject.getFilename</th></tr>
+                    <tr><th>Name:</th><th>
+                      <a href="@url" title="Download this resource.">
+                      @fileObject.getFilename
+                      <image class="img-polaroid"
+                                    src="@routes.Assets.at("images/download_20x20.png")" />
+                      </a>
+                    </th></tr>
                     </thead>
                     <tbody>
                     <tr><th>Served as:</th><td><a href="@(routes.Actions.types(fileObject.getServedContentType ))">@fileObject.getServedContentTypeDetails</a></td></tr>
@@ -44,28 +50,41 @@
 		</div>
 		<div class="col-xs-12 col-sm-7 col-md-7" role="main">
           <p></p>
+            @if( fileObject.getNumberOfOptions == 0 ) {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                    No Access Options Available
+                    </div>
+                    <div class="panel-body">
+                    <p>
+                    Sorry, no alternative access options are available for this format at the current time.
+                    </p>
+                    </div>
+                </div>
+            }
 			@for((action, index) <- fileObject.getActions.zipWithIndex) {
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					    <a href="@(action.getActionURL + url)">
                         <span class="action-image"> @if(!action.getImageUrl.isEmpty) {
                             <image class="img-polaroid"
                                     src="@routes.Assets.at(action.getImageUrl)" />&nbsp; }
                         </span>
 						<span id="action-name-@index" class="panel-title">@action.getName</span>
-						</a>
-                        <span class="pull-right">
-                            <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-default" role="button" title="Inspect the output of this action and determine any further access options.">INSPECT</a>
-                            &nbsp;
-                            <button type="button" id="rate-action-plus-@index" class="btn btn-xs btn-success rate-up" title="Rate this access option as: Good.">+1</button>
-                            <button type="button" id="rate-action-minus-@index" class="btn btn-xs btn-danger rate-down" title="Rate this access option as: Not Good.">-1</button>
-                            &nbsp;
-                            <a href="@(action.getActionURL + url)" class="btn btn-xs btn-primary btn-go" role="button" title="Access this option.">GO</a>
-                        </span>
-					</div>
+    				</div>
 					<div class="panel-body">
                         <span class="action-description">@Html(action.getDescription)</span>
 					</div>
+					<div class="panel-footer">
+                        <a href="@(action.getActionURL + url)" class="btn btn-xs btn-primary btn-go" role="button" title="Download/use this access option.">
+                        DOWNLOAD
+                        </a>
+                        &nbsp;
+                        <button type="button" id="rate-action-plus-@index" class="btn btn-xs btn-success rate-up" title="Rate this access option as: Good.">+1</button>
+                        <button type="button" id="rate-action-minus-@index" class="btn btn-xs btn-danger rate-down" title="Rate this access option as: Not Good.">-1</button>
+	                    <span class="pull-right">
+                            <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-primary" role="button" title="Apply further actions to this option.">FURTHER OPTIONS</a>
+                        </span>
+    				</div>
 				</div>
 			}
 		</div>

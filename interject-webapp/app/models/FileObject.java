@@ -50,4 +50,10 @@ public class FileObject {
 	public List<ActionObject> getActions() {
 	  return actions;
 	}
+
+	public int getNumberOfOptions() {
+		if (actions == null)
+			return 0;
+		return actions.size();
+	}
 }
