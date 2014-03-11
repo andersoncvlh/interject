@@ -26,14 +26,14 @@
             </div>
             <div class="collapse navbar-collapse">
                 <div class="nav navbar-right">
-                  <button type="button" id="rate-action-plus-@index" class="btn btn-xs btn-success rate-up navbar-btn" title="Rate this access option as: Good.">+1</button>
-                  <button type="button" id="rate-action-minus-@index" class="btn btn-xs btn-danger rate-down navbar-btn" title="Rate this access option as: Not Good.">-1</button>
+                  <button type="button" id="rate-action-plus-@index" class="btn btn-xs btn-success rate-up navbar-btn" title="Rate this as: Good.">+1</button>
+                  <button type="button" id="rate-action-minus-@index" class="btn btn-xs btn-danger rate-down navbar-btn" title="Rate this as: Not Good.">-1</button>
                   &nbsp;
-                  <a href="@(action.getActionURL + url)" class="btn btn-xs btn-default btn-go navbar-btn" role="button" title="Download this access option directly.">
+                  <a href="@(action.getActionURL + url)" class="btn btn-xs btn-default btn-go navbar-btn" role="button" title="Download this resource directly.">
                     DOWNLOAD
                   </a>
                   &nbsp;
-                  <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-default navbar-btn" role="button" title="Apply further actions to this option.">FURTHER OPTIONS</a>
+                  <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-default navbar-btn" role="button" title="Apply further (chained) actions to this resource.">FURTHER OPTIONS</a>
                   &nbsp;
                 </div>
             </div>

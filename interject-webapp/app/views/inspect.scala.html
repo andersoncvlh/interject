@@ -78,15 +78,15 @@
                         <span class="action-description">@Html(action.getDescription)</span>
 					</div>
 					<div class="panel-footer">
-                        <a href="@(routes.Actions.view( action.getAction, url))" class="btn btn-xs btn-primary btn-go" role="button" title="View this access option.">
+                        <a href="@(routes.Actions.view( action.getAction, url))" class="btn btn-xs btn-primary btn-go" role="button" title="View the result of this access option.">
                         VIEW
                         </a>
 	                    <span class="pull-right">
-                          <a href="@(action.getActionURL + url)" class="btn btn-xs btn-default btn-go" role="button" title="Download/use this access option.">
+                          <a href="@(action.getActionURL + url)" class="btn btn-xs btn-default btn-go" role="button" title="Download this resource directly.">
                             DOWNLOAD
                           </a>
                           &nbsp;
-                          <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-default" role="button" title="Apply further actions to this option.">FURTHER OPTIONS</a>
+                          <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-default" role="button" title="Apply further (chained) actions to this resource.">FURTHER OPTIONS</a>
                         </span>
     				</div>
 				</div>
