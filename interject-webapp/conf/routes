@@ -25,6 +25,14 @@ GET     /types/                     controllers.Actions.allTypes()
 GET     /types/*type                controllers.Actions.types(type)
 
 #
+# Inspect
+GET     /inspect                    controllers.Inspect.inspectForm()
+GET     /inspect/*url               controllers.Inspect.inspect(url)
+
+# Action view wrapper
+GET     /view/:action/*url   controllers.Actions.view(action,url)
+
+#
 # ACTIONS:
 #
 GET     /act/:action/*url           controllers.Actions.act(action,url)
@@ -50,11 +58,6 @@ GET     /action/vrml1to97/*url      controllers.Actions.vrml1to97(url)
 GET     /action/vrml97toX3D/*url    controllers.Actions.vrml97toX3D(url)
 # X3DOM
 GET     /action/x3dom/*url          controllers.Application.x3dom(url)
-
-#
-# Inspect
-GET     /inspect                    controllers.Inspect.inspectForm()
-GET     /inspect/*url               controllers.Inspect.inspect(url)
 
 # Non-restful way - because we are using additional parameter sourceContentType
 # http://localhost:9000/action/image-io-conversion?url=http://localhost:9000/assets/images/test.bmp&sourceContentType=image/bmp

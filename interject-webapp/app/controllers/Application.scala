@@ -108,11 +108,10 @@ object Application extends Controller {
   }
 
   def writeToFile(entry: String) = {
-    println(entry);
-    val path = System.getProperty("user.dir") + "/tmp/feedback.txt";
-    val file = new File(path);
-    var fileContents = Files.readFile(file);
-    fileContents += entry + "\n";
-    Files.writeFile(file, fileContents);
+    Logger.info("Feedback: " + entry);
+    val path = "logs/feedback.log";
+    val fw = new FileWriter(path, true);
+    fw.write(entry + "\n");
+    fw.close();
   }
 }

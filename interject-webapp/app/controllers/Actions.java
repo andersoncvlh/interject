@@ -44,7 +44,25 @@ import com.typesafe.config.ConfigFactory;
  */
 public class Actions extends Controller {
 
+	public static final String URL_PREFIX_KEY = "application.urlprefix";
+
     private static final int DURATION = 3600*24; // 24 hour cache.
+
+	private static Config conf = ConfigFactory.load();
+
+	public static Result view(String actionStr, String url) {
+		String absolutePrefix = routes.Application.index().absoluteURL(
+				request());
+		if (conf.hasPath(URL_PREFIX_KEY)) {
+			absolutePrefix = conf.getString(URL_PREFIX_KEY);
+		}
+        Logger.info("Got absolutePrefix: " + absolutePrefix);
+
+		ActionObject action = loadAction(actionStr, absolutePrefix);
+		Logger.info("Matched action: " + action.getAction() + " + "
+				+ action.getActionURL());
+		return ok(views.html.view.render(action, url));
+	}
 
 	public static Result act( String action, String url ) {
         return ok("ACT: "+action+" ON "+url);
@@ -306,9 +324,18 @@ public class Actions extends Controller {
     
 	static MimeTypes mimeTypes = TikaConfig.getDefaultConfig().getMimeRepository();
 	
+	public static ActionObject loadAction(String actionId, String prefix) {
+
+		for (Config a : conf.getConfigList("actions")) {
+			ActionObject ao = new ActionObject(a, prefix);
+			if (actionId.equals(ao.getAction()))
+				return ao;
+		}
+		return null;
+	}
+
 	public static List<ActionObject> loadActions( String contentType, String prefix ) {
 		HashMap<String,ActionObject> actions = new HashMap<String,ActionObject>();
-		Config conf = ConfigFactory.load();
 		
 		MediaType type = MediaType.parse(contentType);
 		Logger.info("Looking for actions that match type: "+type);

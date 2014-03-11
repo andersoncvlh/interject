@@ -5,7 +5,6 @@
     <script src='@routes.Assets.at("bootstrap/js/button.js")' type="text/javascript"></script>
     <script src='@routes.Assets.at("bootstrap/js/tab.js")' type="text/javascript"></script>
     <script src='@routes.Assets.at("hexview/hexview.js")' type="text/javascript"></script>
-    <script src='@routes.Assets.at("javascripts/interject.js")' type="text/javascript"></script>
 }
 
 @styles = {
@@ -13,6 +12,10 @@
 }
 
 @main("List of actions", styles, scripts) {
+
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> This is a research prototype for a web archive access helper service, and may be taken down at any time.
+        </div>
 	
           <ul class="nav nav-tabs" id="inspectTabs">
             <li><a href="#summary" data-toggle="tab" id="summaryTab">Summary & Actions</a></li>
@@ -75,14 +78,15 @@
                         <span class="action-description">@Html(action.getDescription)</span>
 					</div>
 					<div class="panel-footer">
-                        <a href="@(action.getActionURL + url)" class="btn btn-xs btn-primary btn-go" role="button" title="Download/use this access option.">
-                        DOWNLOAD
+                        <a href="@(routes.Actions.view( action.getAction, url))" class="btn btn-xs btn-primary btn-go" role="button" title="View this access option.">
+                        VIEW
                         </a>
-                        &nbsp;
-                        <button type="button" id="rate-action-plus-@index" class="btn btn-xs btn-success rate-up" title="Rate this access option as: Good.">+1</button>
-                        <button type="button" id="rate-action-minus-@index" class="btn btn-xs btn-danger rate-down" title="Rate this access option as: Not Good.">-1</button>
 	                    <span class="pull-right">
-                            <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-primary" role="button" title="Apply further actions to this option.">FURTHER OPTIONS</a>
+                          <a href="@(action.getActionURL + url)" class="btn btn-xs btn-default btn-go" role="button" title="Download/use this access option.">
+                            DOWNLOAD
+                          </a>
+                          &nbsp;
+                          <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-default" role="button" title="Apply further actions to this option.">FURTHER OPTIONS</a>
                         </span>
     				</div>
 				</div>
@@ -176,24 +180,5 @@
       $('#inspectTabs a:first').tab('show')
     </script>
 
-	<span id="last-rated" style="display:none;"></span>
-	
-	<div id="feedback-form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-		<div class="modal-dialog">
-		    <div class="modal-content">
-				<div class="modal-header">
-					<button id="dismiss-x" type="button" class="close" aria-hidden="true">&times;</button>
-					<h3 class="modal-title" id="modalTitle">Thanks for you Rating - Please provide Feedback (Optional)</h3>
-				</div>
-				<div class="modal-body">
-					<textarea id="feedback-message" class="form-control"></textarea>
-				</div>
-				<div class="modal-footer">
-					<button type="button" id="feedback-close" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-					<button type="button" id="feedback-send" class="btn btn-primary">Send</button>
-				</div>
-			</div>
-		</div>
-	</div>
 }
 
