@@ -177,7 +177,23 @@
 	
 	
     <script>
-      $('#inspectTabs a:first').tab('show')
+      $(document).ready(function () {
+    	    // Switch to a tab based on the fragment:
+    	    if (location.hash.substr(0,1) == "#") {
+    	        $("#inspectTabs a[href='#" + location.hash.substr(1) + "']").tab("show");
+    	    } else {
+    	        $('#inspectTabs a:first').tab('show');
+    	    }
+
+    	    // Update fragment when a tab is shown:
+    	    $("#inspectTabs a[data-toggle='tab']").on("shown.bs.tab", function (e) {
+    	        var hash = $(e.target).attr("href");
+    	        if (hash.substr(0,1) == "#") {
+    	            location.replace("#" + hash.substr(1));
+    	        }
+    	    });
+    	 
+    	});      
     </script>
 
 }

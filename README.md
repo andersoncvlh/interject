@@ -12,6 +12,9 @@ To Do
 
 Possible future work:
 
+* Add a URL form to /inspect/ when no URL parameter is present, and add bookmarklet a la Mementos.
+* Use a single parameterised route to invoke actions.
+* List all known actions when no action is passed.
 * Much better error handling.
     * It's not clear if/when an action goes wrong, or when type detection fails.
     * Little/no debug information is passed back.
