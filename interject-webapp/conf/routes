@@ -26,7 +26,8 @@ GET     /types/*type                controllers.Actions.types(type)
 
 #
 # Inspect
-GET     /inspect                    controllers.Inspect.inspectForm()
+GET     /inspect/                   controllers.Inspect.inspectForm
+POST    /inspect/                   controllers.Inspect.inspectThis
 GET     /inspect/*url               controllers.Inspect.inspect(url)
 
 # Action view wrapper
@@ -35,6 +36,7 @@ GET     /view/:action/*url   controllers.Actions.view(action,url)
 #
 # ACTIONS:
 #
+GET     /actions/                   controllers.Actions.allActions()
 GET     /act/:action/*url           controllers.Actions.act(action,url)
 
 

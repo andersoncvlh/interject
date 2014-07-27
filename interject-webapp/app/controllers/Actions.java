@@ -263,6 +263,11 @@ public class Actions extends Controller {
     	return types( "application/octet-stream" );
     }
     
+	public static Result allActions() {
+		List<ActionObject> actions = loadAllActions("");
+		return ok(views.html.actions.render(actions));
+	}
+
     public static Result types( String type ) {
     	// No type supplied:
 //    	if( type == null ) {
@@ -359,6 +364,19 @@ public class Actions extends Controller {
 		return actionList;
 	}
 	
+	public static List<ActionObject> loadAllActions(String prefix) {
+		HashMap<String, ActionObject> actions = new HashMap<String, ActionObject>();
+
+		for (Config a : conf.getConfigList("actions")) {
+			ActionObject ao = new ActionObject(a, prefix);
+			actions.put(ao.getAction(), ao);
+		}
+		List<ActionObject> actionList = new ArrayList<ActionObject>(
+				actions.values());
+		Collections.sort(actionList);
+		return actionList;
+	}
+
 	private static boolean hasMatchingSupertype(MediaType type, MediaType inType) {
 		// Get the Tika type tree:
 		MediaType superType = mimeTypes.getMediaTypeRegistry().getSupertype(type);

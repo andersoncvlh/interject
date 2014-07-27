@@ -37,18 +37,16 @@ API
 
 The idea is to provide a RESTful API for identifying items, presenting options, and performing transformations. e.g.
 
-API to perform identification of the item:
-    /id/{original_url}
-
 Interject by examining the item and offering access options;
-    /interject/{original_url}
+    /interject/inspect/{original_url}
 
 Perform actions on item:
-    /action/{actor}/{parameters}/{original_url}
-    /action/{actor}/{original_url}?{parameters}
+    /interject/action/{actor}/{parameters}/{original_url}
+or
+    /interject/action/{actor}/{original_url}?{parameters}
 
 Allow proxied access to remote resource:
-    /action/passthrough/{original_url}
+    /interject/action/passthrough/{original_url}
 
 
 Format conversion actions

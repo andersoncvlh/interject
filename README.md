@@ -1,16 +1,22 @@
 Interject
 =========
 
-A proof-of-concept on-demand format conversion system build with web archives in mind.
+A proof-of-concept on-demand format conversion system build with web archives in mind. Developed at the <a href="http://www.webarchive.org.uk/ukwa/">UK Web Archive</a>, as part of the <a href="http://www.scape-project.eu/">SCAPE Project</a>.
 
 [![Build Status](https://travis-ci.org/ukwa/interject.png?branch=master)](https://travis-ci.org/ukwa/interject/)
 
-NOTE: view3dscene needs to be installed separately and symlinked in to work.
 
-To Do
------
+Installation
+------------
 
-Possible future work:
+Perhaps the clumsiest aspect of the current implementation is the way the underlying tools are handled. The shell commands being invoked are not declared very cleanly, and the invocation code contains a number of assumptions about what is installed, and where. For example, view3dscene needs to be installed separately and symlinked into the execution folder to work, and some of the tools need a X session to function (e.g. via a Xvfb).
+
+Development Ideas
+-----------------
+
+The packaging of tools and the declaration of how to invoke them is probably the area that needs most work in order to carry these ideas forward. For example, if would be better to package up the various tools and their dependencies along with the web service, perhaps in the form of one or more virtual machine images.
+
+Other possible improvements are:
 
 * Add a URL form to /inspect/ when no URL parameter is present, and add bookmarklet a la Mementos.
 * Use a single parameterised route to invoke actions.

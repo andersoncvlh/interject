@@ -1,0 +1,42 @@
+@(inspecteeForm: Form[Inspectee])
+
+@import helper.twitterBootstrap._
+
+@scripts = {
+    <script src='@routes.Assets.at("bootstrap/dist/js/bootstrap.min.js")' type="text/javascript"></script>
+}
+
+@styles = {
+}
+
+@main("Inspection", styles, scripts) {
+
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> This is a research prototype for a web archive access helper service, and may be taken down at any time.
+        </div>
+                
+      <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12">
+      @helper.form(action = routes.Inspect.inspectThis, 'id -> "inspecteeForm", 'class -> "form", 'role -> "form" ) {
+            <div class="form-group">
+              @helper.inputText(inspecteeForm("uri"),'id -> "idInspecteeUri", '_label -> "URI to inspect:", 'class -> "form-control", 'placeHolder -> "http://www.bl.uk" )
+            </div>
+            <button type="submit" class="btn btn-primary pull-right">Inspect This...</button>
+      }
+          </div>
+      </div>
+      <div class="row">      
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            @if(inspecteeForm.hasGlobalErrors) { 
+                <div class="alert alert-error">
+                <a class="close" data-dismiss="alert">×</a>
+                    @inspecteeForm.errors
+                </div>
+            }
+      
+        </div>
+      </div>
+
+
+}
+
