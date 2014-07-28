@@ -4,11 +4,11 @@
 }
 
 @scripts = {
-    <script src='@routes.Assets.at("bootstrap/js/modal.js")' type="text/javascript"></script>
-    <script src='@routes.Assets.at("bootstrap/js/button.js")' type="text/javascript"></script>
+        <script src='@routes.Assets.at("bootstrap/dist/js/bootstrap.min.js")' type="text/javascript"></script>
 }
 
 @plain(action.getName, styles, scripts) {
+    
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-header">             
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -24,7 +24,7 @@
                     @action.getName
                 </a>
             </div>
-            <div class="collapse navbar-collapse">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <div class="nav navbar-right">
                   <button type="button" id="rate-action-plus-@index" class="btn btn-xs btn-success rate-up navbar-btn" title="Rate this as: Good.">+1</button>
                   <button type="button" id="rate-action-minus-@index" class="btn btn-xs btn-danger rate-down navbar-btn" title="Rate this as: Not Good.">-1</button>
