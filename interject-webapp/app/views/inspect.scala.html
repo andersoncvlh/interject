@@ -79,11 +79,9 @@
                         VIEW
                         </a>
 	                    <span class="pull-right">
-                          <a href="@(action.getActionURL + url)" class="btn btn-xs btn-default btn-go" role="button" title="Download this resource directly.">
-                            DOWNLOAD
-                          </a>
+                          <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-primary" role="button" title="Inspect this resource, and optionally apply further (chained) actions to this resource.">INSPECT</a>
                           &nbsp;
-                          <a href="@(routes.Inspect.inspect( action.getActionURL + url))" class="btn btn-xs btn-default" role="button" title="Apply further (chained) actions to this resource.">FURTHER OPTIONS</a>
+                          <a href="@(action.getActionURL + url)" class="btn btn-xs btn-default btn-go" role="button" title="Download this resource directly.">DOWNLOAD</a>
                         </span>
     				</div>
 				</div>
