@@ -13,14 +13,12 @@ object ApplicationBuild extends Build {
     jdbc,
     anorm,
     cache,
-    "org.apache.tika" % "tika-core" % "1.4",
-    "org.apache.tika" % "tika-parsers" % "1.4",
-    "org.apache.commons" % "commons-io" % "1.3.2",
-    "eu.scape-project.nanite" % "nanite-core" % "1.1.4-74",
-    "cglib" % "cglib-nodep" % "2.1_3", // DROID tries to bring in 2.2.2, which doesn't work.
     "uk.bl.wa.interject" % "interject-access-core" % "1.0.0-SNAPSHOT",
     "uk.bl.wa.access" % "qaop" % "1.4.1-SNAPSHOT",
-    "uk.bl.wa.access" % "VRML97toX3D" % "1.0"
+    "uk.bl.wa.access" % "VRML97toX3D" % "1.0",
+    "org.apache.commons" % "commons-io" % "1.3.2",
+    "eu.scape-project.nanite" % "nanite-core" % "1.1.6-82",
+    "cglib" % "cglib-nodep" % "2.1_3" // DROID tries to bring in 2.2.2, which doesn't work.
   )
   
 //  val filterDependencies = Seq(

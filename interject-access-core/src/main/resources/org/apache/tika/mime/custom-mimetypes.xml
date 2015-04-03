@@ -248,7 +248,7 @@ sl:generator="ibauthor"
   </mime-type>
   
   <mime-type type="application/x-spectrum-tap; version=basic">
-    <sub-class-of type="iapplication/x-spectrum-tap" />
+    <sub-class-of type="application/x-spectrum-tap" />
     <_comment>ZX Spectrum .TAP tape image format - BASIC program</_comment>
     <magic priority="50">
       <match value="0x130000" type="string" offset="0">
@@ -258,7 +258,7 @@ sl:generator="ibauthor"
   </mime-type>
 
   <mime-type type="application/x-spectrum-tap; version='number array'">
-    <sub-class-of type="iapplication/x-spectrum-tap" />
+    <sub-class-of type="application/x-spectrum-tap" />
     <_comment>ZX Spectrum .TAP tape image format - number array</_comment>
     <magic priority="50">
       <match value="0x130000" type="string" offset="0">
@@ -268,7 +268,7 @@ sl:generator="ibauthor"
   </mime-type>
 
   <mime-type type="application/x-spectrum-tap; version='character array'">
-    <sub-class-of type="iapplication/x-spectrum-tap" />
+    <sub-class-of type="application/x-spectrum-tap" />
     <_comment>ZX Spectrum .TAP tape image format - character program</_comment>
     <magic priority="50">
       <match value="0x130000" type="string" offset="0">
@@ -278,7 +278,7 @@ sl:generator="ibauthor"
   </mime-type>
 
   <mime-type type="application/x-spectrum-tap; version='memory array'">
-    <sub-class-of type="iapplication/x-spectrum-tap" />
+    <sub-class-of type="application/x-spectrum-tap" />
     <_comment>ZX Spectrum .TAP tape image format - memory block</_comment>
     <magic priority="50">
       <match value="0x130000" type="string" offset="0">
@@ -288,7 +288,7 @@ sl:generator="ibauthor"
   </mime-type>
 
   <mime-type type="application/x-spectrum-tap; version='screen'">
-    <sub-class-of type="iapplication/x-spectrum-tap" />
+    <sub-class-of type="application/x-spectrum-tap" />
     <_comment>ZX Spectrum .TAP tape image format - memory block - screen</_comment>
     <magic priority="50">
       <match value="0x130000" type="string" offset="0">

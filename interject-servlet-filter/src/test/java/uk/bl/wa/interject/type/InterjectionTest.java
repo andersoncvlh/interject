@@ -194,7 +194,7 @@ public class InterjectionTest {
 		try {
 	    	String path = "src/test/resources";
 	    	commands.add("/usr/local/bin/wine");
-			commands.add("external/ivvrml.exe");
+			commands.add("../interject-access-external-tools/ivTools-3.0/ivvrml.exe");
 			commands.add("-2");
 			commands.add(path + "/penguin1.wrl");
 			commands.add("-o");
