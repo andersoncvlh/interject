@@ -236,7 +236,9 @@ sl:generator="ibauthor"
   <mime-type type="application/x-spectrum-tap">
     <acronym>TAP</acronym>
     <_comment>ZX Spectrum .TAP tape image format</_comment>
-    <magic priority="50">
+    <!-- 
+     -->
+    <magic priority="25">
       <match value="0x130000" type="string" offset="0">
         <match value="0x00" type="string" offset="3"/>
         <match value="0x01" type="string" offset="3"/>

@@ -51,6 +51,10 @@
                      <name>log4j.configurationFile</name>
                      <value>${basedir}/src/test/resources/log4j.xml</value>
                   </systemProperty>
+                  <systemProperty>
+                     <name>org.eclipse.jetty.annotations.maxWait</name>
+                     <value>120</value>
+                  </systemProperty>
                </systemProperties>
                <includePluginDependencies>true</includePluginDependencies>
             </configuration>
@@ -114,6 +118,18 @@
          <version>4.4</version>
          <scope>test</scope>
       </dependency>
+	  <dependency>
+    	 <groupId>org.eclipse.jetty</groupId>
+    	 <artifactId>jetty-jsp</artifactId>
+    	 <version>${jetty.version}</version>
+         <scope>test</scope>
+	  </dependency>
+	  <dependency>
+    	 <groupId>org.eclipse.jetty</groupId>
+    	 <artifactId>jetty-util</artifactId>
+    	 <version>${jetty.version}</version>
+         <scope>test</scope>
+	  </dependency>
       <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>javax.servlet-api</artifactId>
