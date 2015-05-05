@@ -24,10 +24,6 @@ import org.apache.commons.imaging.ImagingConstants
 import org.apache.commons.imaging.Imaging
 import org.apache.commons.imaging.ImageFormat
 import org.apache.commons.imaging.formats.png.PngConstants
-import org.apache.http.client.methods.CloseableHttpResponse
-import org.apache.http.client.methods.HttpGet
-import org.apache.http.impl.client.CloseableHttpClient
-import org.apache.http.impl.client.HttpClients
 import org.apache.tika.Tika
 import uk.bl.wa.interject.converter.CommonsImageStrategy
 import uk.bl.wa.interject.converter.ImageIOStrategy

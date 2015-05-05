@@ -22,6 +22,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.sax.ToTextContentHandler;
+import org.springframework.validation.Errors;
 import org.xml.sax.SAXException;
 
 import play.Logger;
@@ -58,7 +59,7 @@ public class Inspection {
 	private String binaryTail;
 	private String binaryTailText;
 
-	
+	private List<String> errors = new ArrayList<String>();
 
 	/* --- */
 	
@@ -196,11 +197,22 @@ public class Inspection {
 			this.size = bytes.length;
 			
 			// Parse it:
-			tika.getParser().parse( new ByteArrayInputStream(bytes), new ToTextContentHandler(content), metadata, context );
+			try {
+				tika.getParser().parse( new ByteArrayInputStream(bytes), new ToTextContentHandler(content), metadata, context );
+			} catch( Throwable e ) {
+				if( e.getCause() != null ) e = e.getCause();
+				Logger.error("Tika failed: "+e);
+				errors.add("Tika parser threw an exception:" +e);
+			}
 			
 			// Also DROID it:
-			droidContentType = dd.detect(new ByteArrayInputStream(bytes), metadata);
-			Logger.info("DROID: " + droidContentType);
+			try {
+				droidContentType = dd.detect(new ByteArrayInputStream(bytes), metadata);
+				Logger.info("DROID: " + droidContentType);
+			} catch( Throwable e ) {
+				Logger.error("DROID failed: "+e);
+				errors.add("DROID detector threw an exception:" +e);
+			}
 
 			// Store the text:
 			this.text = content.toString().trim();
@@ -290,6 +302,14 @@ public class Inspection {
 		 */
 		public String getBinaryTailText() {
 			return binaryTailText;
+		}
+
+		/**
+		 * 
+		 * @return the list of errors
+		 */
+		public List<String> getErrors() {
+			return errors;
 		}
 		
 }

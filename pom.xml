@@ -39,7 +39,7 @@
       <url>git@github.com:ukwa/interject.git</url>
    </scm>
    <properties>
-     <tika.version>1.7</tika.version>
+     <tika.version>1.8</tika.version>
      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
    </properties>
 	<build>

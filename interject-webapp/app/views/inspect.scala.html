@@ -44,9 +44,17 @@
                     <tr><th>Length in bytes:</th><td>@fileObject.getInspection.getSize</td></tr>
                     <tr><th>No. metadata properties:</th><td><a href="#" onclick="$('a#metadataTab').tab('show')">@fileObject.getInspection.getMetadata.size</a></td></tr>
                     <tr><th>Length of extracted text:</th><td><a href="#" onclick="$('a#textTab').tab('show')">@fileObject.getInspection.getText.length</a></td></tr>
+                    <tr><th>Number of parse errors detected:</th><td>@fileObject.getInspection.getErrors().size()</td></tr>
                     </tbody>
 					</table>
 			
+			@if( fileObject.getInspection.getErrors().size() > 0 ) {
+				@for( errorString <- fileObject.getInspection.getErrors() ) {
+					<div class="alert alert-danger">
+					    @errorString
+					</div>
+				}
+			}
 		</div>
 		<div class="col-xs-12 col-sm-7 col-md-7" role="main">
           <p></p>
