@@ -20,6 +20,7 @@ object ApplicationBuild extends Build {
     "eu.scape-project.nanite" % "nanite-core" % "1.1.6-82",
     "org.apache.tika" % "tika-core" % "1.8",
     "org.apache.tika" % "tika-parsers" % "1.8",
+    "org.apache.httpcomponents" % "httpclient" % "4.3.1",
     "cglib" % "cglib-nodep" % "2.1_3" // DROID tries to bring in 2.2.2, which doesn't work.
   )
     

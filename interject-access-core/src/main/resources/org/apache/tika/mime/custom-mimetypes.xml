@@ -236,8 +236,8 @@ sl:generator="ibauthor"
   <mime-type type="application/x-spectrum-tap">
     <acronym>TAP</acronym>
     <_comment>ZX Spectrum .TAP tape image format</_comment>
-    <!-- 
-     -->
+    <!-- Generic signature covering all sub-types as OR matches. 
+    Lower priority to avoid taking precedence over the more specific signatures below. -->
     <magic priority="25">
       <match value="0x130000" type="string" offset="0">
         <match value="0x00" type="string" offset="3"/>
