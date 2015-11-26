@@ -131,7 +131,7 @@ DEF threepyramids Transform {
 		texture	ImageTexture {
 		  repeatS	TRUE
 		  repeatT	TRUE
-		  url	"http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif"
+		  url	http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif
 		}
 
 		textureTransform	TextureTransform {
@@ -160,7 +160,7 @@ DEF threepyramids Transform {
 		texture	ImageTexture {
 		  repeatS	TRUE
 		  repeatT	TRUE
-		  url	"http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif"
+		  url	http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif
 		}
 
 		textureTransform	TextureTransform {
@@ -318,7 +318,7 @@ DEF threepyramids Transform {
 		texture	ImageTexture {
 		  repeatS	TRUE
 		  repeatT	TRUE
-		  url	"http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif"
+		  url	http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif
 		}
 
 		textureTransform	TextureTransform {
@@ -347,7 +347,7 @@ DEF threepyramids Transform {
 		  texture	ImageTexture {
 		    repeatS	TRUE
 		    repeatT	TRUE
-		    url	"http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif"
+		    url	http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif
 		  }
 
 		  textureTransform	TextureTransform {
@@ -386,7 +386,7 @@ DEF threepyramids Transform {
 		texture	ImageTexture {
 		  repeatS	TRUE
 		  repeatT	TRUE
-		  url	"http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif"
+		  url	http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif
 		}
 
 		textureTransform	TextureTransform {
@@ -463,7 +463,7 @@ DEF threepyramids Transform {
 		texture	ImageTexture {
 		  repeatS	TRUE
 		  repeatT	TRUE
-		  url	"http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif"
+		  url	http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif
 		}
 
 		textureTransform	TextureTransform {
@@ -540,7 +540,7 @@ DEF threepyramids Transform {
 		texture	ImageTexture {
 		  repeatS	TRUE
 		  repeatT	TRUE
-		  url	"http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif"
+		  url	http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif
 		}
 
 		textureTransform	TextureTransform {
@@ -617,7 +617,7 @@ DEF threepyramids Transform {
 		texture	ImageTexture {
 		  repeatS	TRUE
 		  repeatT	TRUE
-		  url	"http://intarch.ac.uk/journal/issue7/terrastimages/pyra2a.gif"
+		  url	http://intarch.ac.uk/journal/issue7/terras/model/timages/pyra2a.gif
 		}
 
 		textureTransform	TextureTransform {
