@@ -1,0 +1,707 @@
+#VRML V2.0 utf8
+
+# (c) Melissa M. Terras, HATII, University of Glasgow 1998
+# Inner tomb images (c) Verlag Philipp von Zabern 1994
+
+#File name: pyramids.wrl
+#Date created: 28/7/98
+#revision no: 32
+
+#called from: over.wrl
+#calls: (from timages) pyra2a.gif
+
+#Description: This file contains all the information needed to generate the three pyramids.
+#One pyramid is created then cloned twice to create the two others. The pyramid consists
+#of the main shape, doorway structures, portal structures and screens to prevent a user
+#entering the area.
+
+DEF threepyramids Transform {
+  children	[
+    DEF largepyramid Transform {
+      children	DEF pyramidall_0 Transform {
+	children	[
+	  Transform {
+	    children	DEF pyraportalscreen Shape {
+	      appearance	Appearance {
+		material	Material {
+		  ambientIntensity	0
+		  diffuseColor	0 0 0
+		  specularColor	0.08 0.08 0.08
+		  emissiveColor	0 0 0
+		  shininess	0
+		  transparency	0.1
+		}
+
+	      }
+
+	      geometry	DEF _1 IndexedFaceSet {
+		coord	Coordinate {
+		  point	[ -1 -1 0,
+			    -1 1 0,
+			    1 1 0,
+			    1 -1 0 ]
+		}
+
+		coordIndex	[ 0, 1, 2, 3, -1 ]
+		solid	FALSE
+		normalIndex	[  ]
+		texCoordIndex	[  ]
+	      }
+
+	    }
+
+	    translation	-27.8 8 -11
+	    scale	0.999988 0.999996 0.799996
+	  }
+	  Transform {
+	    children	DEF pyradoorscreen Shape {
+	      appearance	Appearance {
+		material	Material {
+		  ambientIntensity	0
+		  diffuseColor	0 0 0
+		  specularColor	0.08 0.08 0.08
+		  emissiveColor	0 0 0
+		  shininess	0
+		  transparency	0.1
+		}
+
+	      }
+
+	      geometry	DEF _2 IndexedFaceSet {
+		coord	Coordinate {
+		  point	[ -1 -1 0,
+			    -1 1 0,
+			    1 1 0,
+			    1 -1 0 ]
+		}
+
+		coordIndex	[ 0, 1, 2, 3, -1 ]
+		solid	FALSE
+		normalIndex	[  ]
+		texCoordIndex	[  ]
+	      }
+
+	    }
+
+	    translation	-27.8 1.8 -10
+	    scale	1.2 1.8 1.4
+	  }
+	  Transform {
+	    children	DEF pyramidion Shape {
+	      appearance	Appearance {
+		material	Material {
+		  ambientIntensity	0.48
+		  diffuseColor	0.688123 0.702023 0.74
+		  specularColor	0.5 0.5 0.5
+		  emissiveColor	0 0 0
+		  shininess	0.82
+		  transparency	0
+		}
+
+	      }
+
+	      geometry	DEF _3 IndexedFaceSet {
+		coord	Coordinate {
+		  point	[ -1 -1 0,
+			    -1 1 0,
+			    1 1 0,
+			    1 -1 0,
+			    -3.545e-006 -3.50835e-006 -2.98521 ]
+		}
+
+		coordIndex	[ 1, 2, 4, -1, 2, 3, 4, -1,
+			  0, 4, 3, -1, 0, 1, 4, -1 ]
+		solid	FALSE
+		normalIndex	[  ]
+		texCoordIndex	[  ]
+	      }
+
+	    }
+
+	    translation	-27.8016 12.1078 -12.2011
+	    rotation	1 -2.42387e-009 -2.24156e-009  1.5708
+	    scale	0.403215 0.403212 0.436006
+	  }
+	  Transform {
+	    children	DEF pyrasill Shape {
+	      appearance	Appearance {
+		material	Material {
+		}
+
+		texture	ImageTexture {
+		  repeatS	TRUE
+		  repeatT	TRUE
+		  url	"timages/pyra2a.gif"
+		}
+
+		textureTransform	TextureTransform {
+		  translation	0 0
+		  rotation	0
+		  scale	4 2
+		  center	0 0
+		}
+
+	      }
+
+	      geometry	Box {
+	      }
+
+	    }
+
+	    translation	-27.8 7 -10.2
+	    scale	0.756913 0.2 0.2
+	  }
+	  Transform {
+	    children	DEF pyramid Shape {
+	      appearance	Appearance {
+		material	Material {
+		}
+
+		texture	ImageTexture {
+		  repeatS	TRUE
+		  repeatT	TRUE
+		  url	"timages/pyra2a.gif"
+		}
+
+		textureTransform	TextureTransform {
+		  translation	0 0
+		  rotation	0
+		  scale	4.6 3
+		  center	0 0
+		}
+
+	      }
+
+	      geometry	DEF _4 IndexedFaceSet {
+		coord	Coordinate {
+		  point	[ -0.999999 -0.999999 -1.61905,
+			    -0.999999 1 -1.61905,
+			    1 1 -1.61905,
+			    1 -0.999999 -1.61905,
+			    0.0955138 -0.095515 1.2667,
+			    0.0955138 0.0955136 1.2667,
+			    -0.0955148 0.0955137 1.2667,
+			    -0.0955148 -0.095515 1.2667,
+			    0.464035 -0.464035 0.0909371,
+			    0.464035 0.464035 0.0909371,
+			    0.341125 -0.341126 0.483078,
+			    0.341125 0.341125 0.483079,
+			    0.464035 -0.156873 0.0909371,
+			    0.341125 -0.156874 0.483079,
+			    0.464035 0.153581 0.0909371,
+			    0.341125 0.153581 0.483079,
+			    0.40258 -0.156874 0.287008,
+			    0.40258 0.153581 0.287008,
+			    0.341125 -0.00164634 0.483079,
+			    0.371853 -0.156874 0.385043,
+			    0.371853 0.153581 0.385043,
+			    0.341125 -0.054133 0.483079,
+			    0.341125 0.0486069 0.483079,
+			    0.356489 -0.156874 0.434061,
+			    0.356489 0.153581 0.434061,
+			    0.341125 -0.105503 0.483079,
+			    0.356489 -0.105503 0.434061,
+			    0.371853 -0.105503 0.385043,
+			    0.341125 0.101094 0.483079,
+			    0.356489 0.101094 0.434061,
+			    0.371853 0.101094 0.385043,
+			    0.387216 -0.156874 0.336025,
+			    0.387216 0.153581 0.336026,
+			    0.387216 -0.131188 0.336025,
+			    0.371853 -0.131188 0.385043,
+			    0.356489 -0.0798181 0.434061,
+			    0.341125 -0.0798182 0.483079,
+			    0.387216 0.127338 0.336026,
+			    0.371853 0.127338 0.385043,
+			    0.356489 0.0748506 0.434061,
+			    0.341125 0.0748506 0.483079,
+			    0.348807 -0.105503 0.45857,
+			    0.348807 -0.0798181 0.45857,
+			    0.348807 -0.0541329 0.45857,
+			    0.348807 0.0486069 0.45857,
+			    0.348807 0.0748506 0.45857,
+			    0.341125 -0.0278897 0.483079,
+			    0.341125 0.0234803 0.483079,
+			    0.344966 -0.054133 0.470824,
+			    0.344966 -0.0278896 0.470824,
+			    0.344966 0.0234803 0.470824,
+			    0.344966 0.0486069 0.470824,
+			    0.344966 -0.00164633 0.470824,
+			    0.344966 -0.014768 0.470824,
+			    0.341125 -0.014768 0.483079,
+			    0.344966 0.010917 0.470824,
+			    0.341125 0.0109172 0.483079,
+			    0.464035 -0.156873 0.0909371,
+			    0.464035 0.153581 0.0909371,
+			    0.40258 0.153581 0.287008,
+			    0.40258 -0.156874 0.287008,
+			    0.371853 -0.105503 0.385043,
+			    0.371853 0.101094 0.385043,
+			    0.348807 0.0486069 0.45857,
+			    0.348807 -0.0541329 0.45857,
+			    0.341125 -0.00164634 0.483079,
+			    0.338704 -0.159463 0.0967926,
+			    0.338704 0.150991 0.0967926,
+			    0.277249 0.150991 0.292864,
+			    0.277249 -0.159463 0.292863,
+			    0.246521 -0.108093 0.390899,
+			    0.246521 0.0985041 0.390899,
+			    0.223476 0.046017 0.464425,
+			    0.223476 -0.0567228 0.464425,
+			    0.215794 -0.00423621 0.488934,
+			    0.338704 -0.159463 0.0967926,
+			    0.338704 0.150991 0.0967926,
+			    0.277249 0.150991 0.292864,
+			    0.277249 -0.159463 0.292863,
+			    0.246521 -0.108093 0.390899,
+			    0.246521 0.0985041 0.390899,
+			    0.223476 0.046017 0.464425,
+			    0.223476 -0.0567228 0.464425,
+			    0.215794 -0.00423621 0.488934,
+			    1 -0.200004 -1.61905,
+			    0.464035 -0.200004 0.0909371,
+			    1 0.18874 -1.61905,
+			    0.464035 0.188741 0.0909371,
+			    0.745554 -0.200004 -0.807244,
+			    0.745554 0.18874 -0.807243 ]
+		}
+
+		coordIndex	[ 1, 2, 9, 11, 5, 6, -1, 0,
+			  1, 6, 7, -1, 0, 7, 4, 10,
+			  8, 3, -1, 15, 28, 40, 22, 47,
+			  56, 18, 54, 46, 21, 36, 25, 13,
+			  10, 4, 5, 11, -1, 85, 8, 10,
+			  13, 23, 19, 31, 16, 12, -1, 17,
+			  32, 20, 24, 15, 11, 9, 87, 14,
+			  -1, 13, 25, 41, 26, 23, -1, 27,
+			  34, 19, 23, 26, -1, 28, 15, 24,
+			  29, -1, 24, 20, 38, 30, 29, -1,
+			  31, 19, 34, 33, -1, 20, 32, 37,
+			  38, -1, 45, 40, 28, 29, 39, -1,
+			  25, 36, 42, 41, -1, 42, 35, 26,
+			  41, -1, 36, 21, 48, 43, 42, -1,
+			  51, 22, 40, 45, 44, -1, 21, 46,
+			  49, 48, -1, 47, 22, 51, 50, -1,
+			  54, 18, 52, 53, -1, 18, 56, 55,
+			  52, -1, 56, 47, 50, 55, -1, 16,
+			  31, 33, -1, 34, 27, 33, -1, 27,
+			  26, 35, -1, 43, 35, 42, -1, 49,
+			  43, 48, -1, 46, 54, 49, -1, 54,
+			  53, 49, -1, 51, 44, 50, -1, 45,
+			  39, 44, -1, 30, 39, 29, -1, 37,
+			  30, 38, -1, 32, 17, 37, -1, 14,
+			  12, 57, 58, -1, 17, 14, 58, 59,
+			  -1, 12, 16, 60, 57, -1, 58, 57,
+			  66, 67, -1, 59, 58, 67, 68, -1,
+			  57, 60, 69, 66, -1, 67, 66, 75,
+			  76, -1, 68, 67, 76, 77, -1, 66,
+			  69, 78, 75, -1, 88, 84, 3, 8,
+			  85, -1, 2, 86, 89, 87, 9, -1,
+			  88, 85, 12, 14, 87, 89, -1 ]
+		solid	FALSE
+		normalIndex	[  ]
+		texCoordIndex	[  ]
+	      }
+
+	    }
+
+	    translation	-27.8 6.79999 -12.2
+	    rotation	0.57735 0.57735 0.57735  4.18879
+	    scale	4.2 4.2 4.2
+	  }
+	  Transform {
+	    children	DEF pyralintel Shape {
+	      appearance	Appearance {
+		material	DEF _5 Material {
+		}
+
+		texture	ImageTexture {
+		  repeatS	TRUE
+		  repeatT	TRUE
+		  url	"timages/pyra2a.gif"
+		}
+
+		textureTransform	TextureTransform {
+		  translation	0 0
+		  rotation	0
+		  scale	8 4
+		  center	0 0
+		}
+
+	      }
+
+	      geometry	Box {
+	      }
+
+	    }
+
+	    translation	-27.8 3.8 -9
+	    scale	1.6 0.4 1
+	  }
+	  Transform {
+	    children	DEF _6 Transform {
+	      children	DEF pyradoor Shape {
+		appearance	Appearance {
+		  material	USE _5
+
+		  texture	ImageTexture {
+		    repeatS	TRUE
+		    repeatT	TRUE
+		    url	"timages/pyra2a.gif"
+		  }
+
+		  textureTransform	TextureTransform {
+		    translation	0 0
+		    rotation	0
+		    scale	3 10
+		    center	0 0
+		  }
+
+		}
+
+		geometry	Box {
+		}
+
+	      }
+
+	      translation	-29 2.3 -8.8
+	      scale	0.4 2.3 0.799998
+	    }
+
+	    translation	1.90735e-006 9.46357e-008 0
+	    scale	1 0.73913 1
+	  }
+	  Transform {
+	    children	USE _6
+
+	    translation	2.4 9.46357e-008 0
+	    scale	1 0.73913 1
+	  }
+	  Transform {
+	    children	DEF liptopdoorpyramid Shape {
+	      appearance	Appearance {
+		material	Material {
+		}
+
+		texture	ImageTexture {
+		  repeatS	TRUE
+		  repeatT	TRUE
+		  url	"timages/pyra2a.gif"
+		}
+
+		textureTransform	TextureTransform {
+		  translation	0 0
+		  rotation	0
+		  scale	10 2
+		  center	0 0
+		}
+
+	      }
+
+	      geometry	DEF _7 IndexedFaceSet {
+		coord	Coordinate {
+		  point	[ -1 1 1,
+			    -1 -1 1,
+			    1 1 1,
+			    1 -1 1,
+			    1 1 -1,
+			    1 -1 -1,
+			    -1 1 -1,
+			    -1 -1 -1 ]
+		}
+
+		coordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+			  6, -1, 6, 7, 1, 0, -1, 2,
+			  3, 5, 4, -1, 6, 0, 2, 4,
+			  -1, 1, 7, 5, 3, -1 ]
+		texCoord	TextureCoordinate {
+		  point	[ 0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0 ]
+		}
+
+		creaseAngle	0.5
+		normalIndex	[  ]
+		texCoordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+			  6, -1, 8, 9, 11, 10, -1, 12,
+			  13, 15, 14, -1, 16, 17, 19, 18,
+			  -1, 20, 21, 23, 22, -1 ]
+	      }
+
+	    }
+
+	    translation	-27.8 4.25091 -8.78254
+	    scale	1.67894 0.0465558 0.872727
+	  }
+	  Transform {
+	    children	DEF topdoorpyramid2 Shape {
+	      appearance	Appearance {
+		material	Material {
+		}
+
+		texture	ImageTexture {
+		  repeatS	TRUE
+		  repeatT	TRUE
+		  url	"timages/pyra2a.gif"
+		}
+
+		textureTransform	TextureTransform {
+		  translation	0 0
+		  rotation	0
+		  scale	10 3
+		  center	0 0
+		}
+
+	      }
+
+	      geometry	DEF _8 IndexedFaceSet {
+		coord	Coordinate {
+		  point	[ -1 1 1,
+			    -1 -1 1,
+			    1 1 1,
+			    1 -1 1,
+			    1 1 -1,
+			    1 -1 -1,
+			    -1 1 -1,
+			    -1 -1 -1 ]
+		}
+
+		coordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+			  6, -1, 6, 7, 1, 0, -1, 2,
+			  3, 5, 4, -1, 6, 0, 2, 4,
+			  -1, 1, 7, 5, 3, -1 ]
+		texCoord	TextureCoordinate {
+		  point	[ 0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0 ]
+		}
+
+		creaseAngle	0.5
+		normalIndex	[  ]
+		texCoordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+			  6, -1, 8, 9, 11, 10, -1, 12,
+			  13, 15, 14, -1, 16, 17, 19, 18,
+			  -1, 20, 21, 23, 22, -1 ]
+	      }
+
+	    }
+
+	    translation	-27.8 4.56993 -9
+	    scale	1.6 0.272263 1
+	  }
+	  Transform {
+	    children	DEF slopedoorpyramid Shape {
+	      appearance	Appearance {
+		material	Material {
+		}
+
+		texture	ImageTexture {
+		  repeatS	TRUE
+		  repeatT	TRUE
+		  url	"timages/pyra2a.gif"
+		}
+
+		textureTransform	TextureTransform {
+		  translation	0 0
+		  rotation	0
+		  scale	10 4
+		  center	0 0
+		}
+
+	      }
+
+	      geometry	DEF _9 IndexedFaceSet {
+		coord	Coordinate {
+		  point	[ -1.12574 0.684497 1.1893,
+			    -1 -1 1,
+			    1.13313 0.684741 1.1893,
+			    1 -1 1,
+			    1.13313 0.874042 -1,
+			    1 -1 -1,
+			    -1.12574 0.873798 -1,
+			    -1 -1 -1 ]
+		}
+
+		coordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+			  6, -1, 6, 7, 1, 0, -1, 2,
+			  3, 5, 4, -1, 6, 0, 2, 4,
+			  -1, 1, 7, 5, 3, -1 ]
+		texCoord	TextureCoordinate {
+		  point	[ 0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0 ]
+		}
+
+		creaseAngle	0.5
+		normalIndex	[  ]
+		texCoordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+			  6, -1, 8, 9, 11, 10, -1, 12,
+			  13, 15, 14, -1, 16, 17, 19, 18,
+			  -1, 20, 21, 23, 22, -1 ]
+	      }
+
+	    }
+
+	    translation	-27.811 4.94361 -8.98444
+	    scale	1.59966 0.106602 0.999999
+	  }
+	  Transform {
+	    children	Shape {
+	      appearance	Appearance {
+		material	Material {
+		}
+
+		texture	ImageTexture {
+		  repeatS	TRUE
+		  repeatT	TRUE
+		  url	"timages/pyra2a.gif"
+		}
+
+		textureTransform	TextureTransform {
+		  translation	0 0
+		  rotation	0
+		  scale	10 3
+		  center	0 0
+		}
+
+	      }
+
+	      geometry	DEF _10 IndexedFaceSet {
+		coord	Coordinate {
+		  point	[ -1 1 1,
+			    -1 -1 1,
+			    1 1 1,
+			    1 -1 1,
+			    1 1 -1,
+			    1 -1 -1,
+			    -1 1 -1,
+			    -1 -1 -1 ]
+		}
+
+		coordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+			  6, -1, 6, 7, 1, 0, -1, 2,
+			  3, 5, 4, -1, 6, 0, 2, 4,
+			  -1, 1, 7, 5, 3, -1 ]
+		texCoord	TextureCoordinate {
+		  point	[ 0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0,
+			    0 1,
+			    0 0,
+			    1 1,
+			    1 0 ]
+		}
+
+		creaseAngle	0.5
+		normalIndex	[  ]
+		texCoordIndex	[ 0, 1, 3, 2, -1, 4, 5, 7,
+			  6, -1, 8, 9, 11, 10, -1, 12,
+			  13, 15, 14, -1, 16, 17, 19, 18,
+			  -1, 20, 21, 23, 22, -1 ]
+	      }
+
+	    }
+
+	    translation	-27.8 5.14336 -8.8
+	    scale	1.80001 0.143363 1
+	  }
+	]
+	translation	29 0.895327 0.599994
+      }
+
+      translation	-9.07507 -0.0840325 0.714824
+      scale	1.09352 1.09352 1.09352
+    }
+    DEF sennedjempyramid Transform {
+      children	USE pyramidall_0
+
+    }
+    Transform {
+      children	USE pyramidall_0
+
+      translation	7.90748 0.221882 -2.6485
+      scale	0.743766 0.743766 0.743766
+    }
+  ]
+}
+

@@ -40,3 +40,7 @@ Other possible improvements are:
     * OpenJPEG for JP2
     * PDF/TIFF Summaries:  montage -density 150x150 -geometry 200x200+0+0 -tile 4 ~/Downloads/aghsecondannaulreport.pdf tiledoverview.jpg
     * http://www.imagemagick.org/discourse-server/viewtopic.php?f=3&t=23010
+
+Interesting examples
+
+* VRML with textures - http://intarch.ac.uk/journal/issue7/terras/compmod.htm
